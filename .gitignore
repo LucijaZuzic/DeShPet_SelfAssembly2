@@ -3,18 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Code for testing GPU recognition
-test.py
-
 # My charts
 *.png
-
-# My log
-training_log.txt
-
-# Graded peptides
-percentage.csv
-grade.csv
  
 # Keras models
 #*.h5

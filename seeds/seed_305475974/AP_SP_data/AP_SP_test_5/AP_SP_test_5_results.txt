@@ -1,0 +1,161 @@
+Model AP-SP Test 5 Params 1 Fold 1: conv: 5 num_cells: 32 kernel_size: 4 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 1 Fold 1: Maximum accuracy = 91.949152946472% Maximum validation accuracy = 86.440676450729% Minimal loss = 0.316173762083 Minimal validation loss = 0.390797108412
+Model AP-SP Test 5 Params 1 Fold 1: Accuracy = 85.756658485958% (6.764242365692%) Validation accuracy = 81.525423526764% (3.659380232049%) Loss = 0.456655188118 (0.154519950787) Validation loss = 0.435160069806 (0.052467561407)
+Model AP-SP Test 5 Params 1 Fold 2: conv: 5 num_cells: 32 kernel_size: 4 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 1 Fold 2: Maximum accuracy = 92.796611785889% Maximum validation accuracy = 86.440676450729% Minimal loss = 0.321658581495 Minimal validation loss = 0.431742161512
+Model AP-SP Test 5 Params 1 Fold 2: Accuracy = 85.823244282178% (7.093480573393%) Validation accuracy = 81.912833707673% (4.959899607189%) Loss = 0.438977409261 (0.153563519617) Validation loss = 0.466314271944 (0.053943263936)
+Model AP-SP Test 5 Params 1 Fold 3: conv: 5 num_cells: 32 kernel_size: 4 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 1 Fold 3: Maximum accuracy = 92.796611785889% Maximum validation accuracy = 84.745764732361% Minimal loss = 0.286000281572 Minimal validation loss = 0.445370048285
+Model AP-SP Test 5 Params 1 Fold 3: Accuracy = 87.409200583185% (7.510250422181%) Validation accuracy = 77.578691669873% (3.140613822994%) Loss = 0.407442816666 (0.158860331916) Validation loss = 0.531667120542 (0.047068865416)
+Model AP-SP Test 5 Params 1 Fold 4: conv: 5 num_cells: 32 kernel_size: 4 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 1 Fold 4: Maximum accuracy = 92.796611785889% Maximum validation accuracy = 88.135594129562% Minimal loss = 0.308985233307 Minimal validation loss = 0.374304920435
+Model AP-SP Test 5 Params 1 Fold 4: Accuracy = 87.052057811192% (7.004312500272%) Validation accuracy = 86.392252700669% (4.111662773655%) Loss = 0.439528528282 (0.149143507929) Validation loss = 0.403360561388 (0.057128599491)
+Model AP-SP Test 5 Params 1 Fold 5: conv: 5 num_cells: 32 kernel_size: 4 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 1 Fold 5: Maximum accuracy = 88.135594129562% Maximum validation accuracy = 74.576270580292% Minimal loss = 0.405705243349 Minimal validation loss = 0.488862127066
+Model AP-SP Test 5 Params 1 Fold 5: Accuracy = 83.032687476703% (6.214502043363%) Validation accuracy = 71.234868424279% (3.832709177045%) Loss = 0.510762243186 (0.129791930717) Validation loss = 0.576702693956 (0.050983163232)
+Model AP-SP Test 5 Params 1 average: Maximum accuracy = 92.796611785889% (0.000000000000%) Maximum validation accuracy = 88.135594129562% (0.000000000000%) Minimal loss = 0.286000281572 (0.000000000000) Minimal validation loss = 0.374304920435 (0.000000000000)
+Model AP-SP Test 5 Params 1 average: Accuracy = 85.814769727843% (7.098918988402%) Validation accuracy = 79.728814005852% (6.459409478457%) Loss = 0.450673237102 (0.153336782675) Validation loss = 0.482640943527 (0.082217650321)
+Model AP-SP Test 5 Params 2 Fold 1: conv: 5 num_cells: 32 kernel_size: 6 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 2 Fold 1: Maximum accuracy = 96.186441183090% Maximum validation accuracy = 83.050847053528% Minimal loss = 0.233811780810 Minimal validation loss = 0.395681828260
+Model AP-SP Test 5 Params 2 Fold 1: Accuracy = 88.256658698831% (9.231383718558%) Validation accuracy = 79.515737635749% (3.028473328010%) Loss = 0.380856435214 (0.184640310331) Validation loss = 0.490730312467 (0.042245159809)
+Model AP-SP Test 5 Params 2 Fold 2: conv: 5 num_cells: 32 kernel_size: 6 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 2 Fold 2: Maximum accuracy = 96.186441183090% Maximum validation accuracy = 83.050847053528% Minimal loss = 0.201255738735 Minimal validation loss = 0.526661574841
+Model AP-SP Test 5 Params 2 Fold 2: Accuracy = 89.648909909385% (8.627723647274%) Validation accuracy = 80.702178052493% (3.638492526564%) Loss = 0.358722289332 (0.189259742479) Validation loss = 0.636278288705 (0.043818948644)
+Model AP-SP Test 5 Params 2 Fold 3: conv: 5 num_cells: 32 kernel_size: 6 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 2 Fold 3: Maximum accuracy = 91.949152946472% Maximum validation accuracy = 83.050847053528% Minimal loss = 0.287736535072 Minimal validation loss = 0.478132128716
+Model AP-SP Test 5 Params 2 Fold 3: Accuracy = 87.257869073323% (7.546085748651%) Validation accuracy = 79.733655367579% (2.827957466353%) Loss = 0.412869127308 (0.159439847898) Validation loss = 0.555348107219 (0.029232511009)
+Model AP-SP Test 5 Params 2 Fold 4: conv: 5 num_cells: 32 kernel_size: 6 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 2 Fold 4: Maximum accuracy = 92.372882366180% Maximum validation accuracy = 86.440676450729% Minimal loss = 0.322625756264 Minimal validation loss = 0.406767219305
+Model AP-SP Test 5 Params 2 Fold 4: Accuracy = 85.974576260362% (7.626496118172%) Validation accuracy = 84.721548812730% (3.751776182455%) Loss = 0.446658891014 (0.149081139724) Validation loss = 0.435907783253 (0.044998230498)
+Model AP-SP Test 5 Params 2 Fold 5: conv: 5 num_cells: 32 kernel_size: 6 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 2 Fold 5: Maximum accuracy = 93.220341205597% Maximum validation accuracy = 76.271188259125% Minimal loss = 0.285874307156 Minimal validation loss = 0.565696060658
+Model AP-SP Test 5 Params 2 Fold 5: Accuracy = 88.577481848853% (6.646866784876%) Validation accuracy = 74.043584976877% (3.584517057915%) Loss = 0.403829509871 (0.151665106147) Validation loss = 0.624196505547 (0.029185918719)
+Model AP-SP Test 5 Params 2 average: Maximum accuracy = 96.186441183090% (0.000000000000%) Maximum validation accuracy = 86.440676450729% (0.000000000000%) Minimal loss = 0.201255738735 (0.000000000000) Minimal validation loss = 0.395681828260 (0.000000000000)
+Model AP-SP Test 5 Params 2 average: Accuracy = 87.943099158151% (8.083302863143%) Validation accuracy = 79.743340969086% (4.807769678417%) Loss = 0.400587250548 (0.170285514894) Validation loss = 0.548492199438 (0.085944378926)
+Model AP-SP Test 5 Params 3 Fold 1: conv: 5 num_cells: 32 kernel_size: 8 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 3 Fold 1: Maximum accuracy = 92.372882366180% Maximum validation accuracy = 86.440676450729% Minimal loss = 0.310622721910 Minimal validation loss = 0.385021001101
+Model AP-SP Test 5 Params 3 Fold 1: Accuracy = 86.731234363147% (6.608594714586%) Validation accuracy = 82.760291099548% (3.018002840932%) Loss = 0.437788835168 (0.149772293566) Validation loss = 0.443674448133 (0.041349119844)
+Model AP-SP Test 5 Params 3 Fold 2: conv: 5 num_cells: 32 kernel_size: 8 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 3 Fold 2: Maximum accuracy = 95.338982343674% Maximum validation accuracy = 79.661017656326% Minimal loss = 0.252028197050 Minimal validation loss = 0.504826784134
+Model AP-SP Test 5 Params 3 Fold 2: Accuracy = 89.134382222380% (9.009747033682%) Validation accuracy = 77.748184459550% (2.976238870432%) Loss = 0.399744633692 (0.175146883593) Validation loss = 0.644089197261 (0.054200087688)
+Model AP-SP Test 5 Params 3 Fold 3: conv: 5 num_cells: 32 kernel_size: 8 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 3 Fold 3: Maximum accuracy = 93.644070625305% Maximum validation accuracy = 81.355929374695% Minimal loss = 0.223121479154 Minimal validation loss = 0.457669049501
+Model AP-SP Test 5 Params 3 Fold 3: Accuracy = 88.395884803363% (8.272497936155%) Validation accuracy = 77.118643948010% (3.721652502121%) Loss = 0.362292366156 (0.183038409020) Validation loss = 0.558622465815 (0.033024917567)
+Model AP-SP Test 5 Params 3 Fold 4: conv: 5 num_cells: 32 kernel_size: 8 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 3 Fold 4: Maximum accuracy = 93.220341205597% Maximum validation accuracy = 86.440676450729% Minimal loss = 0.256923198700 Minimal validation loss = 0.414523690939
+Model AP-SP Test 5 Params 3 Fold 4: Accuracy = 87.463681059224% (8.986503172016%) Validation accuracy = 82.203389959676% (6.455634393564%) Loss = 0.398404844318 (0.177133055230) Validation loss = 0.534684830904 (0.050013454080)
+Model AP-SP Test 5 Params 3 Fold 5: conv: 5 num_cells: 32 kernel_size: 8 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 3 Fold 5: Maximum accuracy = 92.372882366180% Maximum validation accuracy = 77.966099977493% Minimal loss = 0.288870871067 Minimal validation loss = 0.519764363766
+Model AP-SP Test 5 Params 3 Fold 5: Accuracy = 87.330508232117% (7.468813810612%) Validation accuracy = 75.084746054241% (3.826048977456%) Loss = 0.406323260495 (0.154678024564) Validation loss = 0.585440562453 (0.024198451923)
+Model AP-SP Test 5 Params 3 average: Maximum accuracy = 95.338982343674% (0.000000000000%) Maximum validation accuracy = 86.440676450729% (0.000000000000%) Minimal loss = 0.223121479154 (0.000000000000) Minimal validation loss = 0.385021001101 (0.000000000000)
+Model AP-SP Test 5 Params 3 average: Accuracy = 87.811138136046% (8.166205166110%) Validation accuracy = 78.983051104205% (5.156873447599%) Loss = 0.400910787966 (0.170176936078) Validation loss = 0.553302300913 (0.078093871609)
+Model AP-SP Test 5 Params 4 Fold 1: conv: 5 num_cells: 48 kernel_size: 4 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 4 Fold 1: Maximum accuracy = 87.288135290146% Maximum validation accuracy = 79.661017656326% Minimal loss = 0.430880904198 Minimal validation loss = 0.412337809801
+Model AP-SP Test 5 Params 4 Fold 1: Accuracy = 81.295399240085% (6.948297787508%) Validation accuracy = 76.029055629458% (4.710049983671%) Loss = 0.547431392329 (0.127677407131) Validation loss = 0.454085400701 (0.068296669687)
+Model AP-SP Test 5 Params 4 Fold 2: conv: 5 num_cells: 48 kernel_size: 4 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 4 Fold 2: Maximum accuracy = 91.949152946472% Maximum validation accuracy = 83.050847053528% Minimal loss = 0.338526785374 Minimal validation loss = 0.484714001417
+Model AP-SP Test 5 Params 4 Fold 2: Accuracy = 85.611379742622% (7.793265677052%) Validation accuracy = 79.757868817874% (5.465078677720%) Loss = 0.467629063555 (0.145750354108) Validation loss = 0.545588080798 (0.034102718359)
+Model AP-SP Test 5 Params 4 Fold 3: conv: 5 num_cells: 48 kernel_size: 4 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 4 Fold 3: Maximum accuracy = 89.406782388687% Maximum validation accuracy = 86.440676450729% Minimal loss = 0.378366619349 Minimal validation loss = 0.413104116917
+Model AP-SP Test 5 Params 4 Fold 3: Accuracy = 83.401937229293% (5.990277439933%) Validation accuracy = 80.290556124278% (5.353444060418%) Loss = 0.481126018507 (0.130285796791) Validation loss = 0.459364105548 (0.062839257144)
+Model AP-SP Test 5 Params 4 Fold 4: conv: 5 num_cells: 48 kernel_size: 4 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 4 Fold 4: Maximum accuracy = 92.372882366180% Maximum validation accuracy = 88.135594129562% Minimal loss = 0.311509847641 Minimal validation loss = 0.429013907909
+Model AP-SP Test 5 Params 4 Fold 4: Accuracy = 86.016948819160% (8.068350688048%) Validation accuracy = 85.060533114842% (4.718817272676%) Loss = 0.442447027564 (0.153689514086) Validation loss = 0.450883255260 (0.042300278232)
+Model AP-SP Test 5 Params 4 Fold 5: conv: 5 num_cells: 48 kernel_size: 4 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 4 Fold 5: Maximum accuracy = 91.525423526764% Maximum validation accuracy = 84.745764732361% Minimal loss = 0.322204291821 Minimal validation loss = 0.502014458179
+Model AP-SP Test 5 Params 4 Fold 5: Accuracy = 87.106536882264% (6.262251780483%) Validation accuracy = 78.426150253841% (4.776116749084%) Loss = 0.425333934171 (0.135533646236) Validation loss = 0.559723051957 (0.029283094705)
+Model AP-SP Test 5 Params 4 average: Maximum accuracy = 92.372882366180% (0.000000000000%) Maximum validation accuracy = 88.135594129562% (0.000000000000%) Minimal loss = 0.311509847641 (0.000000000000) Minimal validation loss = 0.412337809801 (0.000000000000)
+Model AP-SP Test 5 Params 4 average: Accuracy = 84.686440382685% (7.359933111382%) Validation accuracy = 79.912832788059% (5.826645761406%) Loss = 0.472793487225 (0.145154501742) Validation loss = 0.493928778853 (0.069362402319)
+Model AP-SP Test 5 Params 5 Fold 1: conv: 5 num_cells: 48 kernel_size: 6 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 5 Fold 1: Maximum accuracy = 92.372882366180% Maximum validation accuracy = 86.440676450729% Minimal loss = 0.324912786484 Minimal validation loss = 0.379766047001
+Model AP-SP Test 5 Params 5 Fold 1: Accuracy = 86.131960579327% (7.363942551255%) Validation accuracy = 78.910411681448% (3.172651940205%) Loss = 0.452724816544 (0.148044959155) Validation loss = 0.453656581044 (0.042766023446)
+Model AP-SP Test 5 Params 5 Fold 2: conv: 5 num_cells: 48 kernel_size: 6 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 5 Fold 2: Maximum accuracy = 94.067794084549% Maximum validation accuracy = 79.661017656326% Minimal loss = 0.302055448294 Minimal validation loss = 0.486385464668
+Model AP-SP Test 5 Params 5 Fold 2: Accuracy = 87.197337022849% (8.053680517805%) Validation accuracy = 76.634381924357% (2.701141403838%) Loss = 0.429436776042 (0.159457754022) Validation loss = 0.571015694312 (0.032886091058)
+Model AP-SP Test 5 Params 5 Fold 3: conv: 5 num_cells: 48 kernel_size: 6 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 5 Fold 3: Maximum accuracy = 91.525423526764% Maximum validation accuracy = 81.355929374695% Minimal loss = 0.353014916182 Minimal validation loss = 0.470386028290
+Model AP-SP Test 5 Params 5 Fold 3: Accuracy = 86.670701929501% (5.510655870783%) Validation accuracy = 72.808718596186% (2.885422339527%) Loss = 0.449709585309 (0.122640368092) Validation loss = 0.555668703147 (0.031818323531)
+Model AP-SP Test 5 Params 5 Fold 4: conv: 5 num_cells: 48 kernel_size: 6 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 5 Fold 4: Maximum accuracy = 94.067794084549% Maximum validation accuracy = 91.525423526764% Minimal loss = 0.204348683357 Minimal validation loss = 0.387045204639
+Model AP-SP Test 5 Params 5 Fold 4: Accuracy = 88.299032023975% (8.132091256985%) Validation accuracy = 88.353509647506% (3.906416911559%) Loss = 0.341258675286 (0.175492680245) Validation loss = 0.425284166847 (0.044569192453)
+Model AP-SP Test 5 Params 5 Fold 5: conv: 5 num_cells: 48 kernel_size: 6 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 5 Fold 5: Maximum accuracy = 95.762711763382% Maximum validation accuracy = 83.050847053528% Minimal loss = 0.202960178256 Minimal validation loss = 0.489712625742
+Model AP-SP Test 5 Params 5 Fold 5: Accuracy = 89.552058066641% (7.099335811017%) Validation accuracy = 79.007262246949% (4.753476609719%) Loss = 0.352011092859 (0.171595873458) Validation loss = 0.526535506759 (0.037521786722)
+Model AP-SP Test 5 Params 5 average: Maximum accuracy = 95.762711763382% (0.000000000000%) Maximum validation accuracy = 91.525423526764% (0.000000000000%) Minimal loss = 0.202960178256 (0.000000000000) Minimal validation loss = 0.379766047001 (0.000000000000)
+Model AP-SP Test 5 Params 5 average: Accuracy = 87.570217924459% (7.395455885885%) Validation accuracy = 79.142856819289% (6.242843514628%) Loss = 0.405028189208 (0.163934198800) Validation loss = 0.506432130422 (0.068828488312)
+Model AP-SP Test 5 Params 6 Fold 1: conv: 5 num_cells: 48 kernel_size: 8 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 6 Fold 1: Maximum accuracy = 91.949152946472% Maximum validation accuracy = 86.440676450729% Minimal loss = 0.324540019035 Minimal validation loss = 0.407031893730
+Model AP-SP Test 5 Params 6 Fold 1: Accuracy = 87.009684784072% (7.732287117916%) Validation accuracy = 82.905570013183% (2.973776357579%) Loss = 0.443766541140 (0.151447835991) Validation loss = 0.452611941099 (0.034781888350)
+Model AP-SP Test 5 Params 6 Fold 2: conv: 5 num_cells: 48 kernel_size: 8 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 6 Fold 2: Maximum accuracy = 96.186441183090% Maximum validation accuracy = 84.745764732361% Minimal loss = 0.176229059696 Minimal validation loss = 0.469161897898
+Model AP-SP Test 5 Params 6 Fold 2: Accuracy = 90.290556294577% (8.523690223462%) Validation accuracy = 81.743342195238% (4.752429636289%) Loss = 0.321424823999 (0.186209445917) Validation loss = 0.534605059879 (0.028267728387)
+Model AP-SP Test 5 Params 6 Fold 3: conv: 5 num_cells: 48 kernel_size: 8 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 6 Fold 3: Maximum accuracy = 91.525423526764% Maximum validation accuracy = 84.745764732361% Minimal loss = 0.258164107800 Minimal validation loss = 0.439540088177
+Model AP-SP Test 5 Params 6 Fold 3: Accuracy = 87.851088643074% (5.991454855732%) Validation accuracy = 81.113799640111% (2.691901518056%) Loss = 0.374036808951 (0.152211105881) Validation loss = 0.495459622996 (0.032640350819)
+Model AP-SP Test 5 Params 6 Fold 4: conv: 5 num_cells: 48 kernel_size: 8 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 6 Fold 4: Maximum accuracy = 91.949152946472% Maximum validation accuracy = 88.135594129562% Minimal loss = 0.262880682945 Minimal validation loss = 0.434934884310
+Model AP-SP Test 5 Params 6 Fold 4: Accuracy = 86.658595885549% (8.641438617243%) Validation accuracy = 85.665858558246% (3.528468639374%) Loss = 0.405711243834 (0.162097969382) Validation loss = 0.471106319768 (0.027440110362)
+Model AP-SP Test 5 Params 6 Fold 5: conv: 5 num_cells: 48 kernel_size: 8 lstm: 5 dense: 96 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 6 Fold 5: Maximum accuracy = 96.186441183090% Maximum validation accuracy = 84.745764732361% Minimal loss = 0.165096089244 Minimal validation loss = 0.526962399483
+Model AP-SP Test 5 Params 6 Fold 5: Accuracy = 90.684018986566% (8.208440119607%) Validation accuracy = 79.176753844534% (5.773688130501%) Loss = 0.310912274250 (0.187673789194) Validation loss = 0.575409605673 (0.022143518641)
+Model AP-SP Test 5 Params 6 average: Maximum accuracy = 96.186441183090% (0.000000000000%) Maximum validation accuracy = 88.135594129562% (0.000000000000%) Minimal loss = 0.165096089244 (0.000000000000) Minimal validation loss = 0.407031893730 (0.000000000000)
+Model AP-SP Test 5 Params 6 average: Accuracy = 88.498788918768% (8.054824131032%) Validation accuracy = 82.121064850262% (4.636120540106%) Loss = 0.371170338435 (0.175984646096) Validation loss = 0.505838509883 (0.053164457144)
+Model AP-SP Test 5 Params 7 Fold 1: conv: 5 num_cells: 64 kernel_size: 4 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 7 Fold 1: Maximum accuracy = 91.101694107056% Maximum validation accuracy = 81.355929374695% Minimal loss = 0.355307489634 Minimal validation loss = 0.401804834604
+Model AP-SP Test 5 Params 7 Fold 1: Accuracy = 84.618643820286% (8.929769246595%) Validation accuracy = 78.426149232047% (4.758900238284%) Loss = 0.484682838832 (0.149690125786) Validation loss = 0.450313582591 (0.051095028365)
+Model AP-SP Test 5 Params 7 Fold 2: conv: 5 num_cells: 64 kernel_size: 4 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 7 Fold 2: Maximum accuracy = 95.338982343674% Maximum validation accuracy = 81.355929374695% Minimal loss = 0.265010356903 Minimal validation loss = 0.516452252865
+Model AP-SP Test 5 Params 7 Fold 2: Accuracy = 87.608958823340% (8.123615461372%) Validation accuracy = 76.053269420351% (3.756461318183%) Loss = 0.404349333474 (0.157684263852) Validation loss = 0.641261065858 (0.052992794527)
+Model AP-SP Test 5 Params 7 Fold 3: conv: 5 num_cells: 64 kernel_size: 4 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 7 Fold 3: Maximum accuracy = 88.559323549271% Maximum validation accuracy = 81.355929374695% Minimal loss = 0.419123858213 Minimal validation loss = 0.452448934317
+Model AP-SP Test 5 Params 7 Fold 3: Accuracy = 83.674334117344% (6.167805317731%) Validation accuracy = 77.118642968791% (6.487341212716%) Loss = 0.525661517893 (0.133306994824) Validation loss = 0.497670842494 (0.081047738727)
+Model AP-SP Test 5 Params 7 Fold 4: conv: 5 num_cells: 64 kernel_size: 4 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 7 Fold 4: Maximum accuracy = 89.406782388687% Maximum validation accuracy = 84.745764732361% Minimal loss = 0.389454185963 Minimal validation loss = 0.441793799400
+Model AP-SP Test 5 Params 7 Fold 4: Accuracy = 83.849879205227% (7.287482142446%) Validation accuracy = 81.743340917996% (3.166640748467%) Loss = 0.506125991259 (0.145723144761) Validation loss = 0.502497026750 (0.038651022285)
+Model AP-SP Test 5 Params 7 Fold 5: conv: 5 num_cells: 64 kernel_size: 4 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 7 Fold 5: Maximum accuracy = 89.406782388687% Maximum validation accuracy = 76.271188259125% Minimal loss = 0.414980679750 Minimal validation loss = 0.532807826996
+Model AP-SP Test 5 Params 7 Fold 5: Accuracy = 81.307506305831% (10.820928716683%) Validation accuracy = 68.619854577950% (6.404529877437%) Loss = 0.533033550637 (0.152562432807) Validation loss = 0.574932453462 (0.045935795993)
+Model AP-SP Test 5 Params 7 average: Maximum accuracy = 95.338982343674% (0.000000000000%) Maximum validation accuracy = 84.745764732361% (0.000000000000%) Minimal loss = 0.265010356903 (0.000000000000) Minimal validation loss = 0.401804834604 (0.000000000000)
+Model AP-SP Test 5 Params 7 average: Accuracy = 84.211864454406% (8.654901636762%) Validation accuracy = 76.392251423427% (6.688990222417%) Loss = 0.490770646419 (0.155111420501) Validation loss = 0.533334994231 (0.087276028009)
+Model AP-SP Test 5 Params 8 Fold 1: conv: 5 num_cells: 64 kernel_size: 6 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 8 Fold 1: Maximum accuracy = 95.338982343674% Maximum validation accuracy = 84.745764732361% Minimal loss = 0.200697585940 Minimal validation loss = 0.400234192610
+Model AP-SP Test 5 Params 8 Fold 1: Accuracy = 88.438256723540% (8.531029503379%) Validation accuracy = 77.481839827129% (4.143195811860%) Loss = 0.374142553551 (0.188297343061) Validation loss = 0.564383897185 (0.080629297183)
+Model AP-SP Test 5 Params 8 Fold 2: conv: 5 num_cells: 64 kernel_size: 6 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 8 Fold 2: Maximum accuracy = 93.220341205597% Maximum validation accuracy = 79.661017656326% Minimal loss = 0.314315468073 Minimal validation loss = 0.491683542728
+Model AP-SP Test 5 Params 8 Fold 2: Accuracy = 86.440678153719% (7.348628347247%) Validation accuracy = 77.409200923783% (3.830030726583%) Loss = 0.443351928251 (0.154918256533) Validation loss = 0.580428767204 (0.044652556906)
+Model AP-SP Test 5 Params 8 Fold 3: conv: 5 num_cells: 64 kernel_size: 6 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 8 Fold 3: Maximum accuracy = 87.711864709854% Maximum validation accuracy = 79.661017656326% Minimal loss = 0.413447827101 Minimal validation loss = 0.440229117870
+Model AP-SP Test 5 Params 8 Fold 3: Accuracy = 82.663437638964% (6.276232261905%) Validation accuracy = 73.704600249018% (5.508887075110%) Loss = 0.519118106791 (0.134180664743) Validation loss = 0.530481952003 (0.086654897563)
+Model AP-SP Test 5 Params 8 Fold 4: conv: 5 num_cells: 64 kernel_size: 6 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 8 Fold 4: Maximum accuracy = 92.372882366180% Maximum validation accuracy = 86.440676450729% Minimal loss = 0.317814081907 Minimal validation loss = 0.433155834675
+Model AP-SP Test 5 Params 8 Fold 4: Accuracy = 86.240919700691% (9.399775198440%) Validation accuracy = 82.397094964981% (6.179838974811%) Loss = 0.439583422456 (0.163163675747) Validation loss = 0.516321798308 (0.049171834759)
+Model AP-SP Test 5 Params 8 Fold 5: conv: 5 num_cells: 64 kernel_size: 6 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 8 Fold 5: Maximum accuracy = 94.915252923965% Maximum validation accuracy = 81.355929374695% Minimal loss = 0.210456848145 Minimal validation loss = 0.476835399866
+Model AP-SP Test 5 Params 8 Fold 5: Accuracy = 88.795399580683% (8.135667578876%) Validation accuracy = 78.256657123566% (5.532885022712%) Loss = 0.345861182681 (0.178382112858) Validation loss = 0.527158482160 (0.048113917003)
+Model AP-SP Test 5 Params 8 average: Maximum accuracy = 95.338982343674% (0.000000000000%) Maximum validation accuracy = 86.440676450729% (0.000000000000%) Minimal loss = 0.200697585940 (0.000000000000) Minimal validation loss = 0.400234192610 (0.000000000000)
+Model AP-SP Test 5 Params 8 average: Accuracy = 86.515738359519% (8.300976658546%) Validation accuracy = 77.849878617695% (5.819654586561%) Loss = 0.424411438746 (0.175589269276) Validation loss = 0.543754979372 (0.068864416617)
+Model AP-SP Test 5 Params 9 Fold 1: conv: 5 num_cells: 64 kernel_size: 8 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 9 Fold 1: Maximum accuracy = 93.644070625305% Maximum validation accuracy = 84.745764732361% Minimal loss = 0.271025389433 Minimal validation loss = 0.386820524931
+Model AP-SP Test 5 Params 9 Fold 1: Accuracy = 86.531477229936% (8.154957457749%) Validation accuracy = 79.612590159689% (3.821985563943%) Loss = 0.425249337299 (0.169428291399) Validation loss = 0.486062960965 (0.053376419964)
+Model AP-SP Test 5 Params 9 Fold 2: conv: 5 num_cells: 64 kernel_size: 8 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 9 Fold 2: Maximum accuracy = 94.067794084549% Maximum validation accuracy = 83.050847053528% Minimal loss = 0.262875139713 Minimal validation loss = 0.464857131243
+Model AP-SP Test 5 Params 9 Fold 2: Accuracy = 88.583536062922% (7.784193752087%) Validation accuracy = 79.806294781821% (4.757360868064%) Loss = 0.396095169442 (0.167095054963) Validation loss = 0.531998204759 (0.036279316712)
+Model AP-SP Test 5 Params 9 Fold 3: conv: 5 num_cells: 64 kernel_size: 8 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 9 Fold 3: Maximum accuracy = 88.559323549271% Maximum validation accuracy = 83.050847053528% Minimal loss = 0.409328460693 Minimal validation loss = 0.439914733171
+Model AP-SP Test 5 Params 9 Fold 3: Accuracy = 83.516948946885% (7.386974595011%) Validation accuracy = 80.338982726846% (5.689608756889%) Loss = 0.520015777009 (0.138188925143) Validation loss = 0.493522692578 (0.051379908859)
+Model AP-SP Test 5 Params 9 Fold 4: conv: 5 num_cells: 64 kernel_size: 8 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 9 Fold 4: Maximum accuracy = 91.525423526764% Maximum validation accuracy = 88.135594129562% Minimal loss = 0.316649138927 Minimal validation loss = 0.448214799166
+Model AP-SP Test 5 Params 9 Fold 4: Accuracy = 86.186440501894% (7.249672892608%) Validation accuracy = 85.447941252163% (5.224023504172%) Loss = 0.442699325510 (0.148382784696) Validation loss = 0.485376021692 (0.037410189623)
+Model AP-SP Test 5 Params 9 Fold 5: conv: 5 num_cells: 64 kernel_size: 8 lstm: 5 dense: 128 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5 Params 9 Fold 5: Maximum accuracy = 91.949152946472% Maximum validation accuracy = 81.355929374695% Minimal loss = 0.341594964266 Minimal validation loss = 0.545226037502
+Model AP-SP Test 5 Params 9 Fold 5: Accuracy = 84.461258777550% (11.527052672668%) Validation accuracy = 75.714286225183% (8.583902382278%) Loss = 0.482602918148 (0.165807408901) Validation loss = 0.569123402664 (0.054696264220)
+Model AP-SP Test 5 Params 9 average: Maximum accuracy = 94.067794084549% (0.000000000000%) Maximum validation accuracy = 88.135594129562% (0.000000000000%) Minimal loss = 0.262875139713 (0.000000000000) Minimal validation loss = 0.386820524931 (0.000000000000)
+Model AP-SP Test 5 Params 9 average: Accuracy = 85.855932303837% (8.746616189305%) Validation accuracy = 80.184019029140% (6.614621899751%) Loss = 0.453332505482 (0.164142430371) Validation loss = 0.513216656532 (0.057575892238)
+Model AP-SP Test 5 Best params: conv: 5 num_cells: 32 kernel_size: 4 lstm: 5 dense: 64 lambda: 0.00 dropout: 0.50 batch_size: 600
+Model AP-SP Test 5: Maximum accuracy = 91.186439990997% Minimal loss = 0.380170375109
+Model AP-SP Test 5: Accuracy = 85.893462428025% (7.309399247588%) Loss = 0.482288625836 (0.127522745084)
+Model AP-SP Test 5 ROC curve: ROC thr = 0.548890769482 gmean = 0.834522960396 ROC AUC = 0.854591836735
+Model AP-SP Test 5 PR curve: PR thr = 0.522572219372 PR AUC = 0.933046778381 F1 = 0.860215053763 F1 (0.5) = 0.860215053763 F1 (thr) = 0.860215053763
+Model AP-SP Test 5: Accuracy (0.5) = 82.191780821918% Accuracy (ROC thr) = 82.191780821918% Accuracy (PR thr) = 82.191780821918%
+Model AP-SP Test 5: ROC thr = 0.548890769482 ROC AUC = 0.854591836735 gmean = 0.834522960396
+Model AP-SP Test 5: PR thr = 0.522572219372 PR AUC 0.933046778381 F1 = 0.860215053763 F1 (thr) = 0.860215053763 F1 (0.5) = 0.860215053763

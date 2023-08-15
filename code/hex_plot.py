@@ -4,7 +4,7 @@ from scipy import stats
 import sklearn
 import matplotlib.pyplot as plt
 from model_predict import model_predict
-from load_data import load_data_SA
+from load_data import load_data_SA, MAX_LEN
 from merge_data import merge_data  
 from automate_training import MAX_BATCH_SIZE
 from utils import set_seed, predictions_hex_name, seed_h5_and_png, scatter_name, PATH_TO_NAME, DATA_PATH, AP_DATA_PATH, SP_DATA_PATH, AP_SP_DATA_PATH, TSNE_SP_DATA_PATH, TSNE_AP_SP_DATA_PATH
@@ -135,7 +135,7 @@ for i in df["AP"]:
     actual_AP.append(i) 
 
 seq_example = ""
-for i in range(24):
+for i in range(MAX_LEN):
     seq_example += "A"
 dict_hex[seq_example] = "1" 
 
@@ -146,8 +146,7 @@ for i in df["AP"]:
         test_labels.append(0) 
     else:
         test_labels.append(1) 
-        
-seed_list = [305475974, 369953070, 879273778, 965681145, 992391276] 
+         
 path_list = [AP_DATA_PATH, SP_DATA_PATH, AP_SP_DATA_PATH, TSNE_SP_DATA_PATH, TSNE_AP_SP_DATA_PATH] 
  
 vals_in_lines = [   

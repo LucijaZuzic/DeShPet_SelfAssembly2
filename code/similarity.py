@@ -2,46 +2,30 @@ import numpy as np
 from utils import DATA_PATH 
 from sklearn.model_selection import StratifiedKFold
 from plot_similarities_seqprops import main_sim, double_sim
+from load_data import MAX_LEN
 import os
 
 # Algorithm settings 
 N_FOLDS_FIRST = 5
 SA_data = np.load(DATA_PATH+'data_SA_updated.npy', allow_pickle=True).item()
 sequences = []
-labels = []
-MAXLEN = 24
-sequences_6 = []
-labels_6 = []
-sequences_not_6 = []
-labels_not_6 = []
+labels = [] 
 
 for peptide in SA_data:
     if SA_data[peptide] != '1':
         continue  
-    if len(peptide) > MAXLEN or SA_data[peptide] == '-1':
+    if len(peptide) > MAX_LEN or SA_data[peptide] == '-1':
         continue
     sequences.append(peptide)
-    labels.append(SA_data[peptide])
-    if len(peptide) == 6:
-        sequences_6.append(peptide)
-        labels_6.append(SA_data[peptide])
-    else:
-        sequences_not_6.append(peptide)
-        labels_not_6.append(SA_data[peptide])
+    labels.append(SA_data[peptide]) 
 
 for peptide in SA_data:
     if SA_data[peptide] == '1':
         continue  
-    if len(peptide) > MAXLEN or SA_data[peptide] == '-1':
+    if len(peptide) > MAX_LEN or SA_data[peptide] == '-1':
         continue
     sequences.append(peptide)
-    labels.append(SA_data[peptide])
-    if len(peptide) == 6:
-        sequences_6.append(peptide)
-        labels_6.append(SA_data[peptide])
-    else:
-        sequences_not_6.append(peptide)
-        labels_not_6.append(SA_data[peptide])
+    labels.append(SA_data[peptide]) 
 
 seed_list = [305475974, 369953070, 879273778, 965681145, 992391276]
 

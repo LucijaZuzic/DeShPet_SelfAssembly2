@@ -5,8 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt 
 import seaborn as sns
-
-MAXLEN = 24
+ 
 def read_one_prediction(some_path, test_number, final_model_type, iteration, some_seed):
     file = open(predictions_name(some_path, test_number), "r")
     lines = file.readlines()

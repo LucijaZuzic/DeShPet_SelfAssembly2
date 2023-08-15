@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np 
 from model_predict import model_predict
-from load_data import load_data_SA
+from load_data import load_data_SA, MAX_LEN
 from merge_data import merge_data  
 from automate_training import MAX_BATCH_SIZE
 from utils import set_seed, predictions_hex_name, seed_h5_and_png, DATA_PATH, AP_DATA_PATH, SP_DATA_PATH, AP_SP_DATA_PATH, TSNE_SP_DATA_PATH, TSNE_AP_SP_DATA_PATH
@@ -33,7 +33,7 @@ for i in range(len(df["pep"])):
     actual_AP_AI.append(df["AP"][i])  
 
 seq_example = ""
-for i in range(24):
+for i in range(MAX_LEN):
     seq_example += "A"
 dict_human[seq_example] = "1"
 dict_AI[seq_example] = "1"
@@ -42,8 +42,7 @@ offset = 1
 properties = np.ones(95)
 properties[0] = 0
 masking_value = 2 
-
-seed_list = [305475974, 369953070, 879273778, 965681145, 992391276] 
+ 
 path_list = [AP_DATA_PATH, SP_DATA_PATH, AP_SP_DATA_PATH, TSNE_SP_DATA_PATH, TSNE_AP_SP_DATA_PATH] 
  
 for some_path in path_list:

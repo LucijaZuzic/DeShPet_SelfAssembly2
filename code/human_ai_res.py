@@ -151,8 +151,7 @@ for i in range(len(df["pep"])):
     if df["expert"][i] != "AI":
         continue
     actual_AP_AI.append(df["AP"][i])  
-        
-seed_list = [305475974, 369953070, 879273778, 965681145, 992391276] 
+         
 path_list = [AP_DATA_PATH, SP_DATA_PATH, AP_SP_DATA_PATH, TSNE_SP_DATA_PATH, TSNE_AP_SP_DATA_PATH] 
  
 vals_in_lines = [   

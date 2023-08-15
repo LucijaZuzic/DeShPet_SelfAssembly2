@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # My charts
-*.png
+#*.png
  
 # Keras models
 #*.h5

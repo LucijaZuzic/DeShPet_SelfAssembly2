@@ -1,13 +1,7 @@
 import pandas as pd
-import numpy as np 
-from scipy import stats
-import sklearn
-import matplotlib.pyplot as plt
-from model_predict import model_predict
-from load_data import load_data_SA
-from merge_data import merge_data  
-from automate_training import MAX_BATCH_SIZE
-from utils import set_seed, predictions_hex_name, seed_h5_and_png, scatter_name, PATH_TO_NAME, DATA_PATH, AP_DATA_PATH, SP_DATA_PATH, AP_SP_DATA_PATH, TSNE_SP_DATA_PATH, TSNE_AP_SP_DATA_PATH
+import numpy as np  
+import matplotlib.pyplot as plt    
+from utils import predictions_hex_name, DATA_PATH, AP_DATA_PATH, SP_DATA_PATH, AP_SP_DATA_PATH, TSNE_SP_DATA_PATH, TSNE_AP_SP_DATA_PATH
 from sklearn.metrics import (
     roc_curve,
     precision_recall_curve,

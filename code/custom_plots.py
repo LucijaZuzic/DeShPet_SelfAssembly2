@@ -22,8 +22,10 @@ from utils import (
     acc_name,
 )
 
+
 def merge_type_test_number(some_path, test_number):
     return "Model " + PATH_TO_NAME[some_path] + " Test " + str(test_number)
+
 
 def merge_type_params(some_path, fold_nr, params_nr, test_number):
     return (
@@ -33,60 +35,62 @@ def merge_type_params(some_path, fold_nr, params_nr, test_number):
         + " Fold "
         + str(fold_nr)
     )
-    
+
+
 # Plot the history for training a model
 def plt_model(some_path, test_number, history, params_nr, fold_nr):
     # Summarize history for accuracy
     plt.figure()
-    plt.plot(history.history["accuracy"], label = "Accuracy")
-    plt.plot(history.history["val_accuracy"], label = "Validation accuracy")
+    plt.plot(history.history["accuracy"], label="Accuracy")
+    plt.plot(history.history["val_accuracy"], label="Validation accuracy")
     plt.title(
         merge_type_params(some_path, fold_nr, params_nr, test_number) + " Accuracy"
     )
     plt.ylabel("Accuracy")
     plt.xlabel("Epoch")
-    plt.legend(loc="upper center", bbox_to_anchor = (0.5, -0.1), ncol = 2)
+    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=2)
     plt.savefig(
-        acc_name(some_path, test_number, params_nr, fold_nr), bbox_inches = "tight"
+        acc_name(some_path, test_number, params_nr, fold_nr), bbox_inches="tight"
     )
     plt.close()
     # Summarize history for loss
     plt.figure()
-    plt.plot(history.history["loss"], label = "Loss")
-    plt.plot(history.history["val_loss"], label = "Validation loss")
+    plt.plot(history.history["loss"], label="Loss")
+    plt.plot(history.history["val_loss"], label="Validation loss")
     plt.title(merge_type_params(some_path, fold_nr, params_nr, test_number) + " Loss")
     plt.ylabel("Loss")
     plt.xlabel("Epoch")
-    plt.legend(loc = "upper center", bbox_to_anchor = (0.5, -0.1), ncol = 2)
-    plt.savefig(loss_name(some_path, test_number, params_nr, fold_nr), bbox_inches = "tight")
+    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=2)
+    plt.savefig(
+        loss_name(some_path, test_number, params_nr, fold_nr), bbox_inches="tight"
+    )
     plt.close()
+
 
 # Plot the history for training a model
 def plt_model_final(some_path, test_number, history):
     # Summarize history for accuracy
     plt.figure()
     plt.plot(history.history["accuracy"], label="Accuracy")
-    plt.title(
-        merge_type_test_number(some_path, test_number) + " Accuracy"
-    )
+    plt.title(merge_type_test_number(some_path, test_number) + " Accuracy")
     plt.ylabel("Accuracy")
     plt.xlabel("Epoch")
-    plt.legend(loc="upper center", bbox_to_anchor = (0.5, -0.1), ncol = 2)
-    plt.savefig(final_acc_name(some_path, test_number), bbox_inches = "tight")
+    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=2)
+    plt.savefig(final_acc_name(some_path, test_number), bbox_inches="tight")
     plt.close()
     # Summarize history for loss
     plt.figure()
-    plt.plot(history.history["loss"], label = "Loss")
+    plt.plot(history.history["loss"], label="Loss")
     plt.title(merge_type_test_number(some_path, test_number) + " Loss")
     plt.ylabel("Loss")
     plt.xlabel("Epoch")
-    plt.legend(loc="upper center", bbox_to_anchor = (0.5, -0.1), ncol = 2)
-    plt.savefig(final_loss_name(some_path, test_number), bbox_inches = "tight")
+    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=2)
+    plt.savefig(final_loss_name(some_path, test_number), bbox_inches="tight")
     plt.close()
 
 
 # Convert probability to class based on the threshold of probability
-def convert_to_binary(model_predictions, threshold = 0.5):
+def convert_to_binary(model_predictions, threshold=0.5):
     model_predictions_binary = []
 
     for x in model_predictions:
@@ -134,10 +138,14 @@ def make_a_PR_plot(
         merge_type_test_number(some_path, test_number)
         + " "
         + label
-        + ": PR thr = %.12f PR AUC = %.12f F1 = %.12f F1 (0.5) = %.12f F1 (thr) = %.12f" % 
-        (thresholds[ix], auc(recall, precision), fscore[ix], 
-        f1_score(test_labels, model_predictions_binary), 
-        f1_score(test_labels, model_predictions_binary_thr))
+        + ": PR thr = %.12f PR AUC = %.12f F1 = %.12f F1 (0.5) = %.12f F1 (thr) = %.12f"
+        % (
+            thresholds[ix],
+            auc(recall, precision),
+            fscore[ix],
+            f1_score(test_labels, model_predictions_binary),
+            f1_score(test_labels, model_predictions_binary_thr),
+        )
     )
     other_output.write("\n")
     other_output.close()
@@ -145,11 +153,12 @@ def make_a_PR_plot(
         recall[ix], precision[ix], "o", markerfacecolor=pattern, markeredgecolor="k"
     )
 
+
 def getPRthr(test_labels, model_predictions):
     # Get recall and precision.
     precision, recall, thresholds = precision_recall_curve(
         test_labels, model_predictions
-    ) 
+    )
 
     # Calculate the F1 score for each threshold
     fscore = []
@@ -198,10 +207,10 @@ def make_PR_plots(
     plt.xlabel("Recall")
     plt.ylabel("Precision")
 
-    plt.legend(loc="upper center", bbox_to_anchor = (0.5, -0.1), ncol = 2)
+    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=2)
     plt.savefig(
         PR_name(some_path, test_number),
-        bbox_inches = "tight",
+        bbox_inches="tight",
     )
 
     plt.close()
@@ -231,7 +240,8 @@ def make_a_ROC_plot(
         merge_type_test_number(some_path, test_number)
         + " "
         + label
-        + ": ROC thr = %.12f gmean = %.12f ROC AUC = %.12f" % (thresholds[ix], gmeans[ix], roc_auc_score(test_labels, model_predictions))
+        + ": ROC thr = %.12f gmean = %.12f ROC AUC = %.12f"
+        % (thresholds[ix], gmeans[ix], roc_auc_score(test_labels, model_predictions))
     )
     other_output.write("\n")
     other_output.close()
@@ -278,10 +288,10 @@ def make_ROC_plots(
     plt.xlabel("FPR")
     plt.ylabel("TPR")
 
-    plt.legend(loc="upper center", bbox_to_anchor = (0.5, -0.1), ncol = 2)
+    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=2)
     plt.savefig(
         ROC_name(some_path, test_number),
-        bbox_inches = "tight",
+        bbox_inches="tight",
     )
 
     plt.close()
@@ -294,7 +304,6 @@ def my_accuracy_calculate(test_labels, model_predictions, threshold=0.5):
     model_predictions = convert_to_binary(model_predictions, threshold)
 
     for i in range(len(test_labels)):
-
         if model_predictions[i] == test_labels[i]:
             score += 1
 
@@ -326,7 +335,7 @@ def output_metrics(
             merge_type_test_number(some_path, test_number),
             my_accuracy_calculate(test_labels, model_predictions, threshold),
             my_accuracy_calculate(test_labels, model_predictions, thresholdROC),
-            my_accuracy_calculate(test_labels, model_predictions, thresholdPR)
+            my_accuracy_calculate(test_labels, model_predictions, thresholdPR),
         )
     )
     other_output.write("\n")
@@ -336,19 +345,19 @@ def output_metrics(
             merge_type_test_number(some_path, test_number),
             thresholdROC,
             roc_auc_score(test_labels, model_predictions),
-            gmean
+            gmean,
         )
     )
     other_output.write("\n")
     other_output.write(
         "%s: PR thr = %.12f PR AUC %.12f F1 = %.12f F1 (thr) = %.12f F1 (0.5) = %.12f"
-        % ( 
-            merge_type_test_number(some_path, test_number), 
-            thresholdPR,  
+        % (
+            merge_type_test_number(some_path, test_number),
+            thresholdPR,
             auc(recall, precision),
             f1,
             f1_score(test_labels, model_predictions_binary_thr),
-            f1_score(test_labels, model_predictions_binary)
+            f1_score(test_labels, model_predictions_binary),
         )
     )
     other_output.write("\n")
@@ -379,7 +388,7 @@ def hist_predicted(
         model_predictions_true, bins=[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
     )
 
-    plt.savefig(SA_name, bbox_inches = "tight")
+    plt.savefig(SA_name, bbox_inches="tight")
     plt.close()
 
     # Create a histogram of the predicted probabilities only for the peptides that don't show self-assembly
@@ -401,7 +410,7 @@ def hist_predicted(
         bins=[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
     )
 
-    plt.savefig(NSA_name, bbox_inches = "tight")
+    plt.savefig(NSA_name, bbox_inches="tight")
     plt.close()
 
     other_output = open(
@@ -527,7 +536,6 @@ def decorate_stats_final(some_path, test_number, history):
 def decorate_stats_avg(
     some_path, test_number, accuracy, val_acc, loss, val_loss, params_nr=""
 ):
-
     accuracy_max = np.max(accuracy)
     val_acc_max = np.max(val_acc)
     loss_min = np.min(loss)

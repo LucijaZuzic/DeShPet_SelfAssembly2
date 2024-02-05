@@ -180,7 +180,7 @@ for i in range(MAX_LEN):
 dict_hex[seq_example] = "1"
 
 test_labels = []
-threshold = np.mean(actual_AP)
+threshold = 1.75
 for i in df["AP"]:
     if i < threshold:
         test_labels.append(0)

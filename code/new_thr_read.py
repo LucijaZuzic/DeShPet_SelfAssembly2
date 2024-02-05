@@ -237,59 +237,59 @@ for some_path in path_list:
             for val in vals_in_lines:
                 lines_dict[val] = []
 
-                # Convert train and validation indices to train and validation data and train and validation labels
-                (
+            # Convert train and validation indices to train and validation data and train and validation labels
+            (
+                train_and_validation_data,
+                train_and_validation_labels,
+            ) = data_and_labels_from_indices(
+                all_data, all_labels, train_and_validation_data_indices
+            )
+
+            fold_nr = 0
+
+            for train_data_indices, validation_data_indices in kfold_second.split(
+                train_and_validation_data, train_and_validation_labels
+            ):
+                fold_nr += 1
+
+                # Convert validation indices to validation data and validation labels
+                validation_data, validation_labels = data_and_labels_from_indices(
                     train_and_validation_data,
                     train_and_validation_labels,
-                ) = data_and_labels_from_indices(
-                    all_data, all_labels, train_and_validation_data_indices
+                    validation_data_indices,
                 )
 
-                fold_nr = 0
+                predictions_file_all = open(
+                    predictions_thr_name(
+                        some_path, test_number, params_nr, fold_nr
+                    ),
+                    "r",
+                )
+                predictions_file_lines_all = eval(
+                    predictions_file_all.readlines()[0].replace("\n", "")
+                )
+                predictions_file_all.close()
+                # print(len(predictions_file_lines_all))
 
-                for train_data_indices, validation_data_indices in kfold_second.split(
-                    train_and_validation_data, train_and_validation_labels
-                ):
-                    fold_nr += 1
+                for i in range(len(predictions_file_lines_all)):
+                    alllabels.append(validation_labels[i])
+                    allpreds.append(predictions_file_lines_all[i])
 
-                    # Convert validation indices to validation data and validation labels
-                    validation_data, validation_labels = data_and_labels_from_indices(
-                        train_and_validation_data,
-                        train_and_validation_labels,
-                        validation_data_indices,
-                    )
+            read_ROC(alllabels, allpreds, lines_dict)
+            read_PR(alllabels, allpreds, lines_dict)
 
-                    predictions_file_all = open(
-                        predictions_thr_name(
-                            some_path, test_number, params_nr, fold_nr
-                        ),
-                        "r",
-                    )
-                    predictions_file_lines_all = eval(
-                        predictions_file_all.readlines()[0].replace("\n", "")
-                    )
-                    predictions_file_all.close()
-                    # print(len(predictions_file_lines_all))
+            for x in lines_dict:
+                lines_dict_avg[x].append(lines_dict[x][0])
 
-                    for i in range(len(predictions_file_lines_all)):
-                        alllabels.append(validation_labels[i])
-                        allpreds.append(predictions_file_lines_all[i])
+        for x in lines_dict_avg:
+            avgval = 0
+            for y in lines_dict_avg[x]:
+                avgval += y
+            avgval /= len(lines_dict_avg[x])
+            lines_dict_avg[x] = [avgval]
 
-                read_ROC(alllabels, allpreds, lines_dict)
-                read_PR(alllabels, allpreds, lines_dict)
-
-                for x in lines_dict:
-                    lines_dict_avg[x].append(lines_dict[x][0])
-
-            for x in lines_dict_avg:
-                avgval = 0
-                for y in lines_dict_avg[x]:
-                    avgval += y
-                avgval /= len(lines_dict_avg[x])
-                lines_dict_avg[x] = [avgval]
-
-            for x in lines_dict_avg:
-                lines_dict_avg_avg[x].append(lines_dict_avg[x][0])
+        for x in lines_dict_avg:
+            lines_dict_avg_avg[x].append(lines_dict_avg[x][0])
 
     for x in lines_dict_avg_avg:
         avgval = 0

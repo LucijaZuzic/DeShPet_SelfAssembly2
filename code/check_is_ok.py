@@ -79,7 +79,7 @@ for some_seed in seed_list:
                 is_in_test[sq].append((some_seed, test_number + 1))
             if sq in train_seqs:
                 train_test_label.append("train")
-        print(some_seed, test_number + 1, train_test_label.count("train"), train_test_label.count("test"))
+        print(some_seed, test_number + 1, train_test_label.count("train"), train_test_label.count("test"), len(train_seqs), len(test_seqs), train_test_label.count("train") / len(train_seqs), train_test_label.count("test") / len(test_seqs))
 
 print(is_in_test)
         

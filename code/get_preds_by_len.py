@@ -31,7 +31,7 @@ def returnGMEAN(actual, pred):
             else:
                 tn += 1
 
-    return np.sqrt(tp / apo * tn / ane)
+    return np.sqrt(weird_division(tp, apo) * weird_division(tn, ane))
 
 def read_ROC(test_labels, model_predictions, lines_dict, prthr, rocthr):
     # Get false positive rate and true positive rate.
@@ -163,20 +163,51 @@ vals_in_lines = [
     "F1 (0.5) = ",
     "Accuracy (0.5) = ",
 ]
+
+def return_lens():
+    for model_name in os.listdir("../seeds/seed_369953070"):
+        if "similarity" in model_name:
+            continue
+        for seed_val_ix in range(len(seed_list)):
+            seed_val = seed_list[seed_val_ix]
+            lens = dict()
+            for test_num in range(1, 6):
+                csv_seed_test_fold = pd.read_csv("../seeds/seed_" + str(seed_val) + "/similarity/test_fold_" + str(test_num) + ".csv", index_col = False)
+                seqs = list(csv_seed_test_fold["sequence"])
+                for seq_ix in range(len(seqs)):
+                    if len(seqs[seq_ix]) not in lens:
+                        lens[len(seqs[seq_ix])] = 0
+                    lens[len(seqs[seq_ix])] += 1
+            return(lens)
+    
+def count_classes(minlen, maxlen):
+    for model_name in os.listdir("../seeds/seed_369953070"):
+        if "similarity" in model_name:
+            continue
+        for seed_val_ix in range(len(seed_list)):
+            seed_val = seed_list[seed_val_ix]
+            classes = dict()
+            for test_num in range(1, 6):
+                csv_seed_test_fold = pd.read_csv("../seeds/seed_" + str(seed_val) + "/similarity/test_fold_" + str(test_num) + ".csv", index_col = False)
+                seqs = list(csv_seed_test_fold["sequence"])
+                labs = list(csv_seed_test_fold["label"])
+                for seq_ix in range(len(seqs)):
+                    if len(seqs[seq_ix]) > maxlen or len(seqs[seq_ix]) < minlen:
+                        continue
+                    if labs[seq_ix] not in classes:
+                        classes[labs[seq_ix]] = 0
+                    classes[labs[seq_ix]] += 1
+            return(classes)
+
 def filter_dict(minlen, maxlen):
     models_line_dicts = dict()
     for model_name in os.listdir("../seeds/seed_369953070"):
         if "similarity" in model_name:
             continue
         #print(model_name.replace("_model_data", "").replace("_data", ""))
-        num_par = 3
-        if "SP" in model_name:
-            num_par *= 3
-        #for params_num in range(1, num_par):
-        params_num = params_for_model[model_name.replace("_model_data", "").replace("_data", "")]
         lines_dict = dict()
         for v in vals_in_lines:
-            lines_dict[v] = [] 
+            lines_dict[v] = []
         for seed_val_ix in range(len(seed_list)):
             seed_val = seed_list[seed_val_ix]
             #print(seed_val)
@@ -205,9 +236,72 @@ def filter_dict(minlen, maxlen):
         #print(lines_dict)
         models_line_dicts[model_name.replace("_model_data", "").replace("_data", "")] = lines_dict
     return models_line_dicts
-models_line_dicts1 = filter_dict(3, 9)
-print(models_line_dicts1["AP_SP"]["Accuracy (PR thr) = "])
-print(models_line_dicts1["AP"]["Accuracy (PR thr) = "])
-models_line_dicts1 = filter_dict(2, 15)
-print(models_line_dicts1["AP_SP"]["Accuracy (PR thr) = "])
-print(models_line_dicts1["AP"]["Accuracy (PR thr) = "])
+
+model_order = {"AP": "AP", "SP": "SP", "AP_SP": "AP-SP", "TSNE_SP": "t-SNE SP", "TSNE_AP_SP": "t-SNE AP-SP"}
+
+def print_dict(dicti):
+    linea = "Metric"
+    for model in model_order:
+        linea += " & " + model_order[model]
+    print(linea + " \\\\ \\hline")
+    for metric in dicti["AP"]:
+        linea = metric.replace(" = ", "")
+        for model in model_order:
+            rv = 1
+            if "Acc" not in metric:
+                rv = 3
+            linea += " & " + str(np.round(np.average(dicti[model][metric]), rv))
+        if "thr" in metric and ")" not in metric:
+            continue
+        print(linea + " \\\\ \\hline")
+
+def print_dict_long(dicti):
+    linea = "Metric"
+    for model in model_order:
+        for seed_val in seed_list:
+            linea += " & " + model_order[model] + " (" + str(seed_val) + ")"
+    print(linea + " \\\\ \\hline")
+    for metric in dicti["AP"]:
+        linea = metric.replace(" = ", "")
+        for model in model_order:
+            for v in dicti[model][metric]:
+                rv = 1
+                if "Acc" not in metric:
+                    rv = 3
+                linea += " & " + str(np.round(v, rv))
+        if "thr" in metric and ")" not in metric:
+            continue
+        print(linea + " \\\\ \\hline")
+
+lens = return_lens()
+for lena in sorted(lens.keys()):
+    print(lena, lens[lena])
+larger = []
+for lena in sorted(lens.keys()):
+    print(lena, count_classes(lena, lena), lens[lena])
+    if len(count_classes(lena, lena)) > 1:
+        larger.append(lena)
+print(larger)
+for a in sorted(lens.keys()):
+    for b in sorted(lens.keys()):
+        if b < a:
+            continue
+        rnge = list(range(a, b + 1))
+        is_range_ok = False
+        for r in rnge:
+            if r in larger:
+                is_range_ok = True
+                break
+        if not is_range_ok:
+            continue
+        print(min(lens), a - 1, count_classes(min(lens), a - 1), a, b, count_classes(a, b), b + 1, max(lens), count_classes(b + 1, max(lens)))
+
+print_dict(filter_dict(3, 5))
+print_dict(filter_dict(6, 6))
+print_dict(filter_dict(7, 24))
+print_dict(filter_dict(3, 24))
+
+print_dict_long(filter_dict(3, 5))
+print_dict_long(filter_dict(6, 6))
+print_dict_long(filter_dict(7, 24))
+print_dict_long(filter_dict(3, 24))

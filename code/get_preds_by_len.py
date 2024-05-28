@@ -239,39 +239,67 @@ def filter_dict(minlen, maxlen):
 
 model_order = {"AP": "AP", "SP": "SP", "AP_SP": "AP-SP", "TSNE_SP": "t-SNE SP", "TSNE_AP_SP": "t-SNE AP-SP"}
 
-def print_dict(dicti):
+def print_dict(mini, maxi):
+    dicti = filter_dict(mini, maxi)
     linea = "Metric"
+    colnames = ["Metric"]
     for model in model_order:
         linea += " & " + model_order[model]
-    print(linea + " \\\\ \\hline")
+        colnames.append(model_order[model])
+    dict_csv_data = dict()
+    for c in colnames:
+        dict_csv_data[c] = []
+    #print(linea + " \\\\ \\hline")
     for metric in dicti["AP"]:
+        if "thr" in metric and ")" not in metric:
+            continue
         linea = metric.replace(" = ", "")
+        dict_csv_data["Metric"].append(metric.replace(" = ", ""))
         for model in model_order:
             rv = 1
             if "Acc" not in metric:
                 rv = 3
             linea += " & " + str(np.round(np.average(dicti[model][metric]), rv))
-        if "thr" in metric and ")" not in metric:
-            continue
-        print(linea + " \\\\ \\hline")
+            dict_csv_data[model_order[model]].append(np.average(dicti[model][metric]))
+        #print(linea + " \\\\ \\hline")
+    if not os.path.isdir("review/short"):
+        os.makedirs("review/short")
+    df_new = pd.DataFrame(dict_csv_data)
+    df_new.to_csv("review/short/" + str(mini) + "_" + str(maxi) + ".csv")
 
-def print_dict_long(dicti):
+def print_dict_long(mini, maxi):
+    dicti = filter_dict(mini, maxi)
     linea = "Metric"
+    colnames = ["Metric"]
     for model in model_order:
         for seed_val in seed_list:
-            linea += " & " + model_order[model] + " (" + str(seed_val) + ")"
-    print(linea + " \\\\ \\hline")
+            linea += " & " + model_order[model] + " (seed " + str(seed_val) + ")"
+            colnames.append(model_order[model] + " (seed " + str(seed_val) + ")")
+    dict_csv_data = dict()
+    for c in colnames:
+        dict_csv_data[c] = []
+    #print(linea + " \\\\ \\hline")
     for metric in dicti["AP"]:
+        if "thr" in metric and ")" not in metric:
+            continue
         linea = metric.replace(" = ", "")
+        dict_csv_data["Metric"].append(metric.replace(" = ", ""))
         for model in model_order:
+            ix_seed = 0
             for v in dicti[model][metric]:
                 rv = 1
                 if "Acc" not in metric:
                     rv = 3
                 linea += " & " + str(np.round(v, rv))
-        if "thr" in metric and ")" not in metric:
-            continue
-        print(linea + " \\\\ \\hline")
+                if "thr" in metric and ")" not in metric:
+                    continue
+                dict_csv_data[model_order[model] + " (seed " + str(seed_list[ix_seed]) + ")"].append(v)
+                ix_seed += 1
+        #print(linea + " \\\\ \\hline")
+    if not os.path.isdir("review/long"):
+        os.makedirs("review/long")
+    df_new = pd.DataFrame(dict_csv_data)
+    df_new.to_csv("review/long/" + str(mini) + "_" + str(maxi) + ".csv")
 
 lens = return_lens()
 for lena in sorted(lens.keys()):
@@ -294,14 +322,16 @@ for a in sorted(lens.keys()):
                 break
         if not is_range_ok:
             continue
+        print_dict(a, b)
+        print_dict_long(a, b)
         print(min(lens), a - 1, count_classes(min(lens), a - 1), a, b, count_classes(a, b), b + 1, max(lens), count_classes(b + 1, max(lens)))
 
-print_dict(filter_dict(3, 5))
-print_dict(filter_dict(6, 6))
-print_dict(filter_dict(7, 24))
-print_dict(filter_dict(3, 24))
+print_dict(3, 5)
+print_dict(6, 6)
+print_dict(7, 24)
+print_dict(3, 24)
 
-print_dict_long(filter_dict(3, 5))
-print_dict_long(filter_dict(6, 6))
-print_dict_long(filter_dict(7, 24))
-print_dict_long(filter_dict(3, 24))
+print_dict_long(3, 5)
+print_dict_long(6, 6)
+print_dict_long(7, 24)
+print_dict_long(3, 24)

@@ -180,6 +180,8 @@ def predictions_thr_name(some_path, test_number, params_nr, fold_nr):
         + ".txt"
     )
 
+def predictions_longest_name(some_path):
+    return final_path(some_path) + "predictions_longest.txt"
 
 def predictions_hex_name(some_path):
     return final_path(some_path) + "predictions_hex.txt"

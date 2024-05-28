@@ -179,6 +179,19 @@ def return_lens():
                         lens[len(seqs[seq_ix])] = 0
                     lens[len(seqs[seq_ix])] += 1
             return(lens)
+        
+def count_classes_seed_test(seed_val, test_num, minlen, maxlen):
+    classes = dict() 
+    csv_seed_test_fold = pd.read_csv("../seeds/seed_" + str(seed_val) + "/similarity/test_fold_" + str(test_num) + ".csv", index_col = False)
+    seqs = list(csv_seed_test_fold["sequence"])
+    labs = list(csv_seed_test_fold["label"])
+    for seq_ix in range(len(seqs)):
+        if len(seqs[seq_ix]) > maxlen or len(seqs[seq_ix]) < minlen:
+            continue
+        if labs[seq_ix] not in classes:
+            classes[labs[seq_ix]] = 0
+        classes[labs[seq_ix]] += 1
+    return(classes)
     
 def count_classes(minlen, maxlen):
     for model_name in os.listdir("../seeds/seed_369953070"):
@@ -237,7 +250,154 @@ def filter_dict(minlen, maxlen):
         models_line_dicts[model_name.replace("_model_data", "").replace("_data", "")] = lines_dict
     return models_line_dicts
 
+def filter_dict_seed(minlen, maxlen, seed_val):
+    models_line_dicts = dict()
+    for model_name in os.listdir("../seeds/seed_369953070"):
+        if "similarity" in model_name:
+            continue
+        #print(model_name.replace("_model_data", "").replace("_data", ""))
+        lines_dict = dict()
+        for v in vals_in_lines:
+            lines_dict[v] = []
+        for test_num in range(1, 6):
+            pred_arr1_filter = []
+            pred_arr2_filter = []
+            seqs_filter = []
+            labs_filter = []
+            dir_pred = "../seeds/seed_" + str(seed_val) + "/" + model_name + "/" + model_name.replace("model_data", "test_" + str(test_num)).replace("data", "test_" + str(test_num))
+            csv_seed_test_fold = pd.read_csv("../seeds/seed_" + str(seed_val) + "/similarity/test_fold_" + str(test_num) + ".csv", index_col = False)
+            seqs = list(csv_seed_test_fold["sequence"])
+            labs = list(csv_seed_test_fold["label"])
+            pred_file = open(dir_pred + "/" + model_name.replace("model_data", "test_" + str(test_num)).replace("data", "test_" + str(test_num)) + "_predictions.txt", "r")
+            pred_arrs = pred_file.readlines()
+            pred_arr1 = eval(pred_arrs[0])
+            pred_arr2 = eval(pred_arrs[1])
+            for seq_ix in range(len(seqs)):
+                if len(seqs[seq_ix]) > maxlen or len(seqs[seq_ix]) < minlen:
+                    continue
+                pred_arr1_filter.append(pred_arr1[seq_ix])
+                pred_arr2_filter.append(pred_arr2[seq_ix])
+                seqs_filter.append(seqs[seq_ix])
+                labs_filter.append(labs[seq_ix])
+            read_PR(labs_filter, pred_arr1_filter, lines_dict, PRthr[model_name.replace("_model_data", "").replace("_data", "")], ROCthr[model_name.replace("_model_data", "").replace("_data", "")])
+            read_ROC(labs_filter, pred_arr1_filter, lines_dict, PRthr[model_name.replace("_model_data", "").replace("_data", "")], ROCthr[model_name.replace("_model_data", "").replace("_data", "")])
+        #print(lines_dict)
+        models_line_dicts[model_name.replace("_model_data", "").replace("_data", "")] = lines_dict
+    return models_line_dicts
+
+def filter_dict_none(minlen, maxlen):
+    models_line_dicts = dict()
+    for model_name in os.listdir("../seeds/seed_369953070"):
+        if "similarity" in model_name:
+            continue
+        #print(model_name.replace("_model_data", "").replace("_data", ""))
+        lines_dict = dict()
+        for v in vals_in_lines:
+            lines_dict[v] = []
+        for seed_val_ix in range(len(seed_list)):
+            seed_val = seed_list[seed_val_ix]
+            #print(seed_val)
+            for test_num in range(1, 6):
+                pred_arr1_filter = []
+                pred_arr2_filter = []
+                seqs_filter = []
+                labs_filter = []
+                dir_pred = "../seeds/seed_" + str(seed_val) + "/" + model_name + "/" + model_name.replace("model_data", "test_" + str(test_num)).replace("data", "test_" + str(test_num))
+                csv_seed_test_fold = pd.read_csv("../seeds/seed_" + str(seed_val) + "/similarity/test_fold_" + str(test_num) + ".csv", index_col = False)
+                seqs = list(csv_seed_test_fold["sequence"])
+                labs = list(csv_seed_test_fold["label"])
+                pred_file = open(dir_pred + "/" + model_name.replace("model_data", "test_" + str(test_num)).replace("data", "test_" + str(test_num)) + "_predictions.txt", "r")
+                pred_arrs = pred_file.readlines()
+                pred_arr1 = eval(pred_arrs[0])
+                pred_arr2 = eval(pred_arrs[1])
+                for seq_ix in range(len(seqs)):
+                    if len(seqs[seq_ix]) > maxlen or len(seqs[seq_ix]) < minlen:
+                        continue
+                    pred_arr1_filter.append(pred_arr1[seq_ix])
+                    pred_arr2_filter.append(pred_arr2[seq_ix])
+                    seqs_filter.append(seqs[seq_ix])
+                    labs_filter.append(labs[seq_ix])
+                read_PR(labs_filter, pred_arr1_filter, lines_dict, PRthr[model_name.replace("_model_data", "").replace("_data", "")], ROCthr[model_name.replace("_model_data", "").replace("_data", "")])
+                read_ROC(labs_filter, pred_arr1_filter, lines_dict, PRthr[model_name.replace("_model_data", "").replace("_data", "")], ROCthr[model_name.replace("_model_data", "").replace("_data", "")])
+                #print(lines_dict)
+        models_line_dicts[model_name.replace("_model_data", "").replace("_data", "")] = lines_dict
+    return models_line_dicts
+
 model_order = {"AP": "AP", "SP": "SP", "AP_SP": "AP-SP", "TSNE_SP": "t-SNE SP", "TSNE_AP_SP": "t-SNE AP-SP"}
+
+def print_dict_seed(mini, maxi, seed):
+    dicti = filter_dict_seed(mini, maxi, seed)
+    linea = "Metric"
+    colnames = ["Metric"]
+    for model in model_order:
+        for test_num in range(1, 6):
+            linea += " & " + model_order[model] + " (test " + str(test_num) + ")"
+            colnames.append(model_order[model] + " (test " + str(test_num) + ")")
+    dict_csv_data = dict()
+    for c in colnames:
+        dict_csv_data[c] = []
+    #print(linea + " \\\\ \\hline")
+    for metric in dicti["AP"]:
+        if "thr" in metric and ")" not in metric:
+            continue
+        linea = metric.replace(" = ", "")
+        dict_csv_data["Metric"].append(metric.replace(" = ", ""))
+        for model in model_order:
+            ix_test = 1
+            for v in dicti[model][metric]:
+                rv = 1
+                if "Acc" not in metric:
+                    rv = 3
+                linea += " & " + str(np.round(v, rv))
+                if "thr" in metric and ")" not in metric:
+                    continue
+                dict_csv_data[model_order[model] + " (test " + str(ix_test) + ")"].append(v)
+                ix_test += 1
+        #print(linea + " \\\\ \\hline")
+    if not os.path.isdir("review/seed_" + str(seed)):
+        os.makedirs("review/seed_" + str(seed))
+    df_new = pd.DataFrame(dict_csv_data)
+    df_new.to_csv("review/seed_" + str(seed) +  "/" + str(mini) + "_" + str(maxi) + "_" + str(seed) + ".csv")
+
+def print_dict_seed_all(mini, maxi):
+    dicti = filter_dict_none(mini, maxi)
+    linea = "Metric"
+    colnames = ["Metric"]
+    for model in model_order:
+        for seed_val in seed_list:
+            for test_num in range(1, 6):
+                linea += " & " + model_order[model] + " (seed " + str(seed_val) + ") (test " + str(test_num) + ")"
+                colnames.append(model_order[model] + " (seed " + str(seed_val) + ") (test " + str(test_num) + ")")
+    dict_csv_data = dict()
+    for c in colnames:
+        dict_csv_data[c] = []
+    #print(linea + " \\\\ \\hline")
+    for metric in dicti["AP"]:
+        if "thr" in metric and ")" not in metric:
+            continue
+        linea = metric.replace(" = ", "")
+        dict_csv_data["Metric"].append(metric.replace(" = ", ""))
+        for model in model_order:
+            ix_seed = 0
+            ix_test = 1
+            for v in dicti[model][metric]:
+                rv = 1
+                if "Acc" not in metric:
+                    rv = 3
+                linea += " & " + str(np.round(v, rv))
+                if "thr" in metric and ")" not in metric:
+                    continue
+                dict_csv_data[model_order[model] + " (seed " + str(seed_list[ix_seed]) + ") (test " + str(ix_test) + ")"].append(v)
+                if ix_test < 5:
+                    ix_test += 1
+                else:
+                    ix_test = 1
+                    ix_seed += 1
+        #print(linea + " \\\\ \\hline")
+    if not os.path.isdir("review/seed_all"):
+        os.makedirs("review/seed_all")
+    df_new = pd.DataFrame(dict_csv_data)
+    df_new.to_csv("review/seed_all/" + str(mini) + "_" + str(maxi) + "_all.csv")
 
 def print_dict(mini, maxi):
     dicti = filter_dict(mini, maxi)
@@ -310,6 +470,7 @@ for lena in sorted(lens.keys()):
     if len(count_classes(lena, lena)) > 1:
         larger.append(lena)
 print(larger)
+
 for a in sorted(lens.keys()):
     for b in sorted(lens.keys()):
         if b < a:
@@ -322,16 +483,22 @@ for a in sorted(lens.keys()):
                 break
         if not is_range_ok:
             continue
+        all_seeds_test_ok = True
+        for seed in seed_list:
+            all_test_ok = True
+            for tn in range(1, 6):
+                lens_seed_test = count_classes_seed_test(seed, tn, a, b)
+                if len(lens_seed_test) < 2:
+                    all_test_ok = False
+                    all_seeds_test_ok = False
+            if all_test_ok:
+                print_dict_seed(a, b, seed) 
+            else:
+                print("seed not ok", seed)
+        if all_seeds_test_ok:
+            print_dict_seed_all(a, b)
+        else:
+            print("not all ok")
         print_dict(a, b)
         print_dict_long(a, b)
         print(min(lens), a - 1, count_classes(min(lens), a - 1), a, b, count_classes(a, b), b + 1, max(lens), count_classes(b + 1, max(lens)))
-
-print_dict(3, 5)
-print_dict(6, 6)
-print_dict(7, 24)
-print_dict(3, 24)
-
-print_dict_long(3, 5)
-print_dict_long(6, 6)
-print_dict_long(7, 24)
-print_dict_long(3, 24)

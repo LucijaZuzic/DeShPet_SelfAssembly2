@@ -163,6 +163,8 @@ def final_log_name(some_path):
 def scatter_name(some_path):
     return final_path(some_path) + "scatter_plot_hex.png"
 
+def scatter_name_long(some_path):
+    return final_path(some_path) + "scatter_plot_long.png"
 
 def results_name(some_path, test_number):
     return basic_path(some_path, test_number) + "results.txt"

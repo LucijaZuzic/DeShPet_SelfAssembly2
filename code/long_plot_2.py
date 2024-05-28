@@ -221,11 +221,22 @@ vals_in_lines = [
     "Accuracy (PR thr new) = ",
 ]
 
+dict_csv_data = dict()
+colnames = ["Metric"]
+model_order = {"AP": "AP", "SP": "SP", "AP_SP": "AP-SP", "TSNE_SP": "t-SNE SP", "TSNE_AP_SP": "t-SNE AP-SP"}
+for model in model_order:
+    colnames.append(model_order[model])
+for c in colnames:
+    dict_csv_data[c] = []
+dict_csv_data["Metric"].append("Pearson")
+dict_csv_data["Metric"].append("Spearman")
+
 lines_dict = dict()
 for val in vals_in_lines:
     lines_dict[val] = []
 
 for some_path in path_list:
+    model = some_path.replace("../", "").replace("/", "").replace("_model_data", "").replace("_data", "")
     fileopen = open(predictions_longest_name(some_path), "r")
     predictions = eval(fileopen.readlines()[0].replace("\n", ""))
     predictions = predictions[:-1]
@@ -234,7 +245,9 @@ for some_path in path_list:
     print(some_path)
     print("R: " + str(r))
     print("corrcoef: " + str(np.corrcoef(predictions, actual_AP)[0][1]))
+    dict_csv_data[model_order[model]].append(np.corrcoef(predictions, actual_AP)[0][1])
     print("spearmanr: " + str(stats.spearmanr(predictions, actual_AP)[0]))
+    dict_csv_data[model_order[model]].append(stats.spearmanr(predictions, actual_AP)[0])
     print("R2: " + str(sklearn.metrics.r2_score(predictions, actual_AP)))
 
     read_ROC(test_labels, predictions, lines_dict, PRthr[some_path], ROCthr[some_path])
@@ -252,3 +265,13 @@ for some_path in path_list:
 for x in lines_dict:
     print(x)
     print(np.round(lines_dict[x], 3))
+    dict_csv_data["Metric"].append(x.replace(" = ", ""))
+    ixpth = 0
+    for v in lines_dict[x]:
+        model = path_list[ixpth].replace("../", "").replace("/", "").replace("_model_data", "").replace("_data", "")
+        dict_csv_data[model_order[model]].append(v)
+        ixpth += 1
+
+print(dict_csv_data)
+df_new = pd.DataFrame(dict_csv_data)
+df_new.to_csv("review/newest_data_min.csv")

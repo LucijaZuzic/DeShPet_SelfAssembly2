@@ -183,7 +183,7 @@ for val in duplicate_list:
     ix_dup = duplicate_list.index(list(dict_hex.keys())[ix])
     error_status = (actual_AP[ix] < threshold) != (duplicate_AP_list[ix_dup] < threshold)
     print(error_status, list(dict_hex.keys())[ix], actual_AP[ix], duplicate_AP_list[ix_dup])
-    actual_AP[ix] = max(actual_AP[ix], duplicate_AP_list[ix_dup])
+    actual_AP[ix] = np.average([actual_AP[ix], duplicate_AP_list[ix_dup]])
 
 seq_example = ""
 for i in range(MAX_LEN):
@@ -259,7 +259,7 @@ for some_path in path_list:
     plt.ylabel("AP")
     plt.plot(predictions, mymodel, color="#ff120a")
     plt.scatter(predictions, actual_AP, color="#2e85ff")
-    plt.savefig(scatter_name_long(some_path), bbox_inches="tight")
+    plt.savefig(scatter_name_long(some_path).replace("long", "longavg"), bbox_inches="tight")
     plt.close()
 
 for x in lines_dict:
@@ -274,4 +274,4 @@ for x in lines_dict:
 
 print(dict_csv_data)
 df_new = pd.DataFrame(dict_csv_data)
-df_new.to_csv("review/newest_data_max.csv")
+df_new.to_csv("review/newest_data_avg.csv")

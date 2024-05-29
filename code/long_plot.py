@@ -96,18 +96,18 @@ def read_ROC(test_labels, model_predictions, lines_dict, oldPR, oldROC):
 
     model_predictions_binary = convert_to_binary(model_predictions, 0.5)
 
-    lines_dict["ROC thr new = "].append(oldROC)
+    lines_dict["ROC thr = "].append(oldROC)
     lines_dict["ROC AUC = "].append(roc_auc_score(test_labels, model_predictions))
     lines_dict["gmean (0.5) = "].append(
         returnGMEAN(test_labels, model_predictions_binary)
     )
-    lines_dict["gmean (PR thr new) = "].append(
+    lines_dict["gmean (PR thr) = "].append(
         returnGMEAN(test_labels, model_predictions_binary_thrPR_new)
     )
-    lines_dict["gmean (ROC thr new) = "].append(
+    lines_dict["gmean (ROC thr) = "].append(
         returnGMEAN(test_labels, model_predictions_binary_thrROC_new)
     )
-    lines_dict["Accuracy (ROC thr new) = "].append(
+    lines_dict["Accuracy (ROC thr) = "].append(
         my_accuracy_calculate(test_labels, model_predictions, oldROC)
     )
 
@@ -141,16 +141,16 @@ def read_PR(test_labels, model_predictions, lines_dict, oldPR, oldROC):
     model_predictions_binary_thrROC_new = convert_to_binary(model_predictions, oldROC)
     model_predictions_binary = convert_to_binary(model_predictions, 0.5)
 
-    lines_dict["PR thr new = "].append(oldPR)
+    lines_dict["PR thr = "].append(oldPR)
     lines_dict["PR AUC = "].append(auc(recall, precision))
     lines_dict["F1 (0.5) = "].append(f1_score(test_labels, model_predictions_binary))
-    lines_dict["F1 (PR thr new) = "].append(
+    lines_dict["F1 (PR thr) = "].append(
         f1_score(test_labels, model_predictions_binary_thrPR_new)
     )
-    lines_dict["F1 (ROC thr new) = "].append(
+    lines_dict["F1 (ROC thr) = "].append(
         f1_score(test_labels, model_predictions_binary_thrROC_new)
     )
-    lines_dict["Accuracy (PR thr new) = "].append(
+    lines_dict["Accuracy (PR thr) = "].append(
         my_accuracy_calculate(test_labels, model_predictions_binary_thrPR_new, oldPR)
     )
     lines_dict["Accuracy (0.5) = "].append(
@@ -211,14 +211,14 @@ vals_in_lines = [
     "gmean (0.5) = ",
     "F1 (0.5) = ",
     "Accuracy (0.5) = ",
-    "ROC thr new = ",
-    "PR thr new = ",
-    "gmean (ROC thr new) = ",
-    "F1 (ROC thr new) = ",
-    "Accuracy (ROC thr new) = ",
-    "gmean (PR thr new) = ",
-    "F1 (PR thr new) = ",
-    "Accuracy (PR thr new) = ",
+    "ROC thr = ",
+    "PR thr = ",
+    "gmean (ROC thr) = ",
+    "F1 (ROC thr) = ",
+    "Accuracy (ROC thr) = ",
+    "gmean (PR thr) = ",
+    "F1 (PR thr) = ",
+    "Accuracy (PR thr) = ",
 ]
 
 dict_csv_data = dict()
@@ -263,6 +263,8 @@ for some_path in path_list:
     plt.close()
 
 for x in lines_dict:
+    if "thr" in x and ")" not in x:
+        continue
     print(x)
     print(np.round(lines_dict[x], 3))
     dict_csv_data["Metric"].append(x.replace(" = ", ""))

@@ -30,8 +30,8 @@ for model_name in os.listdir("seeds/seed_305475974"):
                 plt.ylim(0, 1)
                 plt.xticks([])
                 plt.yticks([])
-                color_list_val = ["red", "green", "blue", "orange", "purple"]
-                color_list_train = ["yellow", "cyan", "magenta", "pink", "brown"]
+                color_list_train = ["red", "green", "blue", "orange", "purple"]
+                color_list_val = ["yellow", "cyan", "magenta", "pink", "brown"]
                 if seed_val_ix == 0:
                     if test_num == 3:
                         long_title = model_order[model_name.replace("_model_data", "").replace("_data", "")] + " model"
@@ -55,8 +55,8 @@ for model_name in os.listdir("seeds/seed_305475974"):
                     train_loss_arr = eval(train_loss_file.readlines()[0])
                     val_loss_file = open(dir_loss + "/" + model_name.replace("model_data", "test_" + str(test_num)).replace("data", "test_" + str(test_num)) + "_val_loss_params_" + str(params_num) + "_fold_" + str(fold_num) + ".txt", "r")
                     val_loss_arr = eval(val_loss_file.readlines()[0])
-                    plt.plot(train_loss_arr, c = color_list_train[fold_num - 1], label = "Validation fold " + str(fold_num))
-                    plt.plot(val_loss_arr, c = color_list_val[fold_num - 1], label = "Training fold " + str(fold_num))
+                    plt.plot(train_loss_arr, c = color_list_train[fold_num - 1], label = "Training fold " + str(fold_num))
+                    plt.plot(val_loss_arr, c = color_list_val[fold_num - 1], label = "Validation fold " + str(fold_num))
                 if test_num == 1 and seed_val_ix == len(seed_list) - 1:
                     plt.legend(loc = "lower left", ncol = 5, bbox_to_anchor = (0, -0.5))
         file_name = "review/" + model_name.replace("_model_data", "").replace("_data", "") + "_params_" + str(params_num)

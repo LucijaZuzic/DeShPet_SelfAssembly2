@@ -222,6 +222,8 @@ def return_lens():
     seqs = seqs_new
     lens = dict()
     for seq_ix in range(len(seqs)):
+        if seq_ix in ix_to_skip:
+            continue
         if len(seqs[seq_ix]) not in lens:
             lens[len(seqs[seq_ix])] = 0
         lens[len(seqs[seq_ix])] += 1
@@ -232,7 +234,7 @@ def count_classes(minlen, maxlen):
     labs = test_labels
     classes = dict()
     for seq_ix in range(len(seqs)):
-        if len(seqs[seq_ix]) > maxlen or len(seqs[seq_ix]) < minlen:
+        if len(seqs[seq_ix]) > maxlen or len(seqs[seq_ix]) < minlen or seq_ix in ix_to_skip:
             continue
         if labs[seq_ix] not in classes:
             classes[labs[seq_ix]] = 0
@@ -255,7 +257,7 @@ def filter_dict(minlen, maxlen):
         pred_arrs = pred_file.readlines()
         pred_arr1 = eval(pred_arrs[0])
         for seq_ix in range(len(seqs)):
-            if len(seqs[seq_ix]) > maxlen or len(seqs[seq_ix]) < minlen:
+            if len(seqs[seq_ix]) > maxlen or len(seqs[seq_ix]) < minlen or seq_ix in ix_to_skip:
                 continue
             pred_arr1_filter.append(pred_arr1[seq_ix])
             seqs_filter.append(seqs[seq_ix])

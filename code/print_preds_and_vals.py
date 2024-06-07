@@ -1,11 +1,10 @@
 import pandas as pd
 import numpy as np
 
-model_list_old = ['Transformer', 'RNN', 'LSTM', 'Bi-LSTM', 'MLP']
-model_list_new = ["AP", "SP", "AP-SP", "t-SNE SP", "t-SNE AP-SP"]
+model_list = ["AP", "SP", "AP-SP", "t-SNE SP", "t-SNE AP-SP"]
 seed_list = [305475974, 369953070, 879273778, 965681145, 992391276]
 
-def print_latex_format_long(model_list, path_to_file):
+def print_latex_format_long(path_to_file):
     pd_file = pd.read_csv(path_to_file)
     rows_string = "Metric"
     for model in model_list:
@@ -38,7 +37,7 @@ def print_latex_format_long(model_list, path_to_file):
         rows_string += rows_string_one.replace(max_part, "\\textbf{" + max_part + "}")
     print(rows_string)
 
-def print_latex_format(model_list, path_to_file):
+def print_latex_format(path_to_file):
     pd_file = pd.read_csv(path_to_file)
     rows_string = "Metric"
     for model in model_list:
@@ -85,5 +84,5 @@ def print_latex_format(model_list, path_to_file):
     new_df.to_csv(path_to_file.replace(".csv", "_avg_std.csv"))
     print(rows_string)
 
-print_latex_format(model_list_new, "review/long/3_24.csv")
-print_latex_format(model_list_new, "review_20/long/5_5.csv")
+print_latex_format("review/long/3_24.csv")
+print_latex_format("review_20/long/5_5.csv")

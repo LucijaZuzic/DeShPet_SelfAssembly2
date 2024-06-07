@@ -1,10 +1,9 @@
 import pandas as pd
 import numpy as np
 
-model_list_old = ['Transformer', 'RNN', 'LSTM', 'Bi-LSTM', 'MLP']
-model_list_new = ["AP", "SP", "AP-SP", "t-SNE SP", "t-SNE AP-SP"]
+model_list = ["AP", "SP", "AP-SP", "t-SNE SP", "t-SNE AP-SP"]
 
-def print_latex_format(model_list, path_to_file):
+def print_latex_format(path_to_file):
     pd_file = pd.read_csv(path_to_file)
     rows_string = "Metric"
     for model in model_list:
@@ -35,7 +34,7 @@ def print_latex_format(model_list, path_to_file):
         rows_string += rows_string_one.replace(max_part, "\\textbf{" + max_part + "}")
     print(rows_string)
 
-print_latex_format(model_list_new, "review/short/3_24.csv")
-print_latex_format(model_list_new, "review_20/short/3_24.csv")
-print_latex_format(model_list_new, "review_6000/short/5_5.csv")
-print_latex_format(model_list_new, "review_62000/short/5_10.csv")
+print_latex_format("review/short/3_24.csv")
+print_latex_format("review_20/short/3_24.csv")
+print_latex_format("review_6000/short/5_5.csv")
+print_latex_format("review_62000/short/5_10.csv")

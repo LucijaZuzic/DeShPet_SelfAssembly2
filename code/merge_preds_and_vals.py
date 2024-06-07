@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import os
 
 seed_list = [305475974, 369953070, 879273778, 965681145, 992391276]

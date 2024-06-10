@@ -168,7 +168,7 @@ dict_hex = {}
 actual_AP = []
 duplicate_list = []
 duplicate_AP_list = []
-threshold = 1.75
+threshold = 0.5
 for ix in range(len(df["Feature"])):
     if df["Feature"][ix] not in dict_hex:
         dict_hex[df["Feature"][ix]] = "1"
@@ -274,4 +274,4 @@ for x in lines_dict:
 
 print(dict_csv_data)
 df_new = pd.DataFrame(dict_csv_data)
-df_new.to_csv("review/newest_data_max.csv")
+df_new.to_csv("review/newest_data_genetic.csv")

@@ -60,4 +60,18 @@ merge_format_long("review", 3, 24)
 merge_format_long("review_20", 5, 5)
 merge_format("review_6000", 5, 5)
 merge_format("review_62000", 5, 10)
+
 merge_format("review_genetic", 6, 10)
+
+merge_format("review_genetic_low", 6, 10)
+merge_format("review_genetic_low_0", 6, 6)
+merge_format("review_genetic_low_1", 10, 10)
+
+merge_format("review_genetic_strong", 6, 10)
+merge_format("review_genetic_strong_0", 6, 6)
+merge_format("review_genetic_strong_1", 7, 10)
+
+merge_format("review_genetic_experiments", 9, 10)
+merge_format("review_genetic_experimentsA", 9, 10)
+merge_format("review_genetic_experimentsB", 9, 10)
+merge_format("review_genetic_experimentsC", 9, 10)

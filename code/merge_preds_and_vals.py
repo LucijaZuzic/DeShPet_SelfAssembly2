@@ -14,12 +14,15 @@ def merge_format_long(dirname, mini, maxi):
             pd_filePR = pd.read_csv(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(model) + "/" + str(mini) + "_" + str(maxi) + "_" + str(model) + "_seed_" + str(seed) + "_PR_preds.csv")
             dfdictPR["preds_" + str(model) + "_" + str(seed)] = pd_filePR["preds"]
             dfdictPR["labels_" + str(model) + "_" + str(seed)] = pd_filePR["labels"]
+            dfdictPR["feature_" + str(model) + "_" + str(seed)] = pd_filePR["feature"]
             pd_fileROC = pd.read_csv(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(model) + "/" + str(mini) + "_" + str(maxi) + "_" + str(model) + "_seed_" + str(seed) + "_ROC_preds.csv")
             dfdictROC["preds_" + str(model) + "_" + str(seed)] = pd_fileROC["preds"]
             dfdictROC["labels_" + str(model) + "_" + str(seed)] = pd_fileROC["labels"]
+            dfdictROC["feature_" + str(model) + "_" + str(seed)] = pd_fileROC["feature"]
             pd_file50 = pd.read_csv(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(model) + "/" + str(mini) + "_" + str(maxi) + "_" + str(model) + "_seed_" + str(seed) + "_50_preds.csv")
             dfdict50["preds_" + str(model) + "_" + str(seed)] = pd_file50["preds"]
             dfdict50["labels_" + str(model) + "_" + str(seed)] = pd_file50["labels"]
+            dfdict50["feature_" + str(model) + "_" + str(seed)] = pd_file50["feature"]
     df_newPR = pd.DataFrame(dfdictPR)
     df_newPR.to_csv(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_PR_preds.csv")
     df_newROC = pd.DataFrame(dfdictROC)
@@ -37,12 +40,15 @@ def merge_format(dirname, mini, maxi):
         pd_filePR = pd.read_csv(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(model) + "/" + str(mini) + "_" + str(maxi) + "_" + str(model) + "_PR_preds.csv")
         dfdictPR["preds_" + str(model)] = pd_filePR["preds"]
         dfdictPR["labels_" + str(model)] = pd_filePR["labels"]
+        dfdictPR["feature_" + str(model)] = pd_filePR["feature"]
         pd_fileROC = pd.read_csv(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(model) + "/" + str(mini) + "_" + str(maxi) + "_" + str(model) + "_ROC_preds.csv")
         dfdictROC["preds_" + str(model)] = pd_fileROC["preds"]
         dfdictROC["labels_" + str(model)] = pd_fileROC["labels"]
+        dfdictROC["feature_" + str(model)] = pd_fileROC["feature"]
         pd_file50 = pd.read_csv(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(model) + "/" + str(mini) + "_" + str(maxi) + "_" + str(model) + "_50_preds.csv")
         dfdict50["preds_" + str(model)] = pd_file50["preds"]
         dfdict50["labels_" + str(model)] = pd_file50["labels"]
+        dfdict50["feature_" + str(model)] = pd_file50["feature"]
     df_newPR = pd.DataFrame(dfdictPR)
     df_newPR.to_csv(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_PR_preds.csv")
     df_newROC = pd.DataFrame(dfdictROC)

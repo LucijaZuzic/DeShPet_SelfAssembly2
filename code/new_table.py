@@ -160,21 +160,6 @@ def print_dict(mini, maxi):
     #df_new.to_csv("review/short/" + str(mini) + "_" + str(maxi) + ".csv")
     return df_new
 
-dicti = {"Metric": []}
-for len1 in range(3, 24):
-    if os.path.isfile("review/short/" + str(len1) + "_" + str(len1) + ".csv"):
-        print("ok", len1)
-        filepd = pd.read_csv("review/short/" + str(len1) + "_" + str(len1) + ".csv")
-        scores = filepd["AP-SP"]
-        metrics = filepd["Metric"]
-        dicti[str(len1)] = []
-        for ix in range(len(scores)):
-            if "PR thr" in metrics[ix]:
-                dicti[str(len1)].append(scores[ix])
-                if metrics[ix] not in dicti["Metric"]:
-                    dicti["Metric"].append(metrics[ix])
-df_new = pd.DataFrame(dicti)
-df_new.to_csv("review/all_new.csv")
 def return_lens():
     for model_name in os.listdir("../seeds/seed_369953070"):
         if "similarity" in model_name:
@@ -182,26 +167,63 @@ def return_lens():
         for seed_val_ix in range(len(seed_list)):
             seed_val = seed_list[seed_val_ix]
             lens = dict()
+            lens_positive = dict() 
+            lens_negative = dict()
             for test_num in range(1, 6):
                 csv_seed_test_fold = pd.read_csv("../seeds/seed_" + str(seed_val) + "/similarity/test_fold_" + str(test_num) + ".csv", index_col = False)
                 seqs = list(csv_seed_test_fold["sequence"])
+                labs = list(csv_seed_test_fold["label"])
                 for seq_ix in range(len(seqs)):
                     if len(seqs[seq_ix]) not in lens:
                         lens[len(seqs[seq_ix])] = 0
                     lens[len(seqs[seq_ix])] += 1
-            return(lens)
-lens_all = return_lens()
+                    if labs[seq_ix] == 1:
+                        if len(seqs[seq_ix]) not in lens_positive:
+                            lens_positive[len(seqs[seq_ix])] = 0
+                        lens_positive[len(seqs[seq_ix])] += 1
+                    else:
+                        if len(seqs[seq_ix]) not in lens_negative:
+                            lens_negative[len(seqs[seq_ix])] = 0
+                        lens_negative[len(seqs[seq_ix])] += 1
+            return(lens, lens_positive, lens_negative)
+lens_all, lens_positive, lens_negative = return_lens()
 print(lens_all)
-dicti = {"Metric": []}
+print(lens_positive)
+print(lens_negative)
+
+dicti = {"Metric": ["Total", "Positive", "Negative"]}
+for len1 in range(3, 24):
+    if os.path.isfile("review/short/" + str(len1) + "_" + str(len1) + ".csv"):
+        print("ok", len1)
+        print(len1, lens_all[len1], lens_positive[len1], lens_negative[len1])
+        filepd = pd.read_csv("review/short/" + str(len1) + "_" + str(len1) + ".csv")
+        scores = filepd["AP-SP"]
+        metrics = filepd["Metric"]
+        dicti[str(len1)] = [lens_all[len1], lens_positive[len1], lens_negative[len1]]
+        for ix in range(len(scores)):
+            if "PR thr" in metrics[ix]:
+                dicti[str(len1)].append(scores[ix])
+                if metrics[ix] not in dicti["Metric"]:
+                    dicti["Metric"].append(metrics[ix])
+df_new = pd.DataFrame(dicti)
+df_new.to_csv("review/all_new.csv")
 print(dicti)
+
+dicti = {"Metric": ["Total", "Positive", "Negative"]}
 for len1 in range(3, 24):
     if len1 not in lens_all:
         continue
-    print(len1, lens_all[len1])
+    vp = 0
+    vn = 0
+    if len1 in lens_positive:
+        vp = lens_positive[len1]
+    if len1 in lens_negative:
+        vn = lens_negative[len1]
+    print(len1, lens_all[len1], vp, vn)
     filepd = print_dict(len1, len1)
     scores = filepd["AP-SP"]
     metrics = filepd["Metric"]
-    dicti[str(len1)] = []
+    dicti[str(len1)] = [lens_all[len1], vp, vn]
     for ix in range(len(scores)):
         if "PR thr" in metrics[ix]:
             dicti[str(len1)].append(scores[ix])

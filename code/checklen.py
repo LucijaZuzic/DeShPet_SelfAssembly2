@@ -88,6 +88,8 @@ for i in new_all_lens.keys():
 plt.rcParams.update({"font.size": 14})
 
 plt.figure(figsize=(30, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
 plt.xticks(fontsize=8)
 plt.bar(
     range(len(new_all_lens.keys())), new_all_lens.values(), color="#96c1ff", label="SA"
@@ -109,6 +111,8 @@ plt.close()
 
 plt.rcParams.update({"font.size": 22})
 plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 plt.bar(lens.keys(), lens.values(), color="#96c1ff", label="SA")
@@ -119,6 +123,41 @@ plt.xlabel("Length of peptide sequence")
 plt.ylabel("Number of peptides")
 plt.legend()
 plt.savefig(DATA_PATH + "peptide_used.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.bar(lens.keys(), lens.values(), color="#96c1ff", label="SA")
+plt.bar(no_lens.keys(), no_lens.values(), color="#ff8884", label="NSA")
+minik = min(min(list(lens.keys())), min(list(no_lens.keys())))
+maxik = max(max(list(lens.keys())), max(list(no_lens.keys())))
+print(minik, maxik)
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = max(valy, valn)
+    if valy - valn > 0 and not valn > 0:
+        plt.text(ul - 0.5, valy + 2, str(valy), color="#96c1ff")
+    if not valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, valn + 2, str(valn), color="#ff8884")
+    if valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 19, str(valy - valn), color="#96c1ff")
+        plt.text(ul - 0.5, maxv + 2, str(valn), color="#ff8884")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_number.png", bbox_inches="tight")
 plt.show()
 plt.close()
 

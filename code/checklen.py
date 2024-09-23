@@ -32,6 +32,8 @@ no_len_list = []
 
 for pep in SA_data:
     peptide = [pep, SA_data[pep]]
+    if peptide[1] != "1" and peptide[1] != "0":
+        continue
     if len(peptide[0]) not in all_lens:
         all_lens[len(peptide[0])] = 1
         all_len_list.append(len(peptide[0]))
@@ -137,6 +139,7 @@ plt.bar(no_lens.keys(), no_lens.values(), color="#ff8884", label="NSA")
 minik = min(min(list(lens.keys())), min(list(no_lens.keys())))
 maxik = max(max(list(lens.keys())), max(list(no_lens.keys())))
 print(minik, maxik)
+maxv_arr = []
 for ul in range(minik, maxik + 1):
     valy = -1
     valn = -1
@@ -145,19 +148,473 @@ for ul in range(minik, maxik + 1):
     if ul in no_lens:
         valn = no_lens[ul]
     maxv = max(valy, valn)
+    maxv_arr.append(maxv)
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = maxv_arr[ul - minik]
+    if ul - minik > 0 and ul - minik < len(maxv_arr) - 1:
+        prevmax = maxv_arr[ul - minik - 1]
+        nextmax = maxv_arr[ul - minik + 1]
+        avgmax1 = prevmax + (nextmax - prevmax) * 3 / 4
+        avgmax2 = prevmax + (nextmax - prevmax) * 1 / 4
+        maxv = max(max(avgmax1, avgmax2), maxv)
     if valy - valn > 0 and not valn > 0:
-        plt.text(ul - 0.5, valy + 2, str(valy), color="#96c1ff")
+        plt.text(ul - 0.5, maxv + 5, str(valy), color="#2e85ff")
     if not valy - valn > 0 and valn > 0:
-        plt.text(ul - 0.5, valn + 2, str(valn), color="#ff8884")
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
     if valy - valn > 0 and valn > 0:
-        plt.text(ul - 0.5, maxv + 19, str(valy - valn), color="#96c1ff")
-        plt.text(ul - 0.5, maxv + 2, str(valn), color="#ff8884")
+        plt.text(ul - 0.5, maxv + 23, str(valy - valn), color="#2e85ff")
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
 plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
 plt.ylim(0, 230)
 plt.xlabel("Length of peptide sequence")
 plt.ylabel("Number of peptides")
 plt.legend()
 plt.savefig(DATA_PATH + "peptide_used_number.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+sorted_lens_keys = []
+sorted_lens_vals = []
+sorted_no_lens_keys = []
+sorted_no_lens_vals = []
+for k in sorted(lens.keys()):
+    sorted_lens_keys.append(k)
+    sorted_lens_vals.append(lens[k])
+for nk in sorted(no_lens.keys()):
+    sorted_no_lens_keys.append(nk)
+    sorted_no_lens_vals.append(no_lens[nk])
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.bar(lens.keys(), lens.values(), color="#96c1ff", label="SA")
+plt.bar(no_lens.keys(), no_lens.values(), color="#ff8884", label="NSA")
+plt.plot(sorted_lens_keys, sorted_lens_vals, color="#2e85ff")
+plt.plot(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a")
+minik = min(min(list(lens.keys())), min(list(no_lens.keys())))
+maxik = max(max(list(lens.keys())), max(list(no_lens.keys())))
+print(minik, maxik)
+maxv_arr = []
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = max(valy, valn)
+    maxv_arr.append(maxv)
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = maxv_arr[ul - minik]
+    if ul - minik > 0 and ul - minik < len(maxv_arr) - 1:
+        prevmax = maxv_arr[ul - minik - 1]
+        nextmax = maxv_arr[ul - minik + 1]
+        avgmax1 = prevmax + (nextmax - prevmax) * 3 / 4
+        avgmax2 = prevmax + (nextmax - prevmax) * 1 / 4
+        maxv = max(max(avgmax1, avgmax2), maxv)
+    if valy - valn > 0 and not valn > 0:
+        plt.text(ul - 0.5, maxv + 5, str(valy), color="#2e85ff")
+    if not valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
+    if valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 23, str(valy - valn), color="#2e85ff")
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_number_line.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.plot(sorted_lens_keys, sorted_lens_vals, color="#2e85ff", label="SA")
+plt.plot(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a", label="NSA")
+minik = min(min(list(lens.keys())), min(list(no_lens.keys())))
+maxik = max(max(list(lens.keys())), max(list(no_lens.keys())))
+print(minik, maxik)
+maxv_arr = []
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = max(valy, valn)
+    maxv_arr.append(maxv)
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = maxv_arr[ul - minik]
+    if ul - minik > 0 and ul - minik < len(maxv_arr) - 1:
+        prevmax = maxv_arr[ul - minik - 1]
+        nextmax = maxv_arr[ul - minik + 1]
+        avgmax1 = prevmax + (nextmax - prevmax) * 3 / 4
+        avgmax2 = prevmax + (nextmax - prevmax) * 1 / 4
+        maxv = max(max(avgmax1, avgmax2), maxv)
+    if valy - valn > 0 and not valn > 0:
+        plt.text(ul - 0.5, maxv + 5, str(valy), color="#2e85ff")
+    if not valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
+    if valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 23, str(valy - valn), color="#2e85ff")
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_number_line_no_bar.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.bar(lens.keys(), lens.values(), color="#96c1ff", label="SA")
+plt.bar(no_lens.keys(), no_lens.values(), color="#ff8884", label="NSA")
+plt.plot(sorted_lens_keys, sorted_lens_vals, color="#2e85ff")
+plt.plot(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_line.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.plot(sorted_lens_keys, sorted_lens_vals, color="#2e85ff", label="SA")
+plt.plot(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a", label="NSA")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_line_no_bar.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.bar(lens.keys(), lens.values(), color="#96c1ff", label="SA")
+plt.bar(no_lens.keys(), no_lens.values(), color="#ff8884", label="NSA")
+plt.scatter(sorted_lens_keys, sorted_lens_vals, color="#2e85ff")
+plt.scatter(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a")
+minik = min(min(list(lens.keys())), min(list(no_lens.keys())))
+maxik = max(max(list(lens.keys())), max(list(no_lens.keys())))
+print(minik, maxik)
+maxv_arr = []
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = max(valy, valn)
+    maxv_arr.append(maxv)
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = maxv_arr[ul - minik]
+    if ul - minik > 0 and ul - minik < len(maxv_arr) - 1:
+        prevmax = maxv_arr[ul - minik - 1]
+        nextmax = maxv_arr[ul - minik + 1]
+        avgmax1 = prevmax + (nextmax - prevmax) * 3 / 4
+        avgmax2 = prevmax + (nextmax - prevmax) * 1 / 4
+        maxv = max(max(avgmax1, avgmax2), maxv)
+    if valy - valn > 0 and not valn > 0:
+        plt.text(ul - 0.5, maxv + 5, str(valy), color="#2e85ff")
+    if not valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
+    if valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 23, str(valy - valn), color="#2e85ff")
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_number_dot.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.scatter(sorted_lens_keys, sorted_lens_vals, color="#2e85ff", label="SA")
+plt.scatter(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a", label="NSA")
+minik = min(min(list(lens.keys())), min(list(no_lens.keys())))
+maxik = max(max(list(lens.keys())), max(list(no_lens.keys())))
+print(minik, maxik)
+maxv_arr = []
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = max(valy, valn)
+    maxv_arr.append(maxv)
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = maxv_arr[ul - minik]
+    if ul - minik > 0 and ul - minik < len(maxv_arr) - 1:
+        prevmax = maxv_arr[ul - minik - 1]
+        nextmax = maxv_arr[ul - minik + 1]
+        avgmax1 = prevmax + (nextmax - prevmax) * 3 / 4
+        avgmax2 = prevmax + (nextmax - prevmax) * 1 / 4
+        maxv = max(max(avgmax1, avgmax2), maxv)
+    if valy - valn > 0 and not valn > 0:
+        plt.text(ul - 0.5, maxv + 5, str(valy), color="#2e85ff")
+    if not valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
+    if valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 23, str(valy - valn), color="#2e85ff")
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_number_dot_no_bar.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.bar(lens.keys(), lens.values(), color="#96c1ff", label="SA")
+plt.bar(no_lens.keys(), no_lens.values(), color="#ff8884", label="NSA")
+plt.scatter(sorted_lens_keys, sorted_lens_vals, color="#2e85ff")
+plt.scatter(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_dot.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.scatter(sorted_lens_keys, sorted_lens_vals, color="#2e85ff", label="SA")
+plt.scatter(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a", label="NSA")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_dot_no_bar.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.bar(lens.keys(), lens.values(), color="#96c1ff", label="SA")
+plt.bar(no_lens.keys(), no_lens.values(), color="#ff8884", label="NSA")
+plt.scatter(sorted_lens_keys, sorted_lens_vals, color="#2e85ff")
+plt.scatter(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a")
+plt.plot(sorted_lens_keys, sorted_lens_vals, color="#2e85ff")
+plt.plot(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a")
+minik = min(min(list(lens.keys())), min(list(no_lens.keys())))
+maxik = max(max(list(lens.keys())), max(list(no_lens.keys())))
+print(minik, maxik)
+maxv_arr = []
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = max(valy, valn)
+    maxv_arr.append(maxv)
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = maxv_arr[ul - minik]
+    if ul - minik > 0 and ul - minik < len(maxv_arr) - 1:
+        prevmax = maxv_arr[ul - minik - 1]
+        nextmax = maxv_arr[ul - minik + 1]
+        avgmax1 = prevmax + (nextmax - prevmax) * 3 / 4
+        avgmax2 = prevmax + (nextmax - prevmax) * 1 / 4
+        maxv = max(max(avgmax1, avgmax2), maxv)
+    if valy - valn > 0 and not valn > 0:
+        plt.text(ul - 0.5, maxv + 5, str(valy), color="#2e85ff")
+    if not valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
+    if valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 23, str(valy - valn), color="#2e85ff")
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_number_dot_line.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.scatter(sorted_lens_keys, sorted_lens_vals, color="#2e85ff", label="SA")
+plt.scatter(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a", label="NSA")
+plt.plot(sorted_lens_keys, sorted_lens_vals, color="#2e85ff")
+plt.plot(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a")
+minik = min(min(list(lens.keys())), min(list(no_lens.keys())))
+maxik = max(max(list(lens.keys())), max(list(no_lens.keys())))
+print(minik, maxik)
+maxv_arr = []
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = max(valy, valn)
+    maxv_arr.append(maxv)
+for ul in range(minik, maxik + 1):
+    valy = -1
+    valn = -1
+    if ul in lens:
+        valy = lens[ul]
+    if ul in no_lens:
+        valn = no_lens[ul]
+    maxv = maxv_arr[ul - minik]
+    if ul - minik > 0 and ul - minik < len(maxv_arr) - 1:
+        prevmax = maxv_arr[ul - minik - 1]
+        nextmax = maxv_arr[ul - minik + 1]
+        avgmax1 = prevmax + (nextmax - prevmax) * 3 / 4
+        avgmax2 = prevmax + (nextmax - prevmax) * 1 / 4
+        maxv = max(max(avgmax1, avgmax2), maxv)
+    if valy - valn > 0 and not valn > 0:
+        plt.text(ul - 0.5, maxv + 5, str(valy), color="#2e85ff")
+    if not valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
+    if valy - valn > 0 and valn > 0:
+        plt.text(ul - 0.5, maxv + 23, str(valy - valn), color="#2e85ff")
+        plt.text(ul - 0.5, maxv + 5, str(valn), color="#ff120a")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_number_dot_line_no_bar.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.bar(lens.keys(), lens.values(), color="#96c1ff", label="SA")
+plt.bar(no_lens.keys(), no_lens.values(), color="#ff8884", label="NSA")
+plt.scatter(sorted_lens_keys, sorted_lens_vals, color="#2e85ff")
+plt.scatter(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a")
+plt.plot(sorted_lens_keys, sorted_lens_vals, color="#2e85ff")
+plt.plot(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_dot_line.png", bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.rcParams.update({"font.size": 18})
+plt.figure(figsize=(10, 5))
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.scatter(sorted_lens_keys, sorted_lens_vals, color="#2e85ff", label="SA")
+plt.scatter(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a", label="NSA")
+plt.plot(sorted_lens_keys, sorted_lens_vals, color="#2e85ff")
+plt.plot(sorted_no_lens_keys, sorted_no_lens_vals, color="#ff120a")
+plt.xticks(ticks=range(1, max(len_list) + 1), labels=range(1, max(len_list) + 1))
+plt.ylim(0, 230)
+plt.xlabel("Length of peptide sequence")
+plt.ylabel("Number of peptides")
+plt.legend()
+plt.savefig(DATA_PATH + "peptide_used_dot_line_no_bar.png", bbox_inches="tight")
 plt.show()
 plt.close()
 

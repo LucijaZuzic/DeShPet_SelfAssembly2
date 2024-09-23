@@ -334,7 +334,7 @@ def hist_predicted_merged(
     plt.rcParams.update({"font.size": 22})
 
 def hist_predicted_merged_numbers_models(
-    model_type_all, test_number_all, test_labels_all, model_predictions_all, labuse, start_space, space_model
+    model_type_all, test_number_all, test_labels_all, model_predictions_all, labuse, start_space, space_model, text_use, scatter_use, line_use, kde_use
 ):
     xt = []
     xl = []
@@ -463,12 +463,21 @@ def hist_predicted_merged_numbers_models(
         pp["SA " + merge_type_test_number(model_type_all[ix_model], test_number_all[ix_model]).replace("Test 0 Weak 1", "").replace("Test 0", "").replace("Model ", "")] = "#2e85ff"
     gp = sns.displot(
         ksp,
-        kde=True,
+        kde=kde_use,
         bins=tmp_bins,
         height = 4, aspect = 20 / 4, palette=pp,
         legend=False,
     )
     for ix_model in range(len(model_type_all)):
+        bin_mids = []
+        bin_hs = []
+        for bin_ix in range(len(total_bins) * ix_model, len(total_bins) * (ix_model + 1) - 1):
+            bin_mids.append(tmp_bins[bin_ix] + 0.05)
+            bin_hs.append(size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model])
+        if line_use:
+            plt.plot(bin_mids, bin_hs, color = "#2e85ff")
+        if scatter_use:
+            plt.scatter(bin_mids, bin_hs, color = "#2e85ff")
         for bin_ix in range(len(total_bins) * ix_model, len(total_bins) * (ix_model + 1) - 1):
             husep = size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model]
             if bin_ix > len(total_bins) * ix_model and bin_ix < len(total_bins) * (ix_model + 1) - 2:
@@ -479,8 +488,8 @@ def hist_predicted_merged_numbers_models(
             ofs = 1 / 80
             if size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model] < 100:
                 ofs = 1 / 60
-            if size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0:
-                plt.text(tmp_bins[bin_ix] + ofs, husep + 20, str(size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model]), color = "#2e85ff")
+            if size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0 and text_use:
+                plt.text(tmp_bins[bin_ix] + ofs, husep + 30, str(size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model]), color = "#2e85ff")
     plt.ylim(0, 750)
     plt.xlim(0, start_space + (space_model + 1) * len(model_type_all) + 0.1)
     plt.xticks(xt, xl)
@@ -503,12 +512,21 @@ def hist_predicted_merged_numbers_models(
         pn["NSA " + merge_type_test_number(model_type_all[ix_model], test_number_all[ix_model]).replace("Test 0 Weak 1", "").replace("Test 0", "").replace("Model ", "")] = "#ff120a"
     gn = sns.displot(
         ksn,
-        kde=True,
+        kde=kde_use,
         bins=tmp_bins,
         height = 4, aspect = 20 / 4, palette=pn,
         legend=False,
     )
     for ix_model in range(len(model_type_all)):
+        bin_mids = []
+        bin_hs = []
+        for bin_ix in range(len(total_bins) * ix_model, len(total_bins) * (ix_model + 1) - 1):
+            bin_mids.append(tmp_bins[bin_ix] + 0.05)
+            bin_hs.append(size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model])
+        if line_use:
+            plt.plot(bin_mids, bin_hs, color = "#ff120a")
+        if scatter_use:
+            plt.scatter(bin_mids, bin_hs, color = "#ff120a")
         for bin_ix in range(len(total_bins) * ix_model, len(total_bins) * (ix_model + 1) - 1):
             husen = size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model]
             if bin_ix > len(total_bins) * ix_model and bin_ix < len(total_bins) * (ix_model + 1) - 2:
@@ -519,8 +537,8 @@ def hist_predicted_merged_numbers_models(
             ofs = 1 / 80
             if size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model] < 100:
                 ofs = 1 / 60
-            if size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0:
-                plt.text(tmp_bins[bin_ix] + ofs, husen + 20, str(size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model]), color = "#ff120a")
+            if size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0 and text_use:
+                plt.text(tmp_bins[bin_ix] + ofs, husen + 30, str(size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model]), color = "#ff120a")
     plt.ylim(0, 750)
     plt.xlim(0, start_space + (space_model + 1) * len(model_type_all) + 0.1)
     plt.xticks(xt, xl)
@@ -542,12 +560,25 @@ def hist_predicted_merged_numbers_models(
         pt[ks] = pn[ks]
     sns.displot(
         kst,
-        kde=True,
+        kde=kde_use,
         bins=tmp_bins,
         height = 4, aspect = 20 / 4, palette=pt,
         legend = False
     )
     for ix_model in range(len(model_type_all)):
+        bin_mids = []
+        bin_hs_p = []
+        bin_hs_n = []
+        for bin_ix in range(len(total_bins) * ix_model, len(total_bins) * (ix_model + 1) - 1):
+            bin_mids.append(tmp_bins[bin_ix] + 0.05)
+            bin_hs_p.append(size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model])
+            bin_hs_n.append(size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model])
+        if line_use:
+            plt.plot(bin_mids, bin_hs_p, color = "#2e85ff")
+            plt.plot(bin_mids, bin_hs_n, color = "#ff120a")
+        if scatter_use:
+            plt.scatter(bin_mids, bin_hs_p, color = "#2e85ff")
+            plt.scatter(bin_mids, bin_hs_n, color = "#ff120a")
         for bin_ix in range(len(total_bins) * ix_model, len(total_bins) * (ix_model + 1) - 1):
             husen = size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model]
             if bin_ix > len(total_bins) * ix_model and bin_ix < len(total_bins) * (ix_model + 1) - 2:
@@ -565,125 +596,14 @@ def hist_predicted_merged_numbers_models(
             ofs = 1 / 80
             if size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model] < 100 and size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model] < 100:
                 ofs = 1 / 60
-            if size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0 and not size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0:
-                plt.text(tmp_bins[bin_ix] + ofs, huse + 20, str(size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model]), color = "#2e85ff")
-            if not size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0 and size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0:
-                plt.text(tmp_bins[bin_ix] + ofs, huse + 20, str(size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model]), color = "#ff120a")
-            if size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0 and size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0:
-                plt.text(tmp_bins[bin_ix] + ofs, huse + 60, str(size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model]), color = "#2e85ff")
-                plt.text(tmp_bins[bin_ix] + ofs, huse + 20, str(size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model]), color = "#ff120a")
-    plt.ylim(0, 750)
-    plt.xlim(0, start_space + (space_model + 1) * len(model_type_all) + 0.1)
-    plt.xticks(xt, xl)
-    plt.xlabel("Predicted self assembly probability")
-    plt.ylabel("Number of peptides")
-    plt.savefig(labuse + "_all.png", bbox_inches="tight")
-    plt.close()
-    plt.rcParams.update({"font.size": 22})
-
-def hist_predicted_merged_models(
-    model_type_all, test_number_all, test_labels_all, model_predictions_all, labuse, start_space, space_model
-):
-    xt = []
-    xl = []
-    for ix_model in range(len(model_type_all)):
-        xt.append(ix_model * (1 + space_model) + space_model + start_space)
-        xt.append(0.5 + ix_model * (1 + space_model) + space_model + start_space)
-        xt.append(1 + ix_model * (1 + space_model) + space_model + start_space)
-        xl.append(str(0.0))
-        xl.append(str(0.5))
-        xl.append(str(1.0))
-    model_predictions_true = []
-    model_predictions_false = []
-    for ix_model in range(len(model_type_all)):
-        test_labels = test_labels_all[ix_model]
-        model_predictions = model_predictions_all[ix_model]
-        plt.rcParams.update({"font.size": 12})
-        # Create a histogram of the predicted probabilities only for the peptides that show self-assembly
-        model_predictions_true.append([])
-        model_predictions_false.append([])
-        for x in range(len(test_labels)):
-            if test_labels[x] == 1.0:
-                model_predictions_true[-1].append(float(model_predictions[x]))
-            else:
-                model_predictions_false[-1].append(float(model_predictions[x]))
-
-    plt.figure()
-    plt.gca().spines['top'].set_visible(False)
-    plt.gca().spines['right'].set_visible(False)
-    # Draw the density plot
-    tmp_bins = []
-    ksp = dict()
-    pp = dict()
-    for ix_model in range(len(model_type_all)):
-        model_predictions_true_tmp = []
-        for tmp_pred in model_predictions_true[ix_model]:
-            model_predictions_true_tmp.append(tmp_pred + ix_model * (1 + space_model) + space_model + start_space)
-        tmp_bins_one = [b + ix_model * (1 + space_model) + space_model + start_space for b in total_bins]
-        for tb in tmp_bins_one:
-            tmp_bins.append(tb)
-        ksp["SA " + merge_type_test_number(model_type_all[ix_model], test_number_all[ix_model]).replace("Test 0 Weak 1", "").replace("Test 0", "").replace("Model ", "")] = model_predictions_true_tmp
-        pp["SA " + merge_type_test_number(model_type_all[ix_model], test_number_all[ix_model]).replace("Test 0 Weak 1", "").replace("Test 0", "").replace("Model ", "")] = "#2e85ff"
-    sns.displot(
-        ksp,
-        kde=True,
-        bins=tmp_bins,
-        height = 4, aspect = 20 / 4, palette=pp,
-        legend=False,
-    )
-    plt.ylim(0, 750)
-    plt.xlim(0, start_space + (space_model + 1) * len(model_type_all) + 0.1)
-    plt.xticks(xt, xl)
-    plt.xlabel("Predicted self assembly probability")
-    plt.ylabel("Number of peptides")
-    plt.savefig(labuse + "_SA.png", bbox_inches="tight")
-    plt.close()
-
-    plt.figure()
-    plt.gca().spines['top'].set_visible(False)
-    plt.gca().spines['right'].set_visible(False)
-    # Create a histogram of the predicted probabilities only for the peptides that don't show self-assembly
-    ksn = dict()
-    pn = dict()
-    for ix_model in range(len(model_type_all)):
-        model_predictions_false_tmp = []
-        for tmp_pred in model_predictions_false[ix_model]:
-            model_predictions_false_tmp.append(tmp_pred + ix_model * (1 + space_model) + space_model + start_space)
-        ksn["NSA " + merge_type_test_number(model_type_all[ix_model], test_number_all[ix_model]).replace("Test 0 Weak 1", "").replace("Test 0", "").replace("Model ", "")] = model_predictions_false_tmp
-        pn["NSA " + merge_type_test_number(model_type_all[ix_model], test_number_all[ix_model]).replace("Test 0 Weak 1", "").replace("Test 0", "").replace("Model ", "")] = "#ff120a"
-    sns.displot(
-        ksn,
-        kde=True,
-        bins=tmp_bins,
-        height = 4, aspect = 20 / 4, palette=pn,
-        legend=False,
-    )
-    plt.ylim(0, 750)
-    plt.xlim(0, start_space + (space_model + 1) * len(model_type_all) + 0.1)
-    plt.xticks(xt, xl)
-    plt.xlabel("Predicted self assembly probability")
-    plt.ylabel("Number of peptides")
-    plt.savefig(labuse + "_NSA.png", bbox_inches="tight")
-    plt.close()
-
-    plt.figure()
-    plt.gca().spines['top'].set_visible(False)
-    plt.gca().spines['right'].set_visible(False)
-    kst = dict()
-    pt = dict()
-    for ks in ksp:
-        kst[ks] = ksp[ks]
-        pt[ks] = pp[ks]
-    for ks in ksn:
-        kst[ks] = ksn[ks]
-        pt[ks] = pn[ks]
-    sns.displot(
-        kst,
-        kde=True,
-        bins=tmp_bins,
-        height = 4, aspect = 20 / 4, palette=pt,
-        legend = False
-    )
+            if text_use:
+                if size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0 and not size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0:
+                    plt.text(tmp_bins[bin_ix] + ofs, huse + 30, str(size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model]), color = "#2e85ff")
+                if not size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0 and size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0:
+                    plt.text(tmp_bins[bin_ix] + ofs, huse + 30, str(size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model]), color = "#ff120a")
+                if size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0 and size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model] > 0:
+                    plt.text(tmp_bins[bin_ix] + ofs, huse + 70, str(size_of_bin_positive_none[ix_model][bin_ix - len(total_bins) * ix_model]), color = "#2e85ff")
+                    plt.text(tmp_bins[bin_ix] + ofs, huse + 30, str(size_of_bin_negative_none[ix_model][bin_ix - len(total_bins) * ix_model]), color = "#ff120a")
     plt.ylim(0, 750)
     plt.xlim(0, start_space + (space_model + 1) * len(model_type_all) + 0.1)
     plt.xticks(xt, xl)
@@ -868,36 +788,39 @@ for some_path in paths:
         list_labels.append(seed_labels)
         list_preds.append(seed_predictions)
 
-hist_predicted_merged_models(
-    list_TSNE_paths,
-    list_TSNE_nums,
-    list_TSNE_labels,
-    list_TSNE_preds,
-    "../seeds/all_seeds/all_models_hist_merged_seeds_TSNE", 1.5, 0.5
-)
+tf = [True, False]
 
-hist_predicted_merged_numbers_models(
-    list_TSNE_paths,
-    list_TSNE_nums,
-    list_TSNE_labels,
-    list_TSNE_preds,
-    "../seeds/all_seeds/all_models_hist_merged_seeds_numbers_TSNE", 1.5, 0.5
-)
+for use_number in tf:
+    for use_scatter in tf:
+        for use_line in tf:
+            for use_kde in tf:
+                name_curr = "../seeds/all_seeds/all_models_hist_merged_seeds"
+                if use_number:
+                    name_curr += "_numbers"
+                if use_scatter:
+                    name_curr += "_dot"
+                if use_line:
+                    name_curr += "_line"
+                if not use_kde:
+                    name_curr += "_no_bar"
 
-hist_predicted_merged_models(
-    list_paths,
-    list_nums,
-    list_labels,
-    list_preds,
-    "../seeds/all_seeds/all_models_hist_merged_seeds_no_TSNE", 0, 0.5
-)
-hist_predicted_merged_numbers_models(
-    list_paths,
-    list_nums,
-    list_labels,
-    list_preds,
-    "../seeds/all_seeds/all_models_hist_merged_seeds_numbers_no_TSNE", 0, 0.5
-)
+                hist_predicted_merged_numbers_models(
+                    list_TSNE_paths,
+                    list_TSNE_nums,
+                    list_TSNE_labels,
+                    list_TSNE_preds,
+                    name_curr + "_TSNE", 1.5, 0.5,
+                    use_number, use_scatter, use_line, use_kde
+                )
+
+                hist_predicted_merged_numbers_models(
+                    list_paths,
+                    list_nums,
+                    list_labels,
+                    list_preds,
+                    name_curr + "_no_TSNE", 0, 0.5,
+                    use_number, use_scatter, use_line, use_kde
+                )
 
 APpreds = []
 SPpreds = []

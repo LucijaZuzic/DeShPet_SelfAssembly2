@@ -74,4 +74,5 @@ for model_name in os.listdir("seeds/seed_305475974"):
         print(file_name)
         plt.subplots_adjust(wspace = 0, hspace = 0)
         plt.savefig(file_name, bbox_inches = "tight")
+        plt.savefig(file_name + ".svg", bbox_inches = "tight")
         plt.close()

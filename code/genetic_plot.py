@@ -258,6 +258,7 @@ for some_path in path_list:
     plt.plot(predictions, mymodel, color="#ff120a")
     plt.scatter(predictions, actual_AP, color="#2e85ff")
     plt.savefig(scatter_name_long(some_path).replace("long", "genetic"), bbox_inches="tight")
+    plt.savefig(scatter_name_long(some_path).replace("long", "genetic").replace(".png", "") + ".svg", bbox_inches="tight")
     plt.close()
 
 for x in lines_dict:

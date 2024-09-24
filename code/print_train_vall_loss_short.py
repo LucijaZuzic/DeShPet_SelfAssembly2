@@ -21,7 +21,23 @@ for model_name in os.listdir("seeds/seed_305475974"):
         num_par *= 3
     for params_num in range(1, num_par + 1):
         #params_num = params_for_model[model_name.replace("_model_data", "").replace("_data", "")]
-        plt.figure(figsize=(11.7, 8.3), dpi = 110)
+        plt.rcParams["svg.fonttype"] = "none"
+        from matplotlib import rc
+        rc('font',**{'family':'Arial'})
+        cm = 1/2.54  # centimeters in inches
+        #plt.rcParams.update({"font.size": 7})
+        SMALL_SIZE = 7
+        MEDIUM_SIZE = 7
+        BIGGER_SIZE = 7
+
+        plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+        plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+        plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+        plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+        plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+        plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+        plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+        plt.figure(figsize=(22*cm, 26.8*cm), dpi = 300)
         for seed_val_ix in range(len(seed_list)):
             seed_val = seed_list[seed_val_ix]
             #print(seed_val)
@@ -67,12 +83,15 @@ for model_name in os.listdir("seeds/seed_305475974"):
                 plt.plot(min_val_loss_arr, c = "blue", label = "Validation loss")
                 plt.text(7, 0.1, "Validation fold " + str(mini_fold_num))
                 if test_num == 1 and seed_val_ix == len(seed_list) - 1:
-                    plt.legend(loc = "lower left", ncol = 2, bbox_to_anchor = (0, -0.5))
+                    plt.legend(loc = "lower left", ncol = 2, bbox_to_anchor = (0, -0.5*cm))
         file_name = "review_short/" + model_name.replace("_model_data", "").replace("_data", "") + "_params_" + str(params_num)
         if not os.path.isdir("review_short/"):
             os.makedirs("review_short/")
         print(file_name)
         plt.subplots_adjust(wspace = 0, hspace = 0)
-        plt.savefig(file_name, bbox_inches = "tight")
+        plt.savefig(file_name + ".png", bbox_inches = "tight")
         plt.savefig(file_name + ".svg", bbox_inches = "tight")
+        plt.savefig(file_name + ".pdf", bbox_inches = "tight")
         plt.close()
+        break
+    break

@@ -74,7 +74,7 @@ for model_name in os.listdir("seeds/seed_305475974"):
                     plt.plot(train_loss_arr, c = color_list_train[fold_num - 1], label = "Training fold " + str(fold_num))
                     plt.plot(val_loss_arr, c = color_list_val[fold_num - 1], label = "Validation fold " + str(fold_num))
                 if test_num == 1 and seed_val_ix == len(seed_list) - 1:
-                    plt.legend(loc = "lower left", ncol = 2, bbox_to_anchor = (0, -0.5*cm))
+                    plt.legend(loc = "lower left", ncol = 5, bbox_to_anchor = (0, -0.6*cm))
         file_name = "review/" + model_name.replace("_model_data", "").replace("_data", "") + "_params_" + str(params_num)
         if not os.path.isdir("review/"):
             os.makedirs("review/")

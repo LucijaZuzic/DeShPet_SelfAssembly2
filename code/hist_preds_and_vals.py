@@ -6,6 +6,8 @@ light_color = {"TN": "#FFF2CC", "FP": "#F8CECC", "FN": "#DAE8FC", "TP": "#D5E8D4
 dark_color = {"TN": "#D6B656", "FP": "#B85450", "FN": "#6C8EBF", "TP": "#82B366"}
 model_order = {"AP": "AP", "SP": "SP", "AP_SP": "AP-SP", "TSNE_SP": "t-SNE SP", "TSNE_AP_SP": "t-SNE AP-SP"}
 
+cm = 1/2.54  # centimeters in inches
+
 def merge_format_long(dirname, type_pred, mini, maxi):
     ix_model = 0
     tp_list = [0 for model in model_order]
@@ -13,7 +15,22 @@ def merge_format_long(dirname, type_pred, mini, maxi):
     tn_list = [0 for model in model_order]
     fp_list = [0 for model in model_order]
     xtick_labels = []
-    fig = plt.figure(figsize = (5, 5))
+    plt.rcParams["svg.fonttype"] = "none"
+    from matplotlib import rc
+    rc('font',**{'family':'Arial'})
+    #plt.rcParams.update({"font.size": 7})
+    SMALL_SIZE = 7
+    MEDIUM_SIZE = 7
+    BIGGER_SIZE = 7
+
+    plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+    plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+    plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+    fig = plt.figure(figsize=(19.19*cm, 27.9*cm), dpi = 300)
     ax = fig.add_subplot(111)
     for model in model_order:
         model_long = model
@@ -64,8 +81,10 @@ def merge_format_long(dirname, type_pred, mini, maxi):
     ax.spines['left'].set_visible(False)
     plt.ylabel("Number of peptides")
     plt.xlabel("Model")
-    plt.legend(loc="lower left", bbox_to_anchor = (0, -0.2), ncol = 4)
+    plt.legend(loc="lower left", bbox_to_anchor = (0, -0.2*cm), ncol = 4)
     plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models" + type_pred + ".png", bbox_inches = "tight")
+    plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models" + type_pred + ".svg", bbox_inches = "tight")
+    plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models" + type_pred + ".pdf", bbox_inches = "tight")
     plt.close()
 
 def merge_format_long_seed(dirname, type_pred, mini, maxi):
@@ -73,7 +92,22 @@ def merge_format_long_seed(dirname, type_pred, mini, maxi):
     tick_ix = 0
     xtick_labels_text = []
     xtick_labels_coord = []
-    fig = plt.figure(figsize = (25, 5))
+    plt.rcParams["svg.fonttype"] = "none"
+    from matplotlib import rc
+    rc('font',**{'family':'Arial'})
+    #plt.rcParams.update({"font.size": 7})
+    SMALL_SIZE = 7
+    MEDIUM_SIZE = 7
+    BIGGER_SIZE = 7
+
+    plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+    plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+    plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+    fig = plt.figure(figsize=(19.19*cm, 27.9*cm), dpi = 300)
     ax = fig.add_subplot(111)
     for model in model_order:
         model_long = model
@@ -137,8 +171,10 @@ def merge_format_long_seed(dirname, type_pred, mini, maxi):
     ax.spines['left'].set_visible(False)
     plt.ylabel("Number of peptides")
     plt.xlabel("Number of seed")
-    plt.legend(loc="lower left", bbox_to_anchor = (0, -0.2), ncol = 4)
+    plt.legend(loc="lower left", bbox_to_anchor = (0, -0.2*cm), ncol = 4)
     plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models_seeds" + type_pred + ".png", bbox_inches = "tight")
+    plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models_seeds" + type_pred + ".svg", bbox_inches = "tight")
+    plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models_seeds" + type_pred + ".pdf", bbox_inches = "tight")
     plt.close()
 
 def merge_format(dirname, type_pred, mini, maxi):
@@ -148,7 +184,22 @@ def merge_format(dirname, type_pred, mini, maxi):
     tn_list = [0 for model in model_order]
     fp_list = [0 for model in model_order]
     xtick_labels = []
-    fig = plt.figure(figsize = (5, 5))
+    plt.rcParams["svg.fonttype"] = "none"
+    from matplotlib import rc
+    rc('font',**{'family':'Arial'})
+    #plt.rcParams.update({"font.size": 7})
+    SMALL_SIZE = 7
+    MEDIUM_SIZE = 7
+    BIGGER_SIZE = 7
+
+    plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+    plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+    plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+    fig = plt.figure(figsize=(19.19*cm, 27.9*cm), dpi = 300)
     ax = fig.add_subplot(111)
     for model in model_order:
         model_long = model
@@ -198,8 +249,10 @@ def merge_format(dirname, type_pred, mini, maxi):
     ax.spines['left'].set_visible(False)
     plt.ylabel("Number of peptides")
     plt.xlabel("Model")
-    plt.legend(loc="lower left", bbox_to_anchor = (0, -0.2), ncol = 4)
+    plt.legend(loc="lower left", bbox_to_anchor = (0, -0.2*cm), ncol = 4)
     plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models" + type_pred + ".png", bbox_inches = "tight")
+    plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models" + type_pred + ".svg", bbox_inches = "tight")
+    plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models" + type_pred + ".pdf", bbox_inches = "tight")
     plt.close()
 
 for type_pred in ["PR", "ROC", "50"]:

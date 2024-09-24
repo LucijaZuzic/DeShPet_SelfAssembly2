@@ -35,6 +35,8 @@ def merge_format_long(dirname, type_pred, mini, maxi):
         results[model_order[model]] = [tn, fp, fn, tp]
     survey(results)
     plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models_new" + type_pred + ".png", bbox_inches = "tight")
+    plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models_new" + type_pred + ".svg", bbox_inches = "tight")
+    plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models_new" + type_pred + ".pdf", bbox_inches = "tight")
     plt.close()
 
 def merge_format_long_seed(dirname, type_pred, mini, maxi):
@@ -67,6 +69,8 @@ def merge_format_long_seed(dirname, type_pred, mini, maxi):
             results[model_order[model] + "\n(seed " + str(seed) + ")"] = [tn, fp, fn, tp]
     survey(results)
     plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models_new_seeds" + type_pred + ".png", bbox_inches = "tight")
+    plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models_new_seeds" + type_pred + ".svg", bbox_inches = "tight")
+    plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models_new_seeds" + type_pred + ".pdf", bbox_inches = "tight")
     plt.close()
 
 def merge_format(dirname, type_pred, mini, maxi):
@@ -98,6 +102,8 @@ def merge_format(dirname, type_pred, mini, maxi):
         results[model_order[model]] = [tn, fp, fn, tp]
     survey(results)
     plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models_new" + type_pred + ".png", bbox_inches = "tight")
+    plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models_new" + type_pred + ".svg", bbox_inches = "tight")
+    plt.savefig(dirname + "/long/preds/" + str(mini) + "_" + str(maxi) + "/" + str(mini) + "_" + str(maxi) + "_all_models_new" + type_pred + ".pdf", bbox_inches = "tight")
     plt.close()
 
 for type_pred in ["PR", "ROC", "50"]:

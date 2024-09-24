@@ -93,5 +93,3 @@ for model_name in os.listdir("seeds/seed_305475974"):
         plt.savefig(file_name + ".svg", bbox_inches = "tight")
         plt.savefig(file_name + ".pdf", bbox_inches = "tight")
         plt.close()
-        break
-    break

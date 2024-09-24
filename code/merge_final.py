@@ -190,6 +190,7 @@ def hist_predicted_merged_numbers(
         merge_type_test_number(model_type, test_number).replace("Test 0 Weak 1", "").replace("Test 0", "")
     )
     plt.savefig(save + "_SA_numbers.png", bbox_inches="tight")
+    plt.savefig(save + "_SA_numbers.svg", bbox_inches="tight")
     plt.close()
 
     # Create a histogram of the predicted probabilities only for the peptides that don't show self-assembly
@@ -223,6 +224,7 @@ def hist_predicted_merged_numbers(
         merge_type_test_number(model_type, test_number).replace("Test 0 Weak 1", "").replace("Test 0", "")
     )
     plt.savefig(save + "_NSA_numbers.png", bbox_inches="tight")
+    plt.savefig(save + "_NSA_numbers.svg", bbox_inches="tight")
     plt.close()
 
     plt.figure()
@@ -257,6 +259,7 @@ def hist_predicted_merged_numbers(
         merge_type_test_number(model_type, test_number).replace("Test 0 Weak 1", "").replace("Test 0", "")
     )
     plt.savefig(save + "_all_numbers.png", bbox_inches="tight")
+    plt.savefig(save + "_all_numbers.svg", bbox_inches="tight")
     plt.close()
     plt.rcParams.update({"font.size": 22})
 
@@ -291,6 +294,7 @@ def hist_predicted_merged(
         merge_type_test_number(model_type, test_number).replace("Test 0 Weak 1", "").replace("Test 0", "")
     )
     plt.savefig(save + "_SA.png", bbox_inches="tight")
+    plt.savefig(save + "_SA.svg", bbox_inches="tight")
     plt.close()
 
     # Create a histogram of the predicted probabilities only for the peptides that don't show self-assembly
@@ -312,6 +316,7 @@ def hist_predicted_merged(
         merge_type_test_number(model_type, test_number).replace("Test 0 Weak 1", "").replace("Test 0", "")
     )
     plt.savefig(save + "_NSA.png", bbox_inches="tight")
+    plt.savefig(save + "_NSA.svg", bbox_inches="tight")
     plt.close()
 
     plt.figure()
@@ -330,6 +335,7 @@ def hist_predicted_merged(
         merge_type_test_number(model_type, test_number).replace("Test 0 Weak 1", "").replace("Test 0", "")
     )
     plt.savefig(save + "_all.png", bbox_inches="tight")
+    plt.savefig(save + "_all.svg", bbox_inches="tight")
     plt.close()
     plt.rcParams.update({"font.size": 22})
 
@@ -496,6 +502,7 @@ def hist_predicted_merged_numbers_models(
     plt.xlabel("Predicted self assembly probability")
     plt.ylabel("Number of peptides")
     plt.savefig(labuse + "_SA.png", bbox_inches="tight")
+    plt.savefig(labuse + "_SA.svg", bbox_inches="tight")
     plt.close()
 
     plt.figure()
@@ -545,6 +552,7 @@ def hist_predicted_merged_numbers_models(
     plt.xlabel("Predicted self assembly probability")
     plt.ylabel("Number of peptides")
     plt.savefig(labuse + "_NSA.png", bbox_inches="tight")
+    plt.savefig(labuse + "_NSA.svg", bbox_inches="tight")
     plt.close()
 
     plt.figure()
@@ -610,6 +618,7 @@ def hist_predicted_merged_numbers_models(
     plt.xlabel("Predicted self assembly probability")
     plt.ylabel("Number of peptides")
     plt.savefig(labuse + "_all.png", bbox_inches="tight")
+    plt.savefig(labuse + "_all.svg", bbox_inches="tight")
     plt.close()
     plt.rcParams.update({"font.size": 22})
 
@@ -658,6 +667,10 @@ def read_ROC(test_labels, model_predictions, name):
     plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=2)
     plt.savefig(
         "../seeds/all_seeds/" + name + "_ROC.png",
+        bbox_inches="tight",
+    )
+    plt.savefig(
+        "../seeds/all_seeds/" + name + "_ROC.svg",
         bbox_inches="tight",
     )
     plt.close()
@@ -714,6 +727,10 @@ def read_PR(test_labels, model_predictions, name):
     plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=2)
     plt.savefig(
         "../seeds/all_seeds/" + name + "_PR.png",
+        bbox_inches="tight",
+    )
+    plt.savefig(
+        "../seeds/all_seeds/" + name + "_PR.svg",
         bbox_inches="tight",
     )
     plt.close()

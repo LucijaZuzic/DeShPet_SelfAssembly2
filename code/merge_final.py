@@ -712,6 +712,7 @@ def read_ROC(test_labels, model_predictions, name):
     plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
     plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
     plt.figure(figsize=(9*cm, 18.5*cm), dpi = 300)
+    plt.title(name + " model" + "\nReceiver Operating Characteristic (ROC) curve")
     fig = plt.gcf()
     ax = fig.gca()
     ax.set_xlim((0, 1))

@@ -25,6 +25,7 @@ from sklearn.metrics import (
 from custom_plots import my_accuracy_calculate, weird_division, convert_to_binary
 
 from matplotlib import rc
+plt.rcParams["svg.fonttype"] = "none"
 rc('font',**{'family':'Arial'})
 cm = 1/2.54  # centimeters in inches
 plt.rcParams.update({"font.size": 22})
@@ -282,6 +283,7 @@ for some_path in path_list:
     read_PR(test_labels_NEW, predictions_NEW, lines_dict, PRthr[some_path], ROCthr[some_path])
 
     mymodel = list(map(myfunc, predictions_NEW))
+    plt.rcParams["svg.fonttype"] = "none"
     rc('font',**{'family':'Arial'})
     #plt.rcParams.update({"font.size": 5})
     SMALL_SIZE = 5

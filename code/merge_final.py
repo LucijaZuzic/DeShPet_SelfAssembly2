@@ -697,7 +697,21 @@ def read_ROC(test_labels, model_predictions, name):
     # Locate the index of the largest g-mean
     ix = np.argmax(gmeans)
 
-    plt.figure()
+    plt.rcParams["svg.fonttype"] = "none"
+    rc('font',**{'family':'Arial'})
+    #plt.rcParams.update({"font.size": 5})
+    SMALL_SIZE = 5
+    MEDIUM_SIZE = 5
+    BIGGER_SIZE = 5
+
+    plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+    plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+    plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+    plt.figure(figsize=(9*cm, 18.5*cm), dpi = 300)
     fig = plt.gcf()
     ax = fig.gca()
     ax.set_xlim((0, 1))
@@ -753,8 +767,22 @@ def read_PR(test_labels, model_predictions, name):
 
     # Locate the index of the largest F1 score
     ix = np.argmax(fscore)
+    
+    plt.rcParams["svg.fonttype"] = "none"
+    rc('font',**{'family':'Arial'})
+    #plt.rcParams.update({"font.size": 5})
+    SMALL_SIZE = 5
+    MEDIUM_SIZE = 5
+    BIGGER_SIZE = 5
 
-    plt.figure()
+    plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+    plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+    plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+    plt.figure(figsize=(9*cm, 18.5*cm), dpi = 300)
     plt.title(name + " model" + "\nPrecision - Recall (PR) curve")
     fig = plt.gcf()
     ax = fig.gca()

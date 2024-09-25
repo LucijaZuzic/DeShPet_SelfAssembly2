@@ -24,6 +24,9 @@ from sklearn.metrics import (
 )
 from custom_plots import my_accuracy_calculate, weird_division, convert_to_binary
 
+from matplotlib import rc
+rc('font',**{'family':'Arial'})
+cm = 1/2.54  # centimeters in inches
 plt.rcParams.update({"font.size": 22})
 PRthr = {
     AP_DATA_PATH: 0.2581173828,
@@ -254,11 +257,25 @@ for some_path in path_list:
     read_PR(test_labels, predictions, lines_dict, PRthr[some_path], ROCthr[some_path])
 
     mymodel = list(map(myfunc, predictions))
+    rc('font',**{'family':'Arial'})
+    #plt.rcParams.update({"font.size": 5})
+    SMALL_SIZE = 5
+    MEDIUM_SIZE = 5
+    BIGGER_SIZE = 5
+
+    plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+    plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+    plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+    plt.figure(figsize=(4.1*cm, 2.6*cm), dpi = 300)
     plt.title(PATH_TO_NAME[some_path] + " model")
     plt.xlabel("Predicted self assembly probability")
     plt.ylabel("AP")
-    plt.plot(predictions, mymodel, color="#ff120a")
-    plt.scatter(predictions, actual_AP, color="#2e85ff")
+    plt.plot(predictions, mymodel, linewidth = 1, color="#ff120a")
+    plt.scatter(predictions, actual_AP, s = 2, color="#2e85ff")
     plt.savefig(scatter_name_long(some_path), bbox_inches="tight")
     plt.savefig(scatter_name_long(some_path).replace(".png", "") + ".svg", bbox_inches="tight")
     plt.savefig(scatter_name_long(some_path).replace(".png", "") + ".pdf", bbox_inches="tight")

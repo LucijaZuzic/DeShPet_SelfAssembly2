@@ -699,10 +699,10 @@ def read_ROC(test_labels, model_predictions, name):
 
     plt.rcParams["svg.fonttype"] = "none"
     rc('font',**{'family':'Arial'})
-    #plt.rcParams.update({"font.size": 5})
-    SMALL_SIZE = 5
-    MEDIUM_SIZE = 5
-    BIGGER_SIZE = 5
+    #plt.rcParams.update({"font.size": 7})
+    SMALL_SIZE = 7
+    MEDIUM_SIZE = 7
+    BIGGER_SIZE = 7
 
     plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
     plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
@@ -711,10 +711,11 @@ def read_ROC(test_labels, model_predictions, name):
     plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
     plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
     plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
-    plt.figure(figsize=(9*cm, 18.5*cm), dpi = 300)
+    plt.figure(figsize=(9*cm, 9*cm), dpi = 300)
     plt.title(name + " model" + "\nReceiver Operating Characteristic (ROC) curve")
     fig = plt.gcf()
     ax = fig.gca()
+    ax.axes.set_aspect('equal')
     ax.set_xlim((0, 1))
     ax.set_ylim((0, 1))
 
@@ -737,7 +738,7 @@ def read_ROC(test_labels, model_predictions, name):
     plt.xlabel("FPR")
     plt.ylabel("TPR")
 
-    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2*cm), ncol=2)
+    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.3*cm), ncol=2)
     plt.savefig(
         "../seeds/all_seeds/" + name + "_ROC.png",
         bbox_inches="tight",
@@ -771,10 +772,10 @@ def read_PR(test_labels, model_predictions, name):
 
     plt.rcParams["svg.fonttype"] = "none"
     rc('font',**{'family':'Arial'})
-    #plt.rcParams.update({"font.size": 5})
-    SMALL_SIZE = 5
-    MEDIUM_SIZE = 5
-    BIGGER_SIZE = 5
+    #plt.rcParams.update({"font.size": 7})
+    SMALL_SIZE = 7
+    MEDIUM_SIZE = 7
+    BIGGER_SIZE = 7
 
     plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
     plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
@@ -783,10 +784,11 @@ def read_PR(test_labels, model_predictions, name):
     plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
     plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
     plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
-    plt.figure(figsize=(9*cm, 18.5*cm), dpi = 300)
+    plt.figure(figsize=(9*cm, 9*cm), dpi = 300)
     plt.title(name + " model" + "\nPrecision - Recall (PR) curve")
     fig = plt.gcf()
     ax = fig.gca()
+    ax.axes.set_aspect('equal')
     ax.set_xlim((0, 1))
     ax.set_ylim((0, 1))
 
@@ -815,7 +817,7 @@ def read_PR(test_labels, model_predictions, name):
     plt.xlabel("Recall")
     plt.ylabel("Precision")
 
-    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2*cm), ncol=2)
+    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.3*cm), ncol=2)
     plt.savefig(
         "../seeds/all_seeds/" + name + "_PR.png",
         bbox_inches="tight",

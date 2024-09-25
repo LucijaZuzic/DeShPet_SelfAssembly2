@@ -736,7 +736,7 @@ def read_ROC(test_labels, model_predictions, name):
     plt.xlabel("FPR")
     plt.ylabel("TPR")
 
-    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=2)
+    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2*cm), ncol=2)
     plt.savefig(
         "../seeds/all_seeds/" + name + "_ROC.png",
         bbox_inches="tight",
@@ -767,7 +767,7 @@ def read_PR(test_labels, model_predictions, name):
 
     # Locate the index of the largest F1 score
     ix = np.argmax(fscore)
-    
+
     plt.rcParams["svg.fonttype"] = "none"
     rc('font',**{'family':'Arial'})
     #plt.rcParams.update({"font.size": 5})
@@ -814,7 +814,7 @@ def read_PR(test_labels, model_predictions, name):
     plt.xlabel("Recall")
     plt.ylabel("Precision")
 
-    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=2)
+    plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2*cm), ncol=2)
     plt.savefig(
         "../seeds/all_seeds/" + name + "_PR.png",
         bbox_inches="tight",

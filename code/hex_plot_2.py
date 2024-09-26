@@ -299,7 +299,7 @@ for some_path in path_list:
     plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
     plt.figure(figsize=(4.1*cm, 2.6*cm), dpi = 300)
     plt.title(PATH_TO_NAME[some_path] + " model")
-    plt.xlabel("Predicted self assembly probability")
+    plt.xlabel("Predicted self-assembly probability")
     plt.ylabel("AP")
     plt.plot(predictions_NEW, mymodel, linewidth = 1, color="#ff120a")
     plt.scatter(predictions_NEW, actual_AP_NEW, s = 2, color="#2e85ff")
@@ -307,6 +307,9 @@ for some_path in path_list:
     plt.savefig(scatter_name(some_path).replace(".png", "") + "_fixed.svg", bbox_inches="tight")
     plt.savefig(scatter_name(some_path).replace(".png", "") + "_fixed.pdf", bbox_inches="tight")
     plt.close()
+    new_dictio = {"Predicted self-assembly probability": predictions_NEW, "AP": actual_AP_NEW, "Regression": mymodel}
+    df_new = pd.DataFrame(new_dictio)
+    df_new.to_csv(scatter_name(some_path).replace(".png", "") + "_fixed.csv", index = False)
 
 for x in lines_dict:
     print(x)

@@ -189,7 +189,7 @@ def hist_predicted_merged_numbers(
         if size_of_bin_positive_none[bin_ix] > 0:
             plt.text(total_bins[bin_ix] + ofs, husep + 40, str(size_of_bin_positive_none[bin_ix]), color = "#2e85ff")
     plt.ylim(0, 750)
-    plt.xlabel("Self assembly probability")
+    plt.xlabel("Self-assembly probability")
     plt.ylabel("Number of peptides")
     plt.title(
         merge_type_test_number(model_type, test_number).replace("Test 0 Weak 1", "").replace("Test 0", "")
@@ -224,7 +224,7 @@ def hist_predicted_merged_numbers(
         if size_of_bin_negative_none[bin_ix] > 0:
             plt.text(total_bins[bin_ix] + ofs, husen + 40, str(size_of_bin_negative_none[bin_ix]), color = "#ff120a")
     plt.ylim(0, 750)
-    plt.xlabel("Self assembly probability")
+    plt.xlabel("Self-assembly probability")
     plt.ylabel("Number of peptides")
     plt.title(
         merge_type_test_number(model_type, test_number).replace("Test 0 Weak 1", "").replace("Test 0", "")
@@ -260,7 +260,7 @@ def hist_predicted_merged_numbers(
             plt.text(total_bins[bin_ix] + ofs, huse + 80, str(size_of_bin_positive_none[bin_ix]), color = "#2e85ff")
             plt.text(total_bins[bin_ix] + ofs, huse + 40, str(size_of_bin_negative_none[bin_ix]), color = "#ff120a")
     plt.ylim(0, 750)
-    plt.xlabel("Self assembly probability")
+    plt.xlabel("Self-assembly probability")
     plt.ylabel("Number of peptides")
     plt.title(
         merge_type_test_number(model_type, test_number).replace("Test 0 Weak 1", "").replace("Test 0", "")
@@ -296,7 +296,7 @@ def hist_predicted_merged(
         legend=False,
     )
     plt.ylim(0, 750)
-    plt.xlabel("Self assembly probability")
+    plt.xlabel("Self-assembly probability")
     plt.ylabel("Number of peptides")
     plt.title(
         merge_type_test_number(model_type, test_number).replace("Test 0 Weak 1", "").replace("Test 0", "")
@@ -319,7 +319,7 @@ def hist_predicted_merged(
         legend=False,
     )
     plt.ylim(0, 750)
-    plt.xlabel("Self assembly probability")
+    plt.xlabel("Self-assembly probability")
     plt.ylabel("Number of peptides")
     plt.title(
         merge_type_test_number(model_type, test_number).replace("Test 0 Weak 1", "").replace("Test 0", "")
@@ -339,7 +339,7 @@ def hist_predicted_merged(
         palette={"SA": "#2e85ff", "NSA": "#ff120a"},
     )
     plt.ylim(0, 750)
-    plt.xlabel("Self assembly probability")
+    plt.xlabel("Self-assembly probability")
     plt.ylabel("Number of peptides")
     plt.title(
         merge_type_test_number(model_type, test_number).replace("Test 0 Weak 1", "").replace("Test 0", "")
@@ -524,7 +524,7 @@ def hist_predicted_merged_numbers_models(
     plt.ylim(0, 750)
     plt.xlim(0, start_space + (space_model + 1) * len(model_type_all) + 0.1)
     plt.xticks(xt, xl)
-    plt.xlabel("Predicted self assembly probability")
+    plt.xlabel("Predicted self-assembly probability")
     plt.ylabel("Number of peptides")
     plt.savefig(labuse + "_SA.png", bbox_inches="tight")
     plt.savefig(labuse + "_SA.svg", bbox_inches="tight")
@@ -590,7 +590,7 @@ def hist_predicted_merged_numbers_models(
     plt.ylim(0, 750)
     plt.xlim(0, start_space + (space_model + 1) * len(model_type_all) + 0.1)
     plt.xticks(xt, xl)
-    plt.xlabel("Predicted self assembly probability")
+    plt.xlabel("Predicted self-assembly probability")
     plt.ylabel("Number of peptides")
     plt.savefig(labuse + "_NSA.png", bbox_inches="tight")
     plt.savefig(labuse + "_NSA.svg", bbox_inches="tight")
@@ -672,7 +672,7 @@ def hist_predicted_merged_numbers_models(
     plt.ylim(0, 750)
     plt.xlim(0, start_space + (space_model + 1) * len(model_type_all) + 0.1)
     plt.xticks(xt, xl)
-    plt.xlabel("Predicted self assembly probability")
+    plt.xlabel("Predicted self-assembly probability")
     plt.ylabel("Number of peptides")
     plt.savefig(labuse + "_all.png", bbox_inches="tight")
     plt.savefig(labuse + "_all.svg", bbox_inches="tight")
@@ -988,22 +988,22 @@ for i in range(len(all_preds)):
         SPAPN.append(all_preds[i])
 
 d = {
-    "Predicted self assembly probability": all_preds,
-    "Self assembly status": all_labels_new,
+    "Predicted self-assembly probability": all_preds,
+    "Self-assembly status": all_labels_new,
     "Model": all_model_types,
 }
 df = pd.DataFrame(data=d)
 plt.figure()
 g = sns.displot(
     data=df,
-    x="Predicted self assembly probability",
+    x="Predicted self-assembly probability",
     kde=True,
     bins=total_bins,
-    hue="Self assembly status",
+    hue="Self-assembly status",
     col="Model",
     palette={"NSA": "#ff120a", "SA": "#2e85ff"},
 )
-g.set_axis_labels("Self assembly probability", "Number of peptides")
+g.set_axis_labels("Self-assembly probability", "Number of peptides")
 g.set_titles("{col_name} model")
 plt.close()
 

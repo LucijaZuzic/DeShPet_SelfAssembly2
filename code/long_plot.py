@@ -274,7 +274,7 @@ for some_path in path_list:
     plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
     plt.figure(figsize=(4.1*cm, 2.6*cm), dpi = 300)
     plt.title(PATH_TO_NAME[some_path] + " model")
-    plt.xlabel("Predicted self assembly probability")
+    plt.xlabel("Predicted self-assembly probability")
     plt.ylabel("AP")
     plt.plot(predictions, mymodel, linewidth = 1, color="#ff120a")
     plt.scatter(predictions, actual_AP, s = 2, color="#2e85ff")
@@ -282,6 +282,9 @@ for some_path in path_list:
     plt.savefig(scatter_name_long(some_path).replace(".png", "") + ".svg", bbox_inches="tight")
     plt.savefig(scatter_name_long(some_path).replace(".png", "") + ".pdf", bbox_inches="tight")
     plt.close()
+    new_dictio = {"Predicted self-assembly probability": predictions, "AP": actual_AP, "Regression": mymodel}
+    df_new = pd.DataFrame(new_dictio)
+    df_new.to_csv(scatter_name_long(some_path).replace(".png", "") + ".csv", index = False)
 
 for x in lines_dict:
     if "thr" in x and ")" not in x:

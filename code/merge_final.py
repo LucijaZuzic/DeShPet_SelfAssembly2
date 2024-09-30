@@ -283,6 +283,9 @@ def hist_predicted_merged(
             model_predictions_true.append(float(model_predictions[x]))
         else:
             model_predictions_false.append(float(model_predictions[x]))
+    new_dictio = {"Model predictions": model_predictions, "Test labels": test_labels}
+    df_new = pd.DataFrame(new_dictio)
+    df_new.to_csv(save + "_all.csv", index = False)
 
     plt.figure()
     plt.gca().spines['top'].set_visible(False)

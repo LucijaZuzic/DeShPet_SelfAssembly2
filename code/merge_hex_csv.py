@@ -33,28 +33,6 @@ path_list = [
     TSNE_SP_DATA_PATH,
     TSNE_AP_SP_DATA_PATH,
 ]
-new_dict = dict()
-sheet_name_and_data = dict()
-for some_path in path_list:
-    hex_file = scatter_name(some_path).replace(".png", "") + "_fixed.csv"
-    df = pd.read_csv(hex_file)
-    new_dict["AP"] = df["AP"]
-    new_dict["Predicted self-assembly probability " + PATH_TO_NAME[some_path]] = df["Predicted self-assembly probability"]
-    new_dict["Regression " + PATH_TO_NAME[some_path]] = df["Regression"]
-    new_df = pd.DataFrame()
-    new_df["AP"] = df["AP"]
-    new_df["Predicted self-assembly probability " + PATH_TO_NAME[some_path]] = df["Predicted self-assembly probability"]
-    new_df["Regression " + PATH_TO_NAME[some_path]] = df["Regression"]
-    sheet_name_and_data[PATH_TO_NAME[some_path]] = new_df
-for some_path in path_list:
-    mode_determine = "a" 
-    if some_path == path_list[0]:
-        mode_determine = "w"
-    writer = pd.ExcelWriter("my_merged_hex.xlsx", engine = 'openpyxl', mode = mode_determine)
-    sheet_name_and_data[PATH_TO_NAME[some_path]].to_excel(writer, sheet_name = "4c - " + PATH_TO_NAME[some_path], index = False)
-    writer.close()
-df_new_alt_6000 = pd.DataFrame(new_dict)
-df_new_alt_6000.to_csv("my_merged_hex_alt.csv", index = False)
 
 seed_list = [305475974, 369953070, 879273778, 965681145, 992391276]
 PRthr = {
@@ -94,80 +72,6 @@ new = [
     "DPDPD",
 ]
 
-minlen = 3
-maxlen = 24
-dict_model = dict()
-for model_name in os.listdir("review_20/long/preds/" + str(minlen) + "_" + str(maxlen) + "/"):
-    if not os.path.isdir("review_20/long/preds/" + str(minlen) + "_" + str(maxlen) + "/" + model_name + "/"):
-        continue
-    long_title = model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")
-    dict_model[long_title] = dict()
-    for seed_val in seed_list:
-        dict_model[long_title][seed_val] = dict()
-        for test_num in range(1, 6):
-            dict_model[long_title][seed_val][test_num] = dict()
-            dir_pred = "../seeds/seed_" + str(seed_val) + "/" + model_name + "/" + model_name.replace("model_data", "test_" + str(test_num)).replace("data", "test_" + str(test_num))
-            csv_seed_test_fold = pd.read_csv("../seeds/seed_" + str(seed_val) + "/similarity/test_fold_" + str(test_num) + ".csv", index_col = False)
-            seqs = list(csv_seed_test_fold["sequence"])
-            labs = list(csv_seed_test_fold["label"])
-            pred_file = open(dir_pred + "/" + model_name.replace("model_data", "test_" + str(test_num)).replace("data", "test_" + str(test_num)) + "_predictions.txt", "r")
-            pred_arrs = pred_file.readlines()
-            pred_arr1 = eval(pred_arrs[0])
-            pred_arr2 = eval(pred_arrs[1])
-            for seq_ix in range(len(seqs)):
-                if len(seqs[seq_ix]) > maxlen or len(seqs[seq_ix]) < minlen:
-                    continue
-                if seqs[seq_ix] not in new:
-                    continue
-                if seqs[seq_ix] not in dict_model[long_title][seed_val][test_num]:
-                    dict_model[long_title][seed_val][test_num][seqs[seq_ix]] = {"label": seqs[seq_ix]}
-                dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["preds " + long_title] = pred_arr1[seq_ix]
-                dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["label " + long_title] = pred_arr2[seq_ix]
-
-new_files_dict = {"seed": [], "test": [], "sequence": [], "label": []}
-for long_title in dict_model:
-    new_files_dict["PR thr " + long_title] = []
-    new_files_dict["ROC thr " + long_title] = []
-    new_files_dict[long_title] = []
-for seed_val in seed_list:
-    for test_num in range(1, 6):
-        seqs_sth = []
-        for long_title in dict_model:
-            seqs_sth = list(dict_model[long_title][seed_val][test_num].keys())
-            break
-        for sequse in seqs_sth:
-            new_files_dict["seed"].append(seed_val)
-            new_files_dict["test"].append(test_num)
-            new_files_dict["sequence"].append(sequse)
-            new_files_dict["label"].append(dict_model[long_title][seed_val][test_num][sequse]["label"])
-            thr_title = long_title.replace(" ", "_")
-            for long_title in dict_model:
-                new_files_dict["PR thr " + long_title].append(PRthr[thr_title])
-                new_files_dict["ROC thr " + long_title].append(ROCthr[thr_title])
-                new_files_dict[long_title].append(dict_model[long_title][seed_val][test_num][sequse]["preds " + long_title])
-df_new_20 = pd.DataFrame(new_files_dict)
-df_new_20.to_csv("my_merged_hex_alt_20.csv", index = False)
-
-for long_title in dict_model:
-    new_files_dict_model = {"seed": [], "test": [], "sequence": [], "label": []}
-    new_files_dict_model["PR thr " + long_title] = []
-    new_files_dict_model["ROC thr " + long_title] = []
-    new_files_dict_model[long_title] = []
-    for seed_val in seed_list:
-        for test_num in range(1, 6):
-            seqs_sth = list(dict_model[long_title][seed_val][test_num].keys())
-            for sequse in seqs_sth:
-                new_files_dict_model["seed"].append(seed_val)
-                new_files_dict_model["test"].append(test_num)
-                new_files_dict_model["sequence"].append(sequse)
-                new_files_dict_model["label"].append(dict_model[long_title][seed_val][test_num][sequse]["label"])
-                thr_title = long_title.replace(" ", "_")
-                new_files_dict_model["PR thr " + long_title].append(PRthr[thr_title])
-                new_files_dict_model["ROC thr " + long_title].append(ROCthr[thr_title])
-                new_files_dict_model[long_title].append(dict_model[long_title][seed_val][test_num][sequse]["preds " + long_title])
-    df_new = pd.DataFrame(new_files_dict_model)
-    df_new.to_csv("my_merged_hex_alt_20_" + long_title + ".csv", index = False)
-
 df = pd.read_csv("../data/41557_2022_1055_MOESM3_ESM_Figure3a_5mer_score_shortMD.csv")
 
 dict_hex = {}
@@ -198,6 +102,162 @@ for i in df["AP"]:
         test_labels.append(1)
 seqs_new = list(dict_hex.keys())
 
+ap_to_seq = dict()
+seq_to_ap = dict()
+for seq_with_ap_ix in range(len(df["pep"])):
+    ll = 0
+    if df["AP"][seq_with_ap_ix] < threshold:
+        ll = 0
+    else:
+        ll = 1
+
+    if df["AP"][seq_with_ap_ix] not in ap_to_seq:
+        ap_to_seq[df["AP"][seq_with_ap_ix]] = (df["pep"][seq_with_ap_ix], ll) 
+    else:
+        print("duplicate", df["AP"][seq_with_ap_ix])
+
+    if df["pep"][seq_with_ap_ix] not in seq_to_ap:
+        seq_to_ap[df["pep"][seq_with_ap_ix]] = (df["AP"][seq_with_ap_ix], ll) 
+    else:
+        print("duplicate second", df["pep"][seq_with_ap_ix])
+
+new_dict = dict()
+sheet_name_and_data = dict()
+for some_path in path_list:
+    hex_file = scatter_name(some_path).replace(".png", "") + "_fixed.csv"
+    df = pd.read_csv(hex_file)
+    labs = []
+    seqs_u = []
+    for ap in df["AP"]:
+        labs.append(ap_to_seq[ap][1])
+        seqs_u.append(ap_to_seq[ap][0])
+    new_dict["Sequence"] = seqs_u
+    new_dict["Label"] = labs
+    new_dict["Actual AP"] = df["AP"]
+    new_dict["Predicted self-assembly probability " + PATH_TO_NAME[some_path]] = df["Predicted self-assembly probability"]
+    new_dict["Regression " + PATH_TO_NAME[some_path]] = df["Regression"]
+    new_df = pd.DataFrame()
+    new_dict["Sequence"] = seqs_u
+    new_dict["Label"] = labs
+    new_df["Actual AP"] = df["AP"]
+    new_df["Predicted self-assembly probability " + PATH_TO_NAME[some_path]] = df["Predicted self-assembly probability"]
+    new_df["Regression " + PATH_TO_NAME[some_path]] = df["Regression"]
+    sheet_name_and_data[PATH_TO_NAME[some_path]] = new_df
+for some_path in path_list:
+    mode_determine = "a" 
+    if some_path == path_list[0]:
+        mode_determine = "w"
+    writer = pd.ExcelWriter("my_merged_hex.xlsx", engine = 'openpyxl', mode = mode_determine)
+    sheet_name_and_data[PATH_TO_NAME[some_path]].to_excel(writer, sheet_name = "4c - " + PATH_TO_NAME[some_path], index = False)
+    writer.close()
+df_new_alt_6000 = pd.DataFrame(new_dict)
+df_new_alt_6000.to_csv("my_merged_hex_alt.csv", index = False)
+
+minlen = 3
+maxlen = 24
+dict_model = dict()
+for model_name in os.listdir("review_20/long/preds/" + str(minlen) + "_" + str(maxlen) + "/"):
+    if not os.path.isdir("review_20/long/preds/" + str(minlen) + "_" + str(maxlen) + "/" + model_name + "/"):
+        continue
+    long_title = model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")
+    dict_model[long_title] = dict()
+    for seed_val in seed_list:
+        dict_model[long_title][seed_val] = dict()
+        for test_num in range(1, 6):
+            dict_model[long_title][seed_val][test_num] = dict()
+            dir_pred = "../seeds/seed_" + str(seed_val) + "/" + model_name + "/" + model_name.replace("model_data", "test_" + str(test_num)).replace("data", "test_" + str(test_num))
+            csv_seed_test_fold = pd.read_csv("../seeds/seed_" + str(seed_val) + "/similarity/test_fold_" + str(test_num) + ".csv", index_col = False)
+            seqs = list(csv_seed_test_fold["sequence"])
+            labs = list(csv_seed_test_fold["label"])
+            pred_file = open(dir_pred + "/" + model_name.replace("model_data", "test_" + str(test_num)).replace("data", "test_" + str(test_num)) + "_predictions.txt", "r")
+            pred_arrs = pred_file.readlines()
+            pred_arr1 = eval(pred_arrs[0])
+            pred_arr2 = eval(pred_arrs[1])
+            for seq_ix in range(len(seqs)):
+                if len(seqs[seq_ix]) > maxlen or len(seqs[seq_ix]) < minlen:
+                    continue
+                if seqs[seq_ix] not in new:
+                    continue
+                if seqs[seq_ix] not in dict_model[long_title][seed_val][test_num]:
+                    dict_model[long_title][seed_val][test_num][seqs[seq_ix]] = {"label": labs[seq_ix]}
+                dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["Preds " + long_title] = pred_arr1[seq_ix]
+                dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["label " + long_title] = pred_arr2[seq_ix]
+
+new_files_dict = {"Seed": [], "Test": [], "Sequence": [], "Label": []}
+for long_title in dict_model:
+    new_files_dict["PR thr " + long_title] = []
+    new_files_dict["ROC thr " + long_title] = []
+    new_files_dict["Pred " + long_title] = []
+    new_files_dict["PR pred " + long_title] = []
+    new_files_dict["ROC pred " + long_title] = []
+    new_files_dict["0.5 pred " + long_title] = []
+for seed_val in seed_list:
+    for test_num in range(1, 6):
+        seqs_sth = []
+        for long_title in dict_model:
+            seqs_sth = list(dict_model[long_title][seed_val][test_num].keys())
+            break
+        for sequse in seqs_sth:
+            new_files_dict["Seed"].append(seed_val)
+            new_files_dict["Test"].append(test_num)
+            new_files_dict["Sequence"].append(sequse)
+            new_files_dict["Label"].append(dict_model[long_title][seed_val][test_num][sequse]["label"])
+            thr_title = long_title.replace(" ", "_")
+            for long_title in dict_model:
+                new_files_dict["PR thr " + long_title].append(PRthr[thr_title])
+                new_files_dict["ROC thr " + long_title].append(ROCthr[thr_title])
+                new_files_dict["Pred " + long_title].append(dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title])
+                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > PRthr[thr_title]:
+                     new_files_dict["PR pred " + long_title].append(1)
+                else:
+                     new_files_dict["PR pred " + long_title].append(0)
+                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > ROCthr[thr_title]:
+                     new_files_dict["ROC pred " + long_title].append(1)
+                else:
+                     new_files_dict["ROC pred " + long_title].append(0)
+                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > 0.5:
+                     new_files_dict["0.5 pred " + long_title].append(1)
+                else:
+                     new_files_dict["0.5 pred " + long_title].append(0)
+
+df_new_20 = pd.DataFrame(new_files_dict)
+df_new_20.to_csv("my_merged_hex_alt_20.csv", index = False)
+
+for long_title in dict_model:
+    new_files_dict_model = {"Seed": [], "Test": [], "Sequence": [], "Label": []}
+    new_files_dict_model["PR thr " + long_title] = []
+    new_files_dict_model["ROC thr " + long_title] = []
+    new_files_dict_model["Pred " + long_title] = []
+    new_files_dict_model["PR pred " + long_title] = []
+    new_files_dict_model["ROC pred " + long_title] = []
+    new_files_dict_model["0.5 pred " + long_title] = []
+    for seed_val in seed_list:
+        for test_num in range(1, 6):
+            seqs_sth = list(dict_model[long_title][seed_val][test_num].keys())
+            for sequse in seqs_sth:
+                new_files_dict_model["Seed"].append(seed_val)
+                new_files_dict_model["Test"].append(test_num)
+                new_files_dict_model["Sequence"].append(sequse)
+                new_files_dict_model["Label"].append(dict_model[long_title][seed_val][test_num][sequse]["label"])
+                thr_title = long_title.replace(" ", "_")
+                new_files_dict_model["PR thr " + long_title].append(PRthr[thr_title])
+                new_files_dict_model["ROC thr " + long_title].append(ROCthr[thr_title])
+                new_files_dict_model["Pred " + long_title].append(dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title])
+                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > PRthr[thr_title]:
+                     new_files_dict_model["PR pred " + long_title].append(1)
+                else:
+                     new_files_dict_model["PR pred " + long_title].append(0)
+                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > ROCthr[thr_title]:
+                     new_files_dict_model["ROC pred " + long_title].append(1)
+                else:
+                     new_files_dict_model["ROC pred " + long_title].append(0)
+                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > 0.5:
+                     new_files_dict_model["0.5 pred " + long_title].append(1)
+                else:
+                     new_files_dict_model["0.5 pred " + long_title].append(0)
+    df_new = pd.DataFrame(new_files_dict_model)
+    df_new.to_csv("my_merged_hex_alt_20_" + long_title + ".csv", index = False)
+
 new_files_dict = dict()
 minlen = 5
 maxlen = 5
@@ -220,21 +280,25 @@ for model_name in os.listdir("review_6000/long/preds/" + str(minlen) + "_" + str
     thr_vals = [0.5 for v in pred_arr1_filter]
     thr_PR_vals = [PRthr[model_name.replace("_model_data", "").replace("_data", "")] for v in pred_arr1_filter]
     thr_ROC_vals = [ROCthr[model_name.replace("_model_data", "").replace("_data", "")] for v in pred_arr1_filter]
-    df3 = pd.read_csv("review_6000/long/preds/" + str(minlen) + "_" + str(maxlen) + "/" + model_name + "/" + str(minlen) + "_" + str(maxlen) + "_" + model_name + "_PR_preds.csv")
-    new_files_dict["labels"] = df3["labels"]
-    new_files_dict["sequence"] = df3["feature"]
+    new_files_dict["Sequence"] = seqs_filter
+    new_files_dict["Label"] = labs_filter
+    aps = []
+    for pep in seqs_filter:
+        aps.append(seq_to_ap[pep][0])
+    new_files_dict["Actual AP"] = aps
     #new_files_dict["0.5 thr"] = thr_vals
     new_files_dict["PR thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_PR_vals
     new_files_dict["ROC thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_ROC_vals
-    #new_files_dict["preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df3["preds"]
-    new_files_dict["preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
-    new_files_dict_model["labels"] = df3["labels"]
-    new_files_dict_model["sequence"] = df3["feature"]
+    #new_files_dict["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df3["preds"]
+    new_files_dict["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
+    new_files_dict_model["Sequence"] = seqs_filter
+    new_files_dict_model["Label"] = labs_filter
+    new_files_dict_model["Actual AP"] = aps
     #new_files_dict_model["0.5 thr"] = thr_vals
     new_files_dict_model["PR thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_PR_vals
     new_files_dict_model["ROC thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_ROC_vals
-    #new_files_dict_model["preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df3["preds"]
-    new_files_dict_model["preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
+    #new_files_dict_model["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df3["preds"]
+    new_files_dict_model["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
     df_new = pd.DataFrame(new_files_dict_model)
     df_new.to_csv("my_merged_hex_alt_6000_" + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ") + ".csv", index = False)
 df_new_6000 = pd.DataFrame(new_files_dict)
@@ -325,31 +389,30 @@ for model_name in os.listdir("review_62000/long/preds/" + str(minlen) + "_" + st
         labsap_filteravg.append(labsaplongvavg[seq_ix])
     thr_PR_vals = [PRthr[model_name.replace("_model_data", "").replace("_data", "")] for v in pred_arr1_filter]
     thr_ROC_vals = [ROCthr[model_name.replace("_model_data", "").replace("_data", "")] for v in pred_arr1_filter]
-    df4 = pd.read_csv("review_62000/long/preds/" + str(minlen) + "_" + str(maxlen) + "/" + model_name + "/" + str(minlen) + "_" + str(maxlen) + "_" + model_name + "_PR_preds.csv")
-    new_files_dict["labels min"] = labslongvmin
-    new_files_dict["labels max"] = labslongvmax
-    new_files_dict["labels avg"] = labslongvavg
+    new_files_dict["Sequence"] = seqslong
+    new_files_dict["Label min"] = labslongvmin
+    new_files_dict["Label max"] = labslongvmax
+    new_files_dict["Label avg"] = labslongvavg
     new_files_dict["AP min"] = labsaplongvmin
     new_files_dict["AP max"] = labsaplongvmax
     new_files_dict["AP avg"] = labsaplongvavg
-    new_files_dict["sequence"] = df4["feature"]
     #new_files_dict["0.5 thr"] = thr_vals
     new_files_dict["PR thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_PR_vals
     new_files_dict["ROC thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_ROC_vals
-    #new_files_dict["preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df4["preds"]
-    new_files_dict["preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
-    new_files_dict_model["labels min"] = labslongvmin
-    new_files_dict_model["labels max"] = labslongvmax
-    new_files_dict_model["labels avg"] = labslongvavg
+    #new_files_dict["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df4["preds"]
+    new_files_dict["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
+    new_files_dict_model["Sequence"] = seqslong
+    new_files_dict_model["Label min"] = labslongvmin
+    new_files_dict_model["Label max"] = labslongvmax
+    new_files_dict_model["Label avg"] = labslongvavg
     new_files_dict_model["AP min"] = labsaplongvmin
     new_files_dict_model["AP max"] = labsaplongvmax
     new_files_dict_model["AP avg"] = labsaplongvavg
-    new_files_dict_model["sequence"] = df4["feature"]
     #new_files_dict_model["0.5 thr"] = thr_vals
     new_files_dict_model["PR thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_PR_vals
     new_files_dict_model["ROC thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_ROC_vals
-    #new_files_dict_model["preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df4["preds"]
-    new_files_dict_model["preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
+    #new_files_dict_model["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df4["preds"]
+    new_files_dict_model["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
     df_new = pd.DataFrame(new_files_dict_model)
     df_new.to_csv("my_merged_hex_alt_60000_" + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ") + ".csv", index = False)
 df_new_60000 = pd.DataFrame(new_files_dict)
@@ -387,55 +450,90 @@ for model_name in os.listdir("review/long/preds/" + str(minlen) + "_" + str(maxl
                 if len(seqs[seq_ix]) > maxlen or len(seqs[seq_ix]) < minlen:
                     continue
                 if seqs[seq_ix] not in dict_model[long_title][seed_val][test_num]:
-                    dict_model[long_title][seed_val][test_num][seqs[seq_ix]] = {"label": seqs[seq_ix]}
-                dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["preds " + long_title] = pred_arr1[seq_ix]
+                    dict_model[long_title][seed_val][test_num][seqs[seq_ix]] = {"label": labs[seq_ix]}
+                dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["Preds " + long_title] = pred_arr1[seq_ix]
                 dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["label " + long_title] = pred_arr2[seq_ix]
             
-new_files_dict = {"seed": [], "test": [], "sequence": [], "label": []}
+
+new_files_dict = {"Seed": [], "Test": [], "Sequence": [], "Label": []}
 for long_title in dict_model:
     new_files_dict["PR thr " + long_title] = []
     new_files_dict["ROC thr " + long_title] = []
-    new_files_dict[long_title] = []
+    new_files_dict["Pred " + long_title] = []
+    new_files_dict["PR pred " + long_title] = []
+    new_files_dict["ROC pred " + long_title] = []
+    new_files_dict["0.5 pred " + long_title] = []
 for seed_val in seed_list:
     for test_num in range(1, 6):
         seqs_sth = []
         for long_title in dict_model:
             seqs_sth = list(dict_model[long_title][seed_val][test_num].keys())
             break
-        labels_original = []
-        sequences_original = []
         for sequse in seqs_sth:
-            labels_original.append(dict_model[long_title][seed_val][test_num][sequse]["label"])
-            sequences_original.append(sequse)
-            new_files_dict["seed"].append(seed_val)
-            new_files_dict["test"].append(test_num)
-            new_files_dict["sequence"].append(sequse)
-            new_files_dict["label"].append(dict_model[long_title][seed_val][test_num][sequse]["label"])
+            new_files_dict["Seed"].append(seed_val)
+            new_files_dict["Test"].append(test_num)
+            new_files_dict["Sequence"].append(sequse)
+            new_files_dict["Label"].append(dict_model[long_title][seed_val][test_num][sequse]["label"])
             thr_title = long_title.replace(" ", "_")
             for long_title in dict_model:
                 new_files_dict["PR thr " + long_title].append(PRthr[thr_title])
                 new_files_dict["ROC thr " + long_title].append(ROCthr[thr_title])
-                new_files_dict[long_title].append(dict_model[long_title][seed_val][test_num][sequse]["preds " + long_title])
+                new_files_dict["Pred " + long_title].append(dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title])
+                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > PRthr[thr_title]:
+                     new_files_dict["PR pred " + long_title].append(1)
+                else:
+                     new_files_dict["PR pred " + long_title].append(0)
+                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > ROCthr[thr_title]:
+                     new_files_dict["ROC pred " + long_title].append(1)
+                else:
+                     new_files_dict["ROC pred " + long_title].append(0)
+                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > 0.5:
+                     new_files_dict["0.5 pred " + long_title].append(1)
+                else:
+                     new_files_dict["0.5 pred " + long_title].append(0)
+
 df_new_original = pd.DataFrame(new_files_dict)
 df_new_original.to_csv("my_merged_hex_alt_original.csv", index = False)
+
 first = True
+
 for long_title in dict_model:
-    new_files_dict_model = {"seed": [], "test": [], "sequence": [], "label": []}
+    new_files_dict_model = {"Seed": [], "Test": [], "Sequence": [], "Label": []}
     new_files_dict_model["PR thr " + long_title] = []
     new_files_dict_model["ROC thr " + long_title] = []
-    new_files_dict_model[long_title] = []
+    new_files_dict_model["Pred " + long_title] = []
+    new_files_dict_model["PR pred " + long_title] = []
+    new_files_dict_model["ROC pred " + long_title] = []
+    new_files_dict_model["0.5 pred " + long_title] = []
     for seed_val in seed_list:
+        sequences_original = []
+        labels_original = []
         for test_num in range(1, 6):
             seqs_sth = list(dict_model[long_title][seed_val][test_num].keys())
             for sequse in seqs_sth:
-                new_files_dict_model["seed"].append(seed_val)
-                new_files_dict_model["test"].append(test_num)
-                new_files_dict_model["sequence"].append(sequse)
-                new_files_dict_model["label"].append(dict_model[long_title][seed_val][test_num][sequse]["label"])
+                sequences_original.append(sequse)
+                labels_original.append(dict_model[long_title][seed_val][test_num][sequse]["label"])
+            for sequse in seqs_sth:
+                new_files_dict_model["Seed"].append(seed_val)
+                new_files_dict_model["Test"].append(test_num)
+                new_files_dict_model["Sequence"].append(sequse)
+                new_files_dict_model["Label"].append(dict_model[long_title][seed_val][test_num][sequse]["label"])
                 thr_title = long_title.replace(" ", "_")
                 new_files_dict_model["PR thr " + long_title].append(PRthr[thr_title])
                 new_files_dict_model["ROC thr " + long_title].append(ROCthr[thr_title])
-                new_files_dict_model[long_title].append(dict_model[long_title][seed_val][test_num][sequse]["preds " + long_title])
+                new_files_dict_model["Pred " + long_title].append(dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title])
+                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > PRthr[thr_title]:
+                     new_files_dict_model["PR pred " + long_title].append(1)
+                else:
+                     new_files_dict_model["PR pred " + long_title].append(0)
+                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > ROCthr[thr_title]:
+                     new_files_dict_model["ROC pred " + long_title].append(1)
+                else:
+                     new_files_dict_model["ROC pred " + long_title].append(0)
+                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > 0.5:
+                     new_files_dict_model["0.5 pred " + long_title].append(1)
+                else:
+                     new_files_dict_model["0.5 pred " + long_title].append(0)
     df_new = pd.DataFrame(new_files_dict_model)
     df_new.to_csv("my_merged_hex_alt_original_" + long_title + ".csv", index = False)
     mode_determine = "a" 
@@ -547,7 +645,7 @@ df_anew.to_csv("my_merged_acc_final.csv", index = False)
 df_vanew = pd.DataFrame(new_dict_final_vacc)
 df_vanew.to_csv("my_merged_vacc.csv", index = False)
 
-nd1 = {"Labels": labels_original, "Sequences": sequences_original}
+nd1 = {"Sequence": sequences_original, "Label": labels_original}
 df1n = pd.DataFrame(nd1)
 
 writer = pd.ExcelWriter("Source_Data_Fig2.xlsx", engine = 'openpyxl', mode = "w")
@@ -700,7 +798,8 @@ for some_path in path_list:
                     allseqs[some_path][some_seed][test_number][fold_nr].append(validation_data[i])
                     alllabels[some_path][some_seed][test_number][fold_nr].append(validation_labels[i])
                     allpreds[some_path][some_seed][test_number][fold_nr].append(predictions_file_lines_all[i])
-new_df_valn = {"seed": [], "test": [], "val": [], "sequence": [], "label": []}
+
+new_df_valn = {"Seed": [], "Test": [], "Val": [], "Sequence": [], "Label": []}
 for some_path in path_list:
     long_title2 = some_path.replace("/", "").replace(".", "").replace("_model_data", "").replace("_data", "").replace("_", " ")
     if some_path == AP_DATA_PATH:
@@ -733,11 +832,11 @@ for some_seed in seed_list:
                 list_labs = alllabels[some_path][some_seed][test_number][fold_nr]
                 break
             for ix_sequse in range(len(list_seqs)):    
-                new_df_valn["seed"].append(some_seed)
-                new_df_valn["test"].append(test_number)
-                new_df_valn["val"].append(fold_nr)
-                new_df_valn["sequence"].append(list_seqs[ix_sequse])
-                new_df_valn["label"].append(list_labs[ix_sequse])
+                new_df_valn["Seed"].append(some_seed)
+                new_df_valn["Test"].append(test_number)
+                new_df_valn["Val"].append(fold_nr)
+                new_df_valn["Sequence"].append(list_seqs[ix_sequse])
+                new_df_valn["Label"].append(list_labs[ix_sequse])
                 for some_path in path_list:
                     long_title2 = some_path.replace("/", "").replace(".", "").replace("_model_data", "").replace("_data", "").replace("_", " ")
                     if some_path == AP_DATA_PATH:

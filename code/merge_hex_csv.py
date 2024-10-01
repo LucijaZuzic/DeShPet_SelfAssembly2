@@ -131,16 +131,46 @@ for some_path in path_list:
     for ap in df["AP"]:
         labs.append(ap_to_seq[ap][1])
         seqs_u.append(ap_to_seq[ap][0])
+    short_name = some_path.replace("_model_data", "").replace("_data", "").replace(".", "").replace("/", "")
+    thr_vals = [0.5 for v in df["Predicted self-assembly probability"]]
+    thr_PR_vals = [PRthr[short_name] for v in df["Predicted self-assembly probability"]]
+    thr_ROC_vals = [ROCthr[short_name] for v in df["Predicted self-assembly probability"]]
+    prpred = []
+    rocpred = []
+    halfpred = []
+    for p in df["Predicted self-assembly probability"]:
+        if p > PRthr[short_name]:
+            prpred.append(1)
+        else:
+            prpred.append(0)
+        if p > ROCthr[short_name]:
+            rocpred.append(1)
+        else:
+            rocpred.append(0)
+        if p > 0.5:
+            halfpred.append(1)
+        else:
+            halfpred.append(0)
     new_dict["Sequence"] = seqs_u
     new_dict["Label"] = labs
     new_dict["Actual AP"] = df["AP"]
     new_dict["Predicted self-assembly probability " + PATH_TO_NAME[some_path]] = df["Predicted self-assembly probability"]
+    new_dict["Thr PR " + PATH_TO_NAME[some_path]] = thr_PR_vals
+    new_dict["Thr ROC " + PATH_TO_NAME[some_path]] = thr_ROC_vals
+    new_dict["Label PR " + PATH_TO_NAME[some_path]] = prpred
+    new_dict["Label ROC " + PATH_TO_NAME[some_path]] = rocpred
+    new_dict["Label 0.5 " + PATH_TO_NAME[some_path]] = halfpred
     new_dict["Regression " + PATH_TO_NAME[some_path]] = df["Regression"]
     new_df = pd.DataFrame()
-    new_dict["Sequence"] = seqs_u
-    new_dict["Label"] = labs
+    new_df["Sequence"] = seqs_u
+    new_df["Label"] = labs
     new_df["Actual AP"] = df["AP"]
     new_df["Predicted self-assembly probability " + PATH_TO_NAME[some_path]] = df["Predicted self-assembly probability"]
+    new_df["Thr PR " + PATH_TO_NAME[some_path]] = thr_PR_vals
+    new_df["Thr ROC " + PATH_TO_NAME[some_path]] = thr_ROC_vals
+    new_df["Label PR " + PATH_TO_NAME[some_path]] = prpred
+    new_df["Label ROC " + PATH_TO_NAME[some_path]] = rocpred
+    new_df["Label 0.5 " + PATH_TO_NAME[some_path]] = halfpred
     new_df["Regression " + PATH_TO_NAME[some_path]] = df["Regression"]
     sheet_name_and_data[PATH_TO_NAME[some_path]] = new_df
 for some_path in path_list:
@@ -180,7 +210,7 @@ for model_name in os.listdir("review_20/long/preds/" + str(minlen) + "_" + str(m
                     continue
                 if seqs[seq_ix] not in dict_model[long_title][seed_val][test_num]:
                     dict_model[long_title][seed_val][test_num][seqs[seq_ix]] = {"label": labs[seq_ix]}
-                dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["Preds " + long_title] = pred_arr1[seq_ix]
+                dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["Pred " + long_title] = pred_arr1[seq_ix]
                 dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["label " + long_title] = pred_arr2[seq_ix]
 
 new_files_dict = {"Seed": [], "Test": [], "Sequence": [], "Label": []}
@@ -206,16 +236,16 @@ for seed_val in seed_list:
             for long_title in dict_model:
                 new_files_dict["PR thr " + long_title].append(PRthr[thr_title])
                 new_files_dict["ROC thr " + long_title].append(ROCthr[thr_title])
-                new_files_dict["Pred " + long_title].append(dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title])
-                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > PRthr[thr_title]:
+                new_files_dict["Pred " + long_title].append(dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title])
+                if dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title] > PRthr[thr_title]:
                      new_files_dict["PR pred " + long_title].append(1)
                 else:
                      new_files_dict["PR pred " + long_title].append(0)
-                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > ROCthr[thr_title]:
+                if dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title] > ROCthr[thr_title]:
                      new_files_dict["ROC pred " + long_title].append(1)
                 else:
                      new_files_dict["ROC pred " + long_title].append(0)
-                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > 0.5:
+                if dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title] > 0.5:
                      new_files_dict["0.5 pred " + long_title].append(1)
                 else:
                      new_files_dict["0.5 pred " + long_title].append(0)
@@ -242,16 +272,16 @@ for long_title in dict_model:
                 thr_title = long_title.replace(" ", "_")
                 new_files_dict_model["PR thr " + long_title].append(PRthr[thr_title])
                 new_files_dict_model["ROC thr " + long_title].append(ROCthr[thr_title])
-                new_files_dict_model["Pred " + long_title].append(dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title])
-                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > PRthr[thr_title]:
+                new_files_dict_model["Pred " + long_title].append(dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title])
+                if dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title] > PRthr[thr_title]:
                      new_files_dict_model["PR pred " + long_title].append(1)
                 else:
                      new_files_dict_model["PR pred " + long_title].append(0)
-                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > ROCthr[thr_title]:
+                if dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title] > ROCthr[thr_title]:
                      new_files_dict_model["ROC pred " + long_title].append(1)
                 else:
                      new_files_dict_model["ROC pred " + long_title].append(0)
-                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > 0.5:
+                if dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title] > 0.5:
                      new_files_dict_model["0.5 pred " + long_title].append(1)
                 else:
                      new_files_dict_model["0.5 pred " + long_title].append(0)
@@ -280,25 +310,45 @@ for model_name in os.listdir("review_6000/long/preds/" + str(minlen) + "_" + str
     thr_vals = [0.5 for v in pred_arr1_filter]
     thr_PR_vals = [PRthr[model_name.replace("_model_data", "").replace("_data", "")] for v in pred_arr1_filter]
     thr_ROC_vals = [ROCthr[model_name.replace("_model_data", "").replace("_data", "")] for v in pred_arr1_filter]
-    new_files_dict["Sequence"] = seqs_filter
-    new_files_dict["Label"] = labs_filter
+    prpred = []
+    rocpred = []
+    halfpred = []
+    for p in pred_arr1_filter:
+        if p > PRthr[model_name.replace("_model_data", "").replace("_data", "")]:
+            prpred.append(1)
+        else:
+            prpred.append(0)
+        if p > ROCthr[model_name.replace("_model_data", "").replace("_data", "")]:
+            rocpred.append(1)
+        else:
+            rocpred.append(0)
+        if p > 0.5:
+            halfpred.append(1)
+        else:
+            halfpred.append(0)
     aps = []
     for pep in seqs_filter:
         aps.append(seq_to_ap[pep][0])
+    new_files_dict["Sequence"] = seqs_filter
+    new_files_dict["Label"] = labs_filter
     new_files_dict["Actual AP"] = aps
     #new_files_dict["0.5 thr"] = thr_vals
     new_files_dict["PR thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_PR_vals
     new_files_dict["ROC thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_ROC_vals
-    #new_files_dict["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df3["preds"]
-    new_files_dict["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
+    new_files_dict["Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
+    new_files_dict["PR Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = prpred
+    new_files_dict["ROC Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = rocpred
+    new_files_dict["0.5 Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = halfpred
     new_files_dict_model["Sequence"] = seqs_filter
     new_files_dict_model["Label"] = labs_filter
     new_files_dict_model["Actual AP"] = aps
     #new_files_dict_model["0.5 thr"] = thr_vals
     new_files_dict_model["PR thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_PR_vals
     new_files_dict_model["ROC thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_ROC_vals
-    #new_files_dict_model["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df3["preds"]
-    new_files_dict_model["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
+    new_files_dict_model["Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
+    new_files_dict_model["PR Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = prpred
+    new_files_dict_model["ROC Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = rocpred
+    new_files_dict_model["0.5 Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = halfpred
     df_new = pd.DataFrame(new_files_dict_model)
     df_new.to_csv("my_merged_hex_alt_6000_" + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ") + ".csv", index = False)
 df_new_6000 = pd.DataFrame(new_files_dict)
@@ -389,6 +439,22 @@ for model_name in os.listdir("review_62000/long/preds/" + str(minlen) + "_" + st
         labsap_filteravg.append(labsaplongvavg[seq_ix])
     thr_PR_vals = [PRthr[model_name.replace("_model_data", "").replace("_data", "")] for v in pred_arr1_filter]
     thr_ROC_vals = [ROCthr[model_name.replace("_model_data", "").replace("_data", "")] for v in pred_arr1_filter]
+    prpred = []
+    rocpred = []
+    halfpred = []
+    for p in pred_arr1_filter:
+        if p > PRthr[model_name.replace("_model_data", "").replace("_data", "")]:
+            prpred.append(1)
+        else:
+            prpred.append(0)
+        if p > ROCthr[model_name.replace("_model_data", "").replace("_data", "")]:
+            rocpred.append(1)
+        else:
+            rocpred.append(0)
+        if p > 0.5:
+            halfpred.append(1)
+        else:
+            halfpred.append(0)
     new_files_dict["Sequence"] = seqslong
     new_files_dict["Label min"] = labslongvmin
     new_files_dict["Label max"] = labslongvmax
@@ -399,8 +465,11 @@ for model_name in os.listdir("review_62000/long/preds/" + str(minlen) + "_" + st
     #new_files_dict["0.5 thr"] = thr_vals
     new_files_dict["PR thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_PR_vals
     new_files_dict["ROC thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_ROC_vals
-    #new_files_dict["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df4["preds"]
-    new_files_dict["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
+    #new_files_dict["Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df4["preds"]
+    new_files_dict["Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
+    new_files_dict["PR Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = prpred
+    new_files_dict["ROC Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = rocpred
+    new_files_dict["0.5 Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = halfpred
     new_files_dict_model["Sequence"] = seqslong
     new_files_dict_model["Label min"] = labslongvmin
     new_files_dict_model["Label max"] = labslongvmax
@@ -411,8 +480,11 @@ for model_name in os.listdir("review_62000/long/preds/" + str(minlen) + "_" + st
     #new_files_dict_model["0.5 thr"] = thr_vals
     new_files_dict_model["PR thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_PR_vals
     new_files_dict_model["ROC thr " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = thr_ROC_vals
-    #new_files_dict_model["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df4["preds"]
-    new_files_dict_model["Preds " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
+    #new_files_dict_model["Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = df4["preds"]
+    new_files_dict_model["Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = pred_arr1_filter
+    new_files_dict_model["PR Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = prpred
+    new_files_dict_model["ROC Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = rocpred
+    new_files_dict_model["0.5 Pred " + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ")] = halfpred
     df_new = pd.DataFrame(new_files_dict_model)
     df_new.to_csv("my_merged_hex_alt_60000_" + model_name.replace("_model_data", "").replace("_data", "").replace("_", " ") + ".csv", index = False)
 df_new_60000 = pd.DataFrame(new_files_dict)
@@ -451,7 +523,7 @@ for model_name in os.listdir("review/long/preds/" + str(minlen) + "_" + str(maxl
                     continue
                 if seqs[seq_ix] not in dict_model[long_title][seed_val][test_num]:
                     dict_model[long_title][seed_val][test_num][seqs[seq_ix]] = {"label": labs[seq_ix]}
-                dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["Preds " + long_title] = pred_arr1[seq_ix]
+                dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["Pred " + long_title] = pred_arr1[seq_ix]
                 dict_model[long_title][seed_val][test_num][seqs[seq_ix]]["label " + long_title] = pred_arr2[seq_ix]
             
 
@@ -478,16 +550,16 @@ for seed_val in seed_list:
             for long_title in dict_model:
                 new_files_dict["PR thr " + long_title].append(PRthr[thr_title])
                 new_files_dict["ROC thr " + long_title].append(ROCthr[thr_title])
-                new_files_dict["Pred " + long_title].append(dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title])
-                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > PRthr[thr_title]:
+                new_files_dict["Pred " + long_title].append(dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title])
+                if dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title] > PRthr[thr_title]:
                      new_files_dict["PR pred " + long_title].append(1)
                 else:
                      new_files_dict["PR pred " + long_title].append(0)
-                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > ROCthr[thr_title]:
+                if dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title] > ROCthr[thr_title]:
                      new_files_dict["ROC pred " + long_title].append(1)
                 else:
                      new_files_dict["ROC pred " + long_title].append(0)
-                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > 0.5:
+                if dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title] > 0.5:
                      new_files_dict["0.5 pred " + long_title].append(1)
                 else:
                      new_files_dict["0.5 pred " + long_title].append(0)
@@ -521,16 +593,16 @@ for long_title in dict_model:
                 thr_title = long_title.replace(" ", "_")
                 new_files_dict_model["PR thr " + long_title].append(PRthr[thr_title])
                 new_files_dict_model["ROC thr " + long_title].append(ROCthr[thr_title])
-                new_files_dict_model["Pred " + long_title].append(dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title])
-                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > PRthr[thr_title]:
+                new_files_dict_model["Pred " + long_title].append(dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title])
+                if dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title] > PRthr[thr_title]:
                      new_files_dict_model["PR pred " + long_title].append(1)
                 else:
                      new_files_dict_model["PR pred " + long_title].append(0)
-                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > ROCthr[thr_title]:
+                if dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title] > ROCthr[thr_title]:
                      new_files_dict_model["ROC pred " + long_title].append(1)
                 else:
                      new_files_dict_model["ROC pred " + long_title].append(0)
-                if dict_model[long_title][seed_val][test_num][sequse]["Preds " + long_title] > 0.5:
+                if dict_model[long_title][seed_val][test_num][sequse]["Pred " + long_title] > 0.5:
                      new_files_dict_model["0.5 pred " + long_title].append(1)
                 else:
                      new_files_dict_model["0.5 pred " + long_title].append(0)

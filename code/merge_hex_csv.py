@@ -500,6 +500,13 @@ letters = {
     "TSNE_SP": "g",
     "TSNE_AP_SP": "h",
 }
+supporting_numbers = {
+    "AP": "3",
+    "SP": "4",
+    "AP_SP": "5",
+    "TSNE_SP": "6",
+    "TSNE_AP_SP": "7",
+}
 dict_model = dict()
 for model_name in os.listdir("review/long/preds/" + str(minlen) + "_" + str(maxlen) + "/"):
     if not os.path.isdir("review/long/preds/" + str(minlen) + "_" + str(maxlen) + "/" + model_name + "/"):
@@ -567,8 +574,14 @@ for seed_val in seed_list:
 df_new_original = pd.DataFrame(new_files_dict)
 df_new_original.to_csv("my_merged_hex_alt_original.csv", index = False)
 
+writer = pd.ExcelWriter("Source_Data_Table1.xlsx", engine = 'openpyxl', mode = "w")
+df_new_original.to_excel(writer, sheet_name = "Table1", index = False)
+writer.close()
+
 first = True
 
+new_S106 = dict()
+new_S112 = dict()
 for long_title in dict_model:
     new_files_dict_model = {"Seed": [], "Test": [], "Sequence": [], "Label": []}
     new_files_dict_model["PR thr " + long_title] = []
@@ -613,19 +626,42 @@ for long_title in dict_model:
         mode_determine = "w"
     first = False
     writer = pd.ExcelWriter("Source_Data_Fig3.xlsx", engine = 'openpyxl', mode = mode_determine)
-    df_new.to_excel(writer, sheet_name = "3" + letters[long_title.replace(" ", "_")], index = False)
+    df_new.to_excel(writer, sheet_name = "Fig3" + letters[long_title.replace(" ", "_")], index = False)
     writer.close()
 
-writer = pd.ExcelWriter("Source_Data_Fig4.xlsx", engine = 'openpyxl', mode = "w")
-df_new_6000.to_excel(writer, sheet_name = "4b", index = False)
+    new_files_dict_model_filtered = dict()
+    for cols in new_files_dict_model:
+        if "thr" not in cols and " pred " not in cols:
+            new_files_dict_model_filtered[cols] = new_files_dict_model[cols]
+        if "ROC" not in cols and "0.5" not in cols and long_title.replace(" ", "_") == "AP_SP":
+            new_S106[cols] = new_files_dict_model[cols]
+        if "ROC" not in cols and "0.5" not in cols:
+            new_S112[cols] = new_files_dict_model[cols]
+    df_new_filtered = pd.DataFrame(new_files_dict_model_filtered)
+    writer_filtered = pd.ExcelWriter("Source_Data_FigS1." + supporting_numbers[long_title.replace(" ", "_")] + ".xlsx", engine = 'openpyxl', mode = "w")
+    df_new_filtered.to_excel(writer_filtered, sheet_name = "FigS1." + supporting_numbers[long_title.replace(" ", "_")], index = False)
+    writer_filtered.close()
+
+df_new_S106 = pd.DataFrame(new_S106)
+writer = pd.ExcelWriter("Source_Data_TableS1.6.xlsx", engine = 'openpyxl', mode = "w")
+df_new_S106.to_excel(writer, sheet_name = "TableS1.6", index = False)
 writer.close()
 
-writer = pd.ExcelWriter("Source_Data_Fig4.xlsx", engine = 'openpyxl', mode = "a")
-df_new_alt_6000.to_excel(writer, sheet_name = "4c", index = False)
+df_new_S112 = pd.DataFrame(new_S112)
+writer = pd.ExcelWriter("Source_Data_FigS1.12.xlsx", engine = 'openpyxl', mode = "w")
+df_new_S112.to_excel(writer, sheet_name = "FigS1.12", index = False)
 writer.close()
 
-writer = pd.ExcelWriter("Source_Data_Fig4.xlsx", engine = 'openpyxl', mode = "a")
-df_new_20.to_excel(writer, sheet_name = "4d", index = False)
+writer = pd.ExcelWriter("Source_Data_FigS2.1.xlsx", engine = 'openpyxl', mode = "w")
+df_new_6000.to_excel(writer, sheet_name = "FigS2.1b", index = False)
+writer.close()
+
+writer = pd.ExcelWriter("Source_Data_FigS2.1.xlsx", engine = 'openpyxl', mode = "a")
+df_new_alt_6000.to_excel(writer, sheet_name = "FigS2.1c", index = False)
+writer.close()
+
+writer = pd.ExcelWriter("Source_Data_TableS1.5.xlsx", engine = 'openpyxl', mode = "w")
+df_new_20.to_excel(writer, sheet_name = "TableS1.5", index = False)
 writer.close()
 
 NUM_TESTS = 5
@@ -705,11 +741,41 @@ def read_all_history(some_path, new_dict):
                 new_dict["Val Loss " + long_title + ")"] = val_loss
     return new_dict
 
+def read_all_history_param_one(some_path, params_num, new_dict):
+    for test_number in range(1, NUM_TESTS + 1):
+        for val_number in range(1, NUM_TESTS + 1):
+            acc, loss, val_acc, val_loss = read_one_history(some_path, test_number, params_num, val_number)
+            long_title = some_path.replace("/", "").replace(".", "").replace("_model_data", "").replace("_data", "").replace("_", " ") 
+            long_title += " Test " + str(test_number)
+            long_title += " Val " + str(val_number)
+            long_title += " Params " + str(params_num)
+            if "AP" in some_path and "SP" not in some_path:
+                long_title += " (dense " + str(short_list[params_num - 1][0])
+            if "AP" in some_path and "SP" in some_path:
+                long_title += " (num cells " + str(long_list[params_num - 1][0])
+                long_title += ", kernel size " + str(long_list[params_num - 1][1])
+                long_title += ", dense " + str(long_list[params_num - 1][0] * 2)
+            if "AP" not in some_path and "SP" in some_path:
+                long_title += " (num cells " + str(long_list[params_num - 1][0])
+                long_title += ", kernel size " + str(long_list[params_num - 1][1])
+            new_dict["Acc " + long_title + ")"] = acc
+            new_dict["Loss " + long_title + ")"] = loss
+            new_dict["Val Acc " + long_title + ")"] = val_acc
+            new_dict["Val Loss " + long_title + ")"] = val_loss
+    return new_dict
+
 new_dict_final_acc = dict()
 new_dict_final_vacc = dict()
 for some_path in path_list:
     new_dict_final_acc = read_all_final_history(some_path, new_dict_final_acc)
     new_dict_final_vacc = read_all_history(some_path, new_dict_final_vacc)
+
+new_dict_final_vacc_AP_SP_params1 = dict()
+new_dict_final_vacc_AP_SP_params1 = read_all_history_param_one(AP_SP_DATA_PATH, 1, new_dict_final_vacc_AP_SP_params1)
+df_new_dict_final_vacc_AP_SP_params1 = pd.DataFrame(new_dict_final_vacc_AP_SP_params1)
+writer = pd.ExcelWriter("Source_Data_FigS1.13.xlsx", engine = 'openpyxl', mode = "w")
+df_new_dict_final_vacc_AP_SP_params1.to_excel(writer, sheet_name = "FigS1.13", index = False)
+writer.close()
 
 df_anew = pd.DataFrame(new_dict_final_acc)
 df_anew.to_csv("my_merged_acc_final.csv", index = False)
@@ -721,15 +787,15 @@ nd1 = {"Sequence": sequences_original, "Label": labels_original}
 df1n = pd.DataFrame(nd1)
 
 writer = pd.ExcelWriter("Source_Data_Fig2.xlsx", engine = 'openpyxl', mode = "w")
-df1n.to_excel(writer, sheet_name = "2a", index = False)
+df1n.to_excel(writer, sheet_name = "Fig2a", index = False)
 writer.close()
 
 writer = pd.ExcelWriter("Source_Data_Fig2.xlsx", engine = 'openpyxl', mode = "a")
-df_vanew.to_excel(writer, sheet_name = "2e", index = False)
+df_vanew.to_excel(writer, sheet_name = "Fig2e", index = False)
 writer.close()
 
 writer = pd.ExcelWriter("Source_Data_Fig2.xlsx", engine = 'openpyxl', mode = "a")
-df_anew.to_excel(writer, sheet_name = "2f", index = False)
+df_anew.to_excel(writer, sheet_name = "Fig2f", index = False)
 writer.close()
 
 N_FOLDS_FIRST = 5
@@ -872,6 +938,7 @@ for some_path in path_list:
                     allpreds[some_path][some_seed][test_number][fold_nr].append(predictions_file_lines_all[i])
 
 new_df_valn = {"Seed": [], "Test": [], "Val": [], "Sequence": [], "Label": []}
+new_df_valn_short = {"Seed": [], "Test": [], "Val": [], "Sequence": [], "Label": []}
 for some_path in path_list:
     long_title2 = some_path.replace("/", "").replace(".", "").replace("_model_data", "").replace("_data", "").replace("_", " ")
     if some_path == AP_DATA_PATH:
@@ -884,6 +951,7 @@ for some_path in path_list:
         params_nr = 5
     if some_path == TSNE_AP_SP_DATA_PATH:
         params_nr = 8
+    new_df_valn_short[long_title2] = []
     if "AP" in some_path and "SP" not in some_path:
         long_title2 += " (dense " + str(short_list[params_nr - 1][0])
     if "AP" in some_path and "SP" in some_path:
@@ -909,8 +977,14 @@ for some_seed in seed_list:
                 new_df_valn["Val"].append(fold_nr)
                 new_df_valn["Sequence"].append(list_seqs[ix_sequse])
                 new_df_valn["Label"].append(list_labs[ix_sequse])
+                new_df_valn_short["Seed"].append(some_seed)
+                new_df_valn_short["Test"].append(test_number)
+                new_df_valn_short["Val"].append(fold_nr)
+                new_df_valn_short["Sequence"].append(list_seqs[ix_sequse])
+                new_df_valn_short["Label"].append(list_labs[ix_sequse])
                 for some_path in path_list:
                     long_title2 = some_path.replace("/", "").replace(".", "").replace("_model_data", "").replace("_data", "").replace("_", " ")
+                    new_df_valn_short[long_title2].append(allpreds[some_path][some_seed][test_number][fold_nr][ix_sequse])
                     if some_path == AP_DATA_PATH:
                         params_nr = 1
                     if some_path == SP_DATA_PATH:
@@ -930,6 +1004,54 @@ for some_seed in seed_list:
                     if "AP" not in some_path and "SP" in some_path:
                         long_title2 += " (num cells " + str(long_list[params_nr - 1][0])
                         long_title2 += ", kernel size " + str(long_list[params_nr - 1][1])
-                    new_df_valn[long_title2 + ")"].append(allpreds[some_path][some_seed][test_number][fold_nr])
+                    new_df_valn[long_title2 + ")"].append(allpreds[some_path][some_seed][test_number][fold_nr][ix_sequse])
 df_new_df_valn = pd.DataFrame(new_df_valn)
 df_new_df_valn.to_csv("my_merged_valid_test_res.csv", index = False)
+
+df_new_df_valn_short = pd.DataFrame(new_df_valn_short)
+df_new_df_valn_short.to_csv("my_merged_valid_test_res_short.csv", index = False)
+
+writer = pd.ExcelWriter("Source_Data_TableS1.2.xlsx", engine = 'openpyxl', mode = "w")
+df_new_df_valn_short.to_excel(writer, sheet_name = "TableS1.2", index = False)
+writer.close()
+
+new_df_valn_short_with_thr = dict()
+
+for cols in ["Seed", "Test", "Val", "Sequence", "Label"]:
+    new_df_valn_short_with_thr[cols] = new_df_valn_short[cols]
+for long_title in new_df_valn_short:
+    if long_title not in ["Seed", "Test", "Val", "Sequence", "Label"]:
+        new_df_valn_short_with_thr["PR thr " + long_title] = []
+        new_df_valn_short_with_thr["ROC thr " + long_title] = []
+        new_df_valn_short_with_thr["Pred " + long_title] = []
+        new_df_valn_short_with_thr["PR pred " + long_title]  = []
+        new_df_valn_short_with_thr["ROC pred " + long_title]  = []
+        new_df_valn_short_with_thr["0.5 pred " + long_title]  = []
+
+for long_title in new_df_valn_short:
+    if long_title not in ["Seed", "Test", "Val", "Sequence", "Label"]:
+        thr_title = long_title.replace(" ", "_")
+        arr_original = new_df_valn_short[long_title]
+        for pred in arr_original:
+            new_df_valn_short_with_thr["PR thr " + long_title].append(PRthr[thr_title])
+            new_df_valn_short_with_thr["ROC thr " + long_title].append(ROCthr[thr_title])
+            new_df_valn_short_with_thr["Pred " + long_title].append(pred)
+            if pred > PRthr[thr_title]:
+                new_df_valn_short_with_thr["PR pred " + long_title].append(1)
+            else:
+                new_df_valn_short_with_thr["PR pred " + long_title].append(0)
+            if pred > ROCthr[thr_title]:
+                new_df_valn_short_with_thr["ROC pred " + long_title].append(1)
+            else:
+                new_df_valn_short_with_thr["ROC pred " + long_title].append(0)
+            if pred > 0.5:
+                new_df_valn_short_with_thr["0.5 pred " + long_title].append(1)
+            else:
+                new_df_valn_short_with_thr["0.5 pred " + long_title].append(0)
+
+df_new_df_valn_short_with_thr = pd.DataFrame(new_df_valn_short_with_thr)
+df_new_df_valn_short_with_thr.to_csv("my_merged_valid_test_res_short_thr.csv", index = False)
+
+writer = pd.ExcelWriter("Source_Data_TableS1.3.xlsx", engine = 'openpyxl', mode = "w")
+df_new_df_valn_short_with_thr.to_excel(writer, sheet_name = "TableS1.3", index = False)
+writer.close()

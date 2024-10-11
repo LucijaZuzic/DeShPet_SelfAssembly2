@@ -1,4 +1,4 @@
-Seed,Test,Val,Sequence,Label,AP (dense 64),"SP (num cells 64, kernel size 4)","AP SP (num cells 32, kernel size 4, dense 64)","TSNE SP (num cells 48, kernel size 6)","TSNE AP SP (num cells 64, kernel size 6, dense 128)"
+Seed,Test,Val,Sequence,Label,AP,SP,AP SP,TSNE SP,TSNE AP SP
 305475974,1,1,AILSS,1.0,0.4760346,0.69808954,0.7213441,0.54179615,0.6031317
 305475974,1,1,NFGAIL,1.0,0.44345453,0.98374104,0.97275895,0.539062,0.70149654
 305475974,1,1,VQIVYK,1.0,0.7007171,0.4035557,0.8434177,0.42327204,0.7989377

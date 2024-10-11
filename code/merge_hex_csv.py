@@ -580,7 +580,7 @@ writer.close()
 
 first = True
 
-new_S106 = dict()
+new_S105 = dict()
 new_S112 = dict()
 for long_title in dict_model:
     new_files_dict_model = {"Seed": [], "Test": [], "Sequence": [], "Label": []}
@@ -634,7 +634,7 @@ for long_title in dict_model:
         if "thr" not in cols and " pred " not in cols:
             new_files_dict_model_filtered[cols] = new_files_dict_model[cols]
         if "ROC" not in cols and "0.5" not in cols and long_title.replace(" ", "_") == "AP_SP":
-            new_S106[cols] = new_files_dict_model[cols]
+            new_S105[cols] = new_files_dict_model[cols]
         if "ROC" not in cols and "0.5" not in cols:
             new_S112[cols] = new_files_dict_model[cols]
     df_new_filtered = pd.DataFrame(new_files_dict_model_filtered)
@@ -642,9 +642,9 @@ for long_title in dict_model:
     df_new_filtered.to_excel(writer_filtered, sheet_name = "FigS1." + supporting_numbers[long_title.replace(" ", "_")], index = False)
     writer_filtered.close()
 
-df_new_S106 = pd.DataFrame(new_S106)
-writer = pd.ExcelWriter("Source_Data_TableS1.6.xlsx", engine = 'openpyxl', mode = "w")
-df_new_S106.to_excel(writer, sheet_name = "TableS1.6", index = False)
+df_new_S105 = pd.DataFrame(new_S105)
+writer = pd.ExcelWriter("Source_Data_TableS1.5.xlsx", engine = 'openpyxl', mode = "w")
+df_new_S105.to_excel(writer, sheet_name = "TableS1.5", index = False)
 writer.close()
 
 df_new_S112 = pd.DataFrame(new_S112)
@@ -660,8 +660,8 @@ writer = pd.ExcelWriter("Source_Data_FigS2.1.xlsx", engine = 'openpyxl', mode = 
 df_new_alt_6000.to_excel(writer, sheet_name = "FigS2.1c", index = False)
 writer.close()
 
-writer = pd.ExcelWriter("Source_Data_TableS1.5.xlsx", engine = 'openpyxl', mode = "w")
-df_new_20.to_excel(writer, sheet_name = "TableS1.5", index = False)
+writer = pd.ExcelWriter("Source_Data_TableS1.4.xlsx", engine = 'openpyxl', mode = "w")
+df_new_20.to_excel(writer, sheet_name = "TableS1.4", index = False)
 writer.close()
 
 NUM_TESTS = 5
@@ -1011,7 +1011,7 @@ df_new_df_valn.to_csv("my_merged_valid_test_res.csv", index = False)
 df_new_df_valn_short = pd.DataFrame(new_df_valn_short)
 df_new_df_valn_short.to_csv("my_merged_valid_test_res_short.csv", index = False)
 
-writer = pd.ExcelWriter("Source_Data_TableS1.2.xlsx", engine = 'openpyxl', mode = "w")
+writer = pd.ExcelWriter("Source_Data_TableS1.2_no_thr.xlsx", engine = 'openpyxl', mode = "w")
 df_new_df_valn_short.to_excel(writer, sheet_name = "TableS1.2", index = False)
 writer.close()
 
@@ -1052,6 +1052,6 @@ for long_title in new_df_valn_short:
 df_new_df_valn_short_with_thr = pd.DataFrame(new_df_valn_short_with_thr)
 df_new_df_valn_short_with_thr.to_csv("my_merged_valid_test_res_short_thr.csv", index = False)
 
-writer = pd.ExcelWriter("Source_Data_TableS1.3.xlsx", engine = 'openpyxl', mode = "w")
-df_new_df_valn_short_with_thr.to_excel(writer, sheet_name = "TableS1.3", index = False)
+writer = pd.ExcelWriter("Source_Data_TableS1.2.xlsx", engine = 'openpyxl', mode = "w")
+df_new_df_valn_short_with_thr.to_excel(writer, sheet_name = "TableS1.2", index = False)
 writer.close()

@@ -41,6 +41,6 @@ for ix in range(len(dictnew["Seed"])):
 df_new_original = pd.DataFrame(dictnew)
 df_new_original.to_csv("mine_plus_other.csv", index = False)
 
-writer = pd.ExcelWriter("Source_Data_TableS1.4.xlsx", engine = 'openpyxl', mode = "w")
-df_new_original.to_excel(writer, sheet_name = "TableS1.4", index = False)
+writer = pd.ExcelWriter("Source_Data_TableS1.3.xlsx", engine = 'openpyxl', mode = "w")
+df_new_original.to_excel(writer, sheet_name = "TableS1.3", index = False)
 writer.close()
